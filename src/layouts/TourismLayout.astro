@@ -1,0 +1,15 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogImage = '/og/og-tourism.jpg', noindex } = Astro.props;
+---
+<BaseLayout title={title} description={description} ogImage={ogImage} lane="tourism" noindex={noindex}>
+  <slot />
+</BaseLayout>

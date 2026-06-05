@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/primitives/Section.astro';
+import Eyebrow from '../../components/primitives/Eyebrow.astro';
+import Card from '../../components/primitives/Card.astro';
+import PriceTag from '../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
+import { autoRepairSchema, breadcrumbSchema } from '../../lib/schema';
+
+const schema = autoRepairSchema({
+  name: 'S.Prestige — Interior & biological cleaning',
+  description:
+    'HEPA vacuum, hot-water extraction, enzymatic biological clean and deodorising.',
+  url: '/detailing/interior-biological',
+  priceFromEUR: 150,
+});
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Detailing', url: '/detailing' },
+  { name: 'Interior & biological', url: '/detailing/interior-biological' },
+]);
+
+const startingFrom = 150;
+
+const steps = [
+  { title: 'Vacuum + extract', body: 'HEPA vacuum + hot-water extraction lift sand from seams and carpet padding.' },
+  { title: 'Enzymatic clean', body: 'Biological solution breaks down organic residue — sweat, spills, pets — at the source.' },
+  { title: 'Deodorise', body: 'Ozone or probiotic mist neutralises odour molecules. No cover-up fragrance.' },
+  { title: 'Protect', body: 'Fabric and leather conditioners applied to keep the result for months.' },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Interior + biological clean"
+  description="Fine Cypriot sand out of the seams. Smells gone, not masked. Interior and biological cleaning, Kissonerga."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={[schema, breadcrumbs]}
+>
+  <Section>
+    <Eyebrow>Auto · Interior</Eyebrow>
+    <h1 class="mt-3 max-w-3xl font-display text-4xl text-fg md:text-6xl text-balance">
+      Sand out of the seams. Smell out of the cabin.
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
+      Cypriot dust is finer than you think — it lives between the stitching,
+      under the carpet pad, in the vents. A vacuum alone doesn't get it. Our
+      full interior + biological service does.
+    </p>
+    <div class="mt-8">
+      <PriceTag amount={startingFrom} period="total" />
+    </div>
+    <div class="mt-6">
+      <WhatsAppButton
+        client:visible
+        template="detailing.interior"
+        size="lg"
+        variant="primary"
+      >
+        Book a slot
+      </WhatsAppButton>
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>Process</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Four stages. One cabin.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {steps.map((s, i) => (
+        <Card>
+          <div class="font-display text-2xl text-gold">0{i + 1}</div>
+          <div class="mt-2 font-display text-lg text-fg">{s.title}</div>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{s.body}</p>
+        </Card>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,48 @@
+---
+import { cn } from '../../lib/cn';
+import { formatEUR } from '../../lib/currency';
+
+export interface Props {
+  amount: number;
+  variant?: 'starting' | 'inline' | 'exact';
+  period?: 'per-hour' | 'per-day' | 'per-week' | 'per-person' | 'per-group' | 'total';
+  class?: string;
+}
+
+const {
+  amount,
+  variant = 'starting',
+  period,
+  class: className,
+} = Astro.props;
+
+const periodLabels = {
+  'per-hour': '/hr',
+  'per-day': '/day',
+  'per-week': '/wk',
+  'per-person': '/pp',
+  'per-group': '/group',
+  total: '',
+} as const;
+
+const periodLabel = period ? periodLabels[period] : '';
+---
+{variant === 'starting' && (
+  <div class={cn('inline-flex items-baseline gap-1.5', className)}>
+    <span class="text-[10px] uppercase tracking-[0.2em] text-fg-muted">from</span>
+    <span class="font-display text-2xl font-semibold text-gold">{formatEUR(amount)}</span>
+    {periodLabel && <span class="text-sm text-fg-muted">{periodLabel}</span>}
+  </div>
+)}
+{variant === 'inline' && (
+  <span class={cn('inline-flex items-baseline gap-1', className)}>
+    <span class="text-[10px] uppercase tracking-[0.2em] text-fg-muted">from</span>
+    <span class="font-medium text-gold">{formatEUR(amount)}</span>
+    {periodLabel && <span class="text-xs text-fg-muted">{periodLabel}</span>}
+  </span>
+)}
+{variant === 'exact' && (
+  <span class={cn('font-display text-2xl font-semibold text-gold', className)}>
+    {formatEUR(amount)}{periodLabel && <span class="ml-1 text-sm font-normal text-fg-muted">{periodLabel}</span>}
+  </span>
+)}

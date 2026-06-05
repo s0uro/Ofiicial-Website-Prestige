@@ -1,0 +1,27 @@
+---
+import { cn } from '../../lib/cn';
+
+export interface Props {
+  class?: string;
+  variant?: 'trust' | 'local' | 'status' | 'gold' | 'muted';
+}
+
+const { class: className, variant = 'trust' } = Astro.props;
+
+const variants = {
+  trust: 'bg-gold/10 text-gold border-gold/20',
+  local: 'bg-fg/5 text-fg-muted border-fg/10',
+  status: 'bg-bg-elev text-fg border-fg/20',
+  gold: 'bg-gold text-bg border-gold',
+  muted: 'bg-transparent text-fg-muted border-fg/10',
+} as const;
+---
+<span
+  class={cn(
+    'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium',
+    variants[variant],
+    className,
+  )}
+>
+  <slot />
+</span>

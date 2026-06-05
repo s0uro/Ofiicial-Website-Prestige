@@ -1,0 +1,27 @@
+---
+import { cn } from '../../lib/cn';
+
+export interface Props {
+  class?: string;
+  padded?: boolean;
+  bordered?: boolean;
+  as?: 'div' | 'article' | 'section' | 'li';
+}
+
+const {
+  class: className,
+  padded = true,
+  bordered = true,
+  as: Tag = 'div',
+} = Astro.props;
+---
+<Tag
+  class={cn(
+    'relative overflow-hidden rounded-lg bg-bg-elev',
+    bordered && 'border border-gold/10',
+    padded && 'p-6 md:p-8',
+    className,
+  )}
+>
+  <slot />
+</Tag>

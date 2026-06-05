@@ -1,0 +1,61 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse at top left, rgb(var(--gold) / 0.04), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgb(var(--gold) / 0.03), transparent 50%);
+  }
+  ::selection {
+    background: rgb(var(--gold));
+    color: rgb(var(--bg));
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--gold));
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+body[data-menu-open='true'] [data-sticky-cta] {
+  display: none !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .gold-gradient-text {
+    background: linear-gradient(120deg, rgb(var(--gold-soft)), rgb(var(--gold)) 50%, rgb(var(--gold-deep)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hairline-gold {
+    border-color: rgb(var(--gold) / 0.15);
+  }
+}

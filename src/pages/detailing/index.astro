@@ -1,0 +1,200 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/primitives/Section.astro';
+import Eyebrow from '../../components/primitives/Eyebrow.astro';
+import Card from '../../components/primitives/Card.astro';
+import Badge from '../../components/primitives/Badge.astro';
+import PriceTag from '../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
+import { Spotlight } from '../../components/fx/Spotlight';
+import { autoRepairSchema } from '../../lib/schema';
+
+const schema = autoRepairSchema({
+  name: 'S.Prestige Detailing',
+  description:
+    'Hand wash, polish, biological interior cleaning, ceramic coating, and headlight restoration in Kissonerga, Cyprus.',
+  url: '/detailing',
+  priceFromEUR: 25,
+});
+
+type Tier = {
+  name: string;
+  scope: string;
+  prices?: { label: string; amount: number }[];
+  from?: number;
+  fromRange?: { from: number; to: number };
+  note?: string;
+  popular?: boolean;
+  premium?: boolean;
+  features: string[];
+};
+
+const tiers: Tier[] = [
+  {
+    name: 'Handwash',
+    scope: 'outside + inside',
+    prices: [
+      { label: 'Small car', amount: 25 },
+      { label: 'SUV', amount: 35 },
+    ],
+    note: 'Free delivery to your location',
+    features: [
+      'Exterior hand wash',
+      'Wheel and tyre clean',
+      'Interior vacuum',
+      'Windows and mats',
+    ],
+  },
+  {
+    name: 'Polish & seal',
+    scope: 'paint + interior',
+    from: 200,
+    popular: true,
+    features: [
+      'Full decontamination',
+      'Clay-bar + iron remover',
+      '1-step machine polish',
+      'Sealant, 3-month gloss',
+      'Interior deep clean',
+    ],
+  },
+  {
+    name: 'Correction & ceramic',
+    scope: 'full car',
+    fromRange: { from: 500, to: 800 },
+    premium: true,
+    features: [
+      '2-step paint correction',
+      'Ceramic coating, 2 years',
+      'Headlight restoration',
+      'Wheels off · barrels clean',
+      'Engine bay detail',
+    ],
+  },
+];
+
+const services = [
+  {
+    href: '/detailing/headlight-restoration',
+    eyebrow: 'Flagship',
+    title: 'Headlight restoration',
+    body: 'UV + salt yellow Cypriot headlights in 18–24 months. Back to clear in about an hour.',
+  },
+  {
+    href: '/detailing/ceramic-coating',
+    eyebrow: 'Protection',
+    title: 'Ceramic coating',
+    body: '2–5 year protection, published tiers, guaranteed maintenance.',
+  },
+  {
+    href: '/detailing/interior-biological',
+    eyebrow: 'Interior',
+    title: 'Interior + biological',
+    body: 'Fine sand and smell out of the seams. No chemistry residue.',
+  },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Detailing"
+  description="Hand wash, polish, biological interior, ceramic coating and headlight restoration in Kissonerga, Cyprus. Published starting prices."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={schema}
+>
+  <Section>
+    <Eyebrow>Auto · Detailing</Eyebrow>
+    <h1 class="mt-3 max-w-3xl font-display text-4xl leading-tight text-fg md:text-6xl text-balance">
+      Three tiers. Real numbers. No upsell at pickup.
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
+      We publish starting prices because we can stand behind them. Send the
+      car and the area on WhatsApp — you get a firm quote before you drop off.
+    </p>
+  </Section>
+
+  <Section spacing="tight">
+    <div class="grid gap-5 md:grid-cols-3">
+      {tiers.map((t) => {
+        const isPopular = 'popular' in t && t.popular;
+        const isPremium = 'premium' in t && t.premium;
+        const cardClass = isPremium
+          ? 'border-gold/55 shadow-glow'
+          : isPopular
+          ? 'border-gold/30 shadow-glow-sm'
+          : '';
+        const buttonVariant = isPopular || isPremium ? 'primary' : 'secondary';
+        return (
+          <Card class={cardClass}>
+            {isPremium && (
+              <div
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent"
+              />
+            )}
+            <div class="flex items-start justify-between gap-3">
+              <div class="font-display">
+                <div class={isPopular || isPremium ? 'text-lg leading-tight text-gold' : 'text-lg leading-tight text-fg'}>
+                  {t.name}
+                </div>
+                <div class="mt-0.5 text-sm leading-tight text-fg-muted">
+                  ({t.scope})
+                </div>
+              </div>
+              {isPopular && <Badge variant="gold">Popular</Badge>}
+              {isPremium && <Badge variant="gold">Premium</Badge>}
+            </div>
+            {t.prices ? (
+              <div class="mt-2 space-y-1">
+                {t.prices.map((p) => (
+                  <div class="flex items-baseline justify-between gap-3 text-sm">
+                    <span class="text-fg-muted">{p.label}</span>
+                    <span class="font-display text-lg font-semibold text-gold">€{p.amount}</span>
+                  </div>
+                ))}
+              </div>
+            ) : t.fromRange ? (
+              <div class="mt-2 inline-flex items-baseline gap-1.5">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-fg-muted">from</span>
+                <span class="font-display text-2xl font-semibold text-gold">€{t.fromRange.from}–{t.fromRange.to}</span>
+              </div>
+            ) : (
+              <PriceTag amount={t.from!} period="total" class="mt-2" />
+            )}
+            {t.note && (
+              <div class="mt-2 text-xs italic text-fg-muted">{t.note}</div>
+            )}
+            <ul class="mt-4 space-y-1.5 text-sm text-fg-muted">
+              {t.features.map((f) => <li>· {f}</li>)}
+            </ul>
+            <WhatsAppButton
+              client:visible
+              template="detailing.general"
+              size="sm"
+              variant={buttonVariant}
+              className="mt-6"
+            >
+              Book {t.name}
+            </WhatsAppButton>
+          </Card>
+        );
+      })}
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>Specialist services</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Go deeper.</h2>
+    <Spotlight className="mt-10 grid gap-4 rounded-lg border border-gold/10 bg-bg p-4 md:grid-cols-3">
+      {services.map((s) => (
+        <a href={s.href} class="group block rounded-md p-6 transition-colors hover:bg-gold/5">
+          <div class="text-[10px] uppercase tracking-[0.2em] text-gold">{s.eyebrow}</div>
+          <h3 class="mt-2 font-display text-xl text-fg">{s.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{s.body}</p>
+          <span class="mt-4 inline-flex text-sm text-gold opacity-0 transition-opacity group-hover:opacity-100">
+            Read more →
+          </span>
+        </a>
+      ))}
+    </Spotlight>
+  </Section>
+</BaseLayout>

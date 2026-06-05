@@ -1,0 +1,137 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/primitives/Section.astro';
+import Eyebrow from '../../components/primitives/Eyebrow.astro';
+import Card from '../../components/primitives/Card.astro';
+import Badge from '../../components/primitives/Badge.astro';
+import PriceTag from '../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
+import Gallery from '../../components/fx/Gallery';
+import { saleListingSchema, breadcrumbSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const all = await getCollection('fleet');
+  return all
+    .filter((e) => e.data.listingType === 'sale')
+    .map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<'fleet'>;
+}
+const { entry } = Astro.props as Props;
+const { Content } = await entry.render();
+const d = entry.data;
+if (d.listingType !== 'sale') throw new Error('Expected a sale listing');
+
+const listingLabel = `${d.year} ${d.make} ${d.model}${d.trim ? ' ' + d.trim : ''}`;
+const metaDescription = `${listingLabel} for sale in Pafos, Cyprus. €${d.priceEUR.toLocaleString('en-IE')}, ${d.mileageKm.toLocaleString('en-IE')} km, ${d.transmission} ${d.fuel}. Cyprus-registered. Detailed before listing.`.slice(0, 158);
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Buy & Sell', url: '/buy-sell' },
+  { name: listingLabel, url: `/buy-sell/${entry.slug}` },
+]);
+
+const galleryImages = await Promise.all(
+  d.images.map(async (img, i) => {
+    const thumb = await getImage({ src: img, width: 640, format: 'webp', quality: 75 });
+    const full = await getImage({ src: img, width: 1400, format: 'webp', quality: 78 });
+    return {
+      thumb: thumb.src,
+      full: full.src,
+      width: img.width,
+      height: img.height,
+      alt: `${listingLabel} — photo ${i + 1} of ${d.images.length}`,
+    };
+  })
+);
+
+const schemaImageUrls = galleryImages.slice(0, 3).map((g) => g.full);
+const schema = saleListingSchema(entry, `/buy-sell/${entry.slug}`, schemaImageUrls);
+---
+<BaseLayout
+  lane="auto"
+  title={listingLabel}
+  description={metaDescription}
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={schema ? [schema, breadcrumbs] : breadcrumbs}
+>
+  <Section>
+    <Eyebrow>Auto · Buy</Eyebrow>
+    <h1 class="mt-3 font-display text-4xl text-fg md:text-6xl text-balance">{listingLabel}</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-4">
+      <PriceTag amount={d.priceEUR} variant="exact" />
+      {d.sold && <Badge variant="muted">Sold</Badge>}
+      {!d.sold && <Badge variant="gold">Available</Badge>}
+    </div>
+
+    <div class="mt-10 grid gap-8 md:grid-cols-[1.4fr_1fr]">
+      <div class="overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
+        <Image
+          src={d.images[0]}
+          alt={listingLabel}
+          width={1280}
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 60vw"
+          format="webp"
+          quality={78}
+          class="aspect-[16/10] w-full rounded-[calc(var(--radius-lg)-4px)] object-cover object-[center_65%]"
+        />
+      </div>
+      <Card>
+        <Eyebrow>Specs</Eyebrow>
+        <dl class="mt-4 grid grid-cols-2 gap-y-2 text-sm">
+          <dt class="text-fg-muted">Year</dt><dd class="text-right text-fg">{d.year}</dd>
+          <dt class="text-fg-muted">Body</dt><dd class="text-right text-fg">{d.bodyStyle}</dd>
+          <dt class="text-fg-muted">Transmission</dt><dd class="text-right text-fg">{d.transmission}</dd>
+          <dt class="text-fg-muted">Fuel</dt><dd class="text-right text-fg">{d.fuel}</dd>
+          <dt class="text-fg-muted">Seats</dt><dd class="text-right text-fg">{d.seats}</dd>
+          <dt class="text-fg-muted">Mileage</dt><dd class="text-right text-fg">{d.mileageKm.toLocaleString('en-IE')} km</dd>
+          <dt class="text-fg-muted">Registered</dt><dd class="text-right text-fg">{d.registrationCountry}</dd>
+        </dl>
+        <WhatsAppButton
+          client:visible
+          template="buysell.inquire"
+          vars={{ listing: listingLabel }}
+          size="lg"
+          variant="primary"
+          className="mt-6 w-full"
+        >
+          Enquire on WhatsApp
+        </WhatsAppButton>
+      </Card>
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <div class="prose prose-invert max-w-3xl text-fg-muted">
+      <Content />
+    </div>
+    {d.features.length > 0 && (
+      <div class="mt-10">
+        <Eyebrow>Features</Eyebrow>
+        <ul class="mt-4 grid grid-cols-1 gap-2 text-sm text-fg-muted md:grid-cols-2">
+          {d.features.map((f) => <li>· {f}</li>)}
+        </ul>
+      </div>
+    )}
+  </Section>
+
+  {galleryImages.length > 1 && (
+    <Section>
+      <Eyebrow>Gallery</Eyebrow>
+      <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl text-balance">
+        All {galleryImages.length} photos.
+      </h2>
+      <p class="mt-3 max-w-2xl text-sm text-fg-muted">
+        Tap any photo to open the full-size view. Use ← / → keys or the
+        arrows to step through.
+      </p>
+      <div class="mt-8">
+        <Gallery client:visible images={galleryImages} />
+      </div>
+    </Section>
+  )}
+</BaseLayout>

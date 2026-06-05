@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#0A0A0A"/>
+      <stop offset="50%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="62%" r="30%">
+      <stop offset="0%" stop-color="#F5C518" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#F5C518" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <rect width="1600" height="1000" fill="url(#sun)"/>
+  <g fill="#F5C518" fill-opacity="0.08" stroke="#F5C518" stroke-opacity="0.3" stroke-width="2">
+    <path d="M 0 700 L 200 600 L 360 640 L 520 540 L 720 620 L 900 520 L 1100 600 L 1300 540 L 1500 620 L 1600 580 L 1600 1000 L 0 1000 Z"/>
+    <path d="M 0 780 L 220 720 L 440 760 L 660 700 L 880 760 L 1100 720 L 1320 780 L 1600 740 L 1600 1000 L 0 1000 Z" fill="#F5C518" fill-opacity="0.04"/>
+  </g>
+  <circle cx="800" cy="620" r="60" fill="#F5C518" fill-opacity="0.35"/>
+  <g font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" fill="#F5C518" fill-opacity="0.5">
+    <text x="800" y="900" text-anchor="middle" font-size="22" letter-spacing="8">D.PRESTIGE · PLACEHOLDER</text>
+  </g>
+</svg>

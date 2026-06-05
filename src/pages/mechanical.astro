@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/primitives/Section.astro';
+import Container from '../components/primitives/Container.astro';
+import Eyebrow from '../components/primitives/Eyebrow.astro';
+import Badge from '../components/primitives/Badge.astro';
+import Card from '../components/primitives/Card.astro';
+import { WhatsAppButton } from '../components/cta/WhatsAppButton';
+import { CallButton } from '../components/cta/CallButton';
+import { AuroraBackground } from '../components/fx/AuroraBackground';
+import { TextReveal } from '../components/fx/TextReveal';
+import { MagneticButton } from '../components/fx/MagneticButton';
+import { autoRepairSchema, faqPageSchema } from '../lib/schema';
+
+const schema = autoRepairSchema({
+  name: 'S.Prestige — Mechanical service',
+  description:
+    'Mechanical diagnostics, servicing and repairs in Kissonerga, Pafos. Honest quotes, no surprise charges at pickup.',
+  url: '/mechanical',
+});
+
+const faq = [
+  {
+    q: 'Do you do the Cyprus periodic technical test (MOT)?',
+    a: 'We do the prep — we inspect the car against the MOT checklist, fix what would fail, and tell you what will pass with notes. The actual test happens at a licensed MOT centre; we book it for you and hand the car over.',
+  },
+  {
+    q: 'Which car brands do you service?',
+    a: 'European, Japanese, Korean — petrol, diesel, hybrid. We are not brand-specialised, we are honest-mechanic-specialised: we tell you when a job is outside our scope and refer you to the right place instead of pretending we can do it.',
+  },
+  {
+    q: 'OEM or aftermarket parts?',
+    a: 'Your choice — we publish both options on the quote. OEM is more expensive and has manufacturer warranty. Quality aftermarket can save 30-50 percent on the part with no real downside for most service items. We tell you the trade-off; you pick.',
+  },
+  {
+    q: 'Is there a diagnostic fee?',
+    a: 'OBD scan and basic diagnostic is included in the quote when we proceed with the work. If we diagnose and you decide not to repair with us, the diagnostic time is charged at our standard hourly rate — no surprise.',
+  },
+];
+const faqSchema = faqPageSchema(faq);
+
+const services = [
+  { title: 'Diagnostics', body: 'OBD scan, error codes read, plain-English explanation of what is wrong.' },
+  { title: 'Servicing', body: 'Oil, filters, brake fluid, coolant. Manufacturer-spec or premium, your call.' },
+  { title: 'Brakes & suspension', body: 'Pads, discs, bushings, shock absorbers — anything that affects how the car stops and rides.' },
+  { title: 'Pre-purchase check', body: "Buying used? We inspect before you pay. We'll tell you what's coming up in the next 12 months." },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Mechanical service"
+  description="Mechanical diagnostics, servicing and repairs in Kissonerga, Pafos. Honest quotes, no hidden charges."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={[schema, faqSchema]}
+>
+  <AuroraBackground className="relative overflow-hidden">
+    <img
+      src="/imagery/mechanical-hero.webp"
+      alt="Premium saloon raised on a hydraulic lift in a dark workshop, warm gold work-light"
+      width="928"
+      height="1152"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      class="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[55%] object-cover object-[center_50%] md:block lg:w-[55%]"
+      style="mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0,0,0,0.85) 45%, rgb(0,0,0) 70%, rgb(0,0,0) 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0,0,0,0.85) 45%, rgb(0,0,0) 70%, rgb(0,0,0) 100%);"
+    />
+
+    <Container class="relative z-10 py-20 md:py-32 lg:py-40">
+      <div class="md:max-w-[56%]">
+        <Eyebrow>Auto · Mechanical</Eyebrow>
+        <TextReveal
+          client:visible
+          as="h1"
+          text={`Honest mechanic.\nNo surprises at pickup.`}
+          className="mt-4 pb-2 font-display text-4xl font-semibold leading-[1.15] md:text-5xl gold-gradient-text"
+        />
+        <p class="mt-6 max-w-xl text-lg text-fg-muted text-pretty">
+          Diagnostics, servicing, brakes, suspension, pre-purchase checks. We
+          quote before we touch anything. If a job grows, we call you first.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <Badge>Quote before work</Badge>
+          <Badge>OEM or aftermarket</Badge>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <MagneticButton client:visible>
+            <WhatsAppButton
+              client:visible
+              template="mechanical.general"
+              size="lg"
+              variant="primary"
+            >
+              Get a quote
+            </WhatsAppButton>
+          </MagneticButton>
+          <CallButton client:visible lane="auto" size="lg" />
+        </div>
+
+        <div class="relative mt-12 md:hidden">
+          <img
+            src="/imagery/mechanical-hero.webp"
+            alt=""
+            width="928"
+            height="1152"
+            loading="lazy"
+            decoding="async"
+            class="block w-full"
+            style="mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 12%, rgb(0,0,0) 30%, rgb(0,0,0) 88%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 12%, rgb(0,0,0) 30%, rgb(0,0,0) 88%, transparent 100%);"
+          />
+        </div>
+      </div>
+    </Container>
+  </AuroraBackground>
+
+  <Section>
+    <Eyebrow>What we cover</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Plain mechanical work, done properly.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {services.map((s) => (
+        <Card>
+          <div class="font-display text-lg text-fg">{s.title}</div>
+          <p class="mt-2 text-sm text-fg-muted">{s.body}</p>
+        </Card>
+      ))}
+    </div>
+    <p class="mt-8 text-sm text-fg-muted">
+      Full price list and booking flow are being finalised. For now, message us
+      with your car and the issue — we will quote within working hours.
+    </p>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>FAQ</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Straight answers.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {faq.map((item) => (
+        <Card>
+          <div class="font-display text-lg text-fg">{item.q}</div>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{item.a}</p>
+        </Card>
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <div class="flex flex-wrap items-center justify-between gap-6">
+      <div>
+        <Eyebrow>Need it sooner?</Eyebrow>
+        <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Same-day diagnostics, when slots allow.</h2>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <WhatsAppButton client:visible template="mechanical.general" size="lg" variant="primary">
+          WhatsApp
+        </WhatsAppButton>
+        <CallButton client:visible lane="auto" size="lg" />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

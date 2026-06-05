@@ -1,0 +1,93 @@
+---
+import '../styles/globals.css';
+import { SITE, buildTitle, canonical } from '../lib/seo';
+import { organizationSchema } from '../lib/schema';
+import Header from '../components/nav/Header.astro';
+import Footer from '../components/nav/Footer.astro';
+import JsonLd from '../components/primitives/JsonLd.astro';
+import { StickyMobileCTA } from '../components/cta/StickyMobileCTA';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  lane?: 'auto' | 'tourism' | 'shared';
+  noindex?: boolean;
+  showChrome?: boolean;
+  jsonLd?: object | object[];
+}
+
+const {
+  title,
+  description = SITE.description,
+  ogImage = SITE.defaultOg,
+  lane = 'shared',
+  noindex = false,
+  showChrome = true,
+  jsonLd,
+} = Astro.props;
+
+const globalSchemas: object[] = [organizationSchema()];
+const pageSchemas: object[] = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+const allSchemas = [...globalSchemas, ...pageSchemas];
+
+const fullTitle = buildTitle(title);
+const canonicalUrl = canonical(Astro.url.pathname);
+const ogImageUrl = new URL(ogImage, SITE.url).toString();
+const stickyLane: 'auto' | 'tourism' | 'both' = lane === 'shared' ? 'both' : lane;
+---
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0A0A0A" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <meta name="geo.region" content="CY-PA" />
+    <meta name="geo.placename" content="Kissonerga, Pafos" />
+    <meta name="geo.position" content={`${SITE.geo.latitude};${SITE.geo.longitude}`} />
+    <meta name="ICBM" content={`${SITE.geo.latitude}, ${SITE.geo.longitude}`} />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — ${description}`} />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={`${SITE.name} — ${description}`} />
+
+    <meta name="generator" content={Astro.generator} />
+
+    <JsonLd data={allSchemas} />
+  </head>
+  <body data-lane={lane} class="min-h-dvh pb-[env(safe-area-inset-bottom)]">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[60] focus:rounded focus:bg-gold focus:px-3 focus:py-2 focus:text-bg"
+    >
+      Skip to content
+    </a>
+    {showChrome && <Header lane={lane} />}
+    <main id="main">
+      <slot />
+    </main>
+    {showChrome && <Footer />}
+    {showChrome && <StickyMobileCTA client:load lane={stickyLane} />}
+  </body>
+</html>

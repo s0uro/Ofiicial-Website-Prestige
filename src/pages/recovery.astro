@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/primitives/Section.astro';
+import Container from '../components/primitives/Container.astro';
+import Eyebrow from '../components/primitives/Eyebrow.astro';
+import Badge from '../components/primitives/Badge.astro';
+import Card from '../components/primitives/Card.astro';
+import { WhatsAppButton } from '../components/cta/WhatsAppButton';
+import { CallButton } from '../components/cta/CallButton';
+import { AuroraBackground } from '../components/fx/AuroraBackground';
+import { TextReveal } from '../components/fx/TextReveal';
+import { MagneticButton } from '../components/fx/MagneticButton';
+import { autoRepairSchema } from '../lib/schema';
+
+const schema = autoRepairSchema({
+  name: 'S.Prestige — Vehicle recovery',
+  description:
+    '24/7 vehicle recovery and towing across Pafos and the western Cyprus coast. Flat-bed truck, careful loading, fixed pickup time.',
+  url: '/recovery',
+});
+
+const steps = [
+  { n: '01', title: 'Call', body: 'Tap Emergency 24/7. Tell us where you are and what is wrong.' },
+  { n: '02', title: 'ETA', body: 'We give you a real pickup window — not "soon" — based on traffic and the truck location.' },
+  { n: '03', title: 'Load', body: 'Flat-bed loading. No drive-on for low cars or anything with drivetrain damage.' },
+  { n: '04', title: 'Drop', body: 'Home, our workshop, your insurer-approved garage — wherever you need it.' },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Recovery"
+  description="24/7 vehicle recovery and towing across Pafos. Flat-bed, careful loading, fixed pickup time."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={schema}
+>
+  <AuroraBackground className="relative overflow-hidden">
+    <!-- Desktop: photo absolutely positioned to right half, alpha-masked into bg -->
+    <img
+      src="/imagery/recovery-flatbed.webp"
+      alt="S.Prestige Mercedes Sprinter flat-bed recovery truck loaded with a vehicle at dusk"
+      width="896"
+      height="1195"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      class="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[55%] object-cover object-[center_88%] md:block lg:w-[55%]"
+      style="mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0,0,0,0.85) 45%, rgb(0,0,0) 70%, rgb(0,0,0) 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0,0,0,0.85) 45%, rgb(0,0,0) 70%, rgb(0,0,0) 100%);"
+    />
+
+    <Container class="relative z-10 py-20 md:py-32 lg:py-40">
+      <div class="md:max-w-[56%]">
+        <Eyebrow>Auto · Recovery</Eyebrow>
+        <TextReveal
+          client:visible
+          as="h1"
+          text={`Stuck on the road?\nWe come and get you.`}
+          className="mt-4 pb-2 font-display text-4xl font-semibold leading-[1.15] md:text-5xl gold-gradient-text"
+        />
+        <p class="mt-6 max-w-xl text-lg text-fg-muted text-pretty">
+          Flat tyre, dead battery, won't start, accident — call once and we
+          handle the truck, the loading and the drop-off. Pafos region, day or
+          night.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <Badge>24/7</Badge>
+          <Badge>Flat-bed</Badge>
+          <Badge>Pafos region</Badge>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <MagneticButton client:visible>
+            <CallButton client:visible lane="auto" size="lg" variant="primary" />
+          </MagneticButton>
+          <WhatsAppButton
+            client:visible
+            template="recovery.general"
+            size="lg"
+            variant="secondary"
+          >
+            WhatsApp instead
+          </WhatsAppButton>
+        </div>
+
+        <!-- Mobile: photo shown inline below text, full-width, with top fade -->
+        <div class="relative mt-12 md:hidden">
+          <img
+            src="/imagery/recovery-flatbed.webp"
+            alt=""
+            width="896"
+            height="1195"
+            loading="lazy"
+            decoding="async"
+            class="block w-full"
+            style="mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 12%, rgb(0,0,0) 30%, rgb(0,0,0) 88%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 12%, rgb(0,0,0) 30%, rgb(0,0,0) 88%, transparent 100%);"
+          />
+        </div>
+      </div>
+    </Container>
+  </AuroraBackground>
+
+
+  <Section>
+    <Eyebrow>How it works</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Four steps. Same every time.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-4">
+      {steps.map((s) => (
+        <Card>
+          <div class="font-display text-2xl text-gold">{s.n}</div>
+          <div class="mt-2 font-display text-lg text-fg">{s.title}</div>
+          <p class="mt-2 text-sm text-fg-muted">{s.body}</p>
+        </Card>
+      ))}
+    </div>
+    <p class="mt-8 text-sm text-fg-muted">
+      Coverage zones, fixed call-out fees and out-of-region rates are being
+      finalised. For an immediate pickup, call — we will quote on the spot.
+    </p>
+  </Section>
+
+  <Section bg="elev">
+    <div class="flex flex-wrap items-center justify-between gap-6">
+      <div>
+        <Eyebrow>Roadside now?</Eyebrow>
+        <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Call. Don't text. We pick up.</h2>
+      </div>
+      <CallButton client:visible lane="auto" size="lg" variant="primary" />
+    </div>
+  </Section>
+</BaseLayout>

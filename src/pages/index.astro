@@ -1,0 +1,347 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { websiteSchema } from '../lib/schema';
+import Section from '../components/primitives/Section.astro';
+import Container from '../components/primitives/Container.astro';
+import Eyebrow from '../components/primitives/Eyebrow.astro';
+import Badge from '../components/primitives/Badge.astro';
+import Card from '../components/primitives/Card.astro';
+
+import { AuroraBackground } from '../components/fx/AuroraBackground';
+import { Spotlight } from '../components/fx/Spotlight';
+import { MagneticButton } from '../components/fx/MagneticButton';
+import { NumberTicker } from '../components/fx/NumberTicker';
+import { Marquee } from '../components/fx/Marquee';
+import { TextReveal } from '../components/fx/TextReveal';
+import { BackgroundBeams } from '../components/fx/BackgroundBeams';
+import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
+
+import { WhatsAppButton } from '../components/cta/WhatsAppButton';
+
+import { DISPLAY_PHONE_AUTO, DISPLAY_PHONE_TOURISM } from '../lib/wa';
+
+const painAnchors = [
+  {
+    title: 'Hidden charges',
+    body: 'The quote you get on WhatsApp is the number you pay. No surprise line items when you collect the keys.',
+  },
+  {
+    title: 'Yellow headlights',
+    body: 'UV and salt dull them in 18–24 months. Back to clear in about an hour — same morning, same week.',
+  },
+  {
+    title: 'Mechanic silence',
+    body: "You drop the car, then nothing. We call before any extra work — every time, no exceptions.",
+  },
+  {
+    title: 'Vague pickup ETAs',
+    body: '"Soon" is not a window. On the recovery line we give a real time — and we honour it, day or night.',
+  },
+];
+
+const rawTestimonials = await getCollection('testimonials');
+const testimonials = rawTestimonials
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .map((t) => ({
+    quote: t.data.quote,
+    who: t.data.locationOrNationality
+      ? `${t.data.name} · ${t.data.locationOrNationality}`
+      : t.data.name,
+  }));
+---
+<BaseLayout
+  lane="shared"
+  title="S.Prestige Services"
+  description="Detailing, mechanics, recovery, sales and rentals in Kissonerga, Pafos. Real starting prices, WhatsApp-first booking, no surprise charges at pickup."
+  jsonLd={websiteSchema()}
+>
+  <!-- HERO -->
+  <AuroraBackground className="relative overflow-hidden">
+    <Container class="relative z-10 py-16 md:py-24 lg:py-28">
+      <div class="grid items-center gap-10 md:grid-cols-[1fr_1.1fr] md:gap-6 lg:gap-10">
+        <div class="relative z-10">
+          <Eyebrow>Kissonerga · Cyprus</Eyebrow>
+          <TextReveal
+            client:visible
+            as="h1"
+            text={`Prestige cars.\nServiced, sold, rented.`}
+            className="mt-4 font-display text-[clamp(2rem,5.5vw,3.75rem)] font-semibold leading-[1.05] gold-gradient-text [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[clamp(1.4rem,3.6vw,2.4rem)] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
+          />
+          <p class="mt-6 max-w-xl text-lg text-fg-muted text-pretty">
+            Detailing, mechanics, recovery, sales and rentals — one address
+            in Kissonerga. Real starting prices, no surprise charges at
+            pickup. WhatsApp answers the same day.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <MagneticButton client:visible>
+              <WhatsAppButton
+                client:visible
+                template="detailing.general"
+                size="lg"
+                variant="primary"
+              >
+                Message Auto
+              </WhatsAppButton>
+            </MagneticButton>
+            <MagneticButton client:visible>
+              <WhatsAppButton
+                client:visible
+                template="rental.general"
+                size="lg"
+                variant="secondary"
+              >
+                Message Rentals
+              </WhatsAppButton>
+            </MagneticButton>
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 text-sm text-fg-muted sm:grid-cols-3 md:mt-10">
+            <div>
+              <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Auto</span>
+              <div class="mt-0.5 text-fg">{DISPLAY_PHONE_AUTO}</div>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Rentals</span>
+              <div class="mt-0.5 text-fg">{DISPLAY_PHONE_TOURISM}</div>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Hours</span>
+              <div class="mt-0.5 text-fg">Mon–Sat 08:00–18:00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative isolate flex flex-col justify-center">
+          <!-- Editorial masthead: services on left, languages on right -->
+          <div class="mb-4 flex flex-col gap-2 md:mb-6 md:gap-3">
+            <div class="flex flex-col gap-1 text-[10px] font-medium uppercase tracking-[0.25em] sm:flex-row sm:items-center sm:justify-between sm:gap-4 md:text-xs">
+              <span class="text-gold">
+                Buy & Sell
+                <span class="mx-1.5 text-fg-muted/50">·</span>
+                Rentals
+                <span class="mx-1.5 text-fg-muted/50">·</span>
+                Detailing
+              </span>
+              <span class="text-fg-muted">
+                EN <span class="mx-0.5 text-fg-muted/50">·</span>
+                EL <span class="mx-0.5 text-fg-muted/50">·</span>
+                RU
+              </span>
+            </div>
+            <div class="h-px w-full bg-gradient-to-r from-gold/50 via-gold/15 to-transparent"></div>
+          </div>
+
+          <!-- Gold atmosphere behind the car (wider horizontal spread for 16:9 image) -->
+          <div
+            aria-hidden
+            class="pointer-events-none absolute inset-y-[10%] left-[-15%] right-[-25%] -z-10 md:right-[-35%]"
+            style="background: radial-gradient(ellipse 50% 60% at 55% 55%, rgba(245,197,24,0.55), rgba(199,154,15,0.18) 48%, transparent 80%); filter: blur(55px);"
+          />
+
+          <!-- Landscape cut-out sedan — bleeds past the right edge on desktop -->
+          <img
+            src="/imagery/Mercedes-S-Class.webp"
+            alt="S.Prestige — Mercedes-Benz S-Class"
+            width="1920"
+            height="1080"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            class="relative block w-full origin-center scale-110 md:w-[130%] md:scale-[1.12] md:translate-x-[10%] lg:w-[140%] lg:translate-x-[14%]"
+          />
+
+          <!-- Ground shadow — grounds the car in 3D -->
+          <div
+            aria-hidden
+            class="pointer-events-none absolute bottom-[8%] left-[15%] right-[15%] -z-[5] h-5 rounded-[50%] bg-black/75 blur-2xl md:left-[22%] md:right-[-10%] md:h-6 lg:right-[-16%]"
+          />
+        </div>
+      </div>
+    </Container>
+  </AuroraBackground>
+
+  <!-- TRUST STRIP -->
+  <Section bg="elev" spacing="tight">
+    <div class="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+      <div>
+        <div class="font-display text-4xl text-gold md:text-5xl">
+          <NumberTicker client:visible value={1200} suffix="+" />
+        </div>
+        <p class="mt-2 text-sm text-fg-muted">Cars detailed</p>
+      </div>
+      <div>
+        <div class="font-display text-4xl text-gold md:text-5xl">
+          <NumberTicker client:visible value={8} suffix=" yr" />
+        </div>
+        <p class="mt-2 text-sm text-fg-muted">On the island</p>
+      </div>
+      <div>
+        <div class="font-display text-4xl text-gold md:text-5xl">
+          <NumberTicker client:visible value={4.9} decimals={1} />
+        </div>
+        <p class="mt-2 text-sm text-fg-muted">Google rating</p>
+      </div>
+      <div>
+        <div class="font-display text-4xl text-gold md:text-5xl">
+          <NumberTicker client:visible value={0} prefix="€" />
+        </div>
+        <p class="mt-2 text-sm text-fg-muted">Hidden fees</p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- TWO-LANE SPLIT -->
+  <Section>
+    <Eyebrow>Pick your lane</Eyebrow>
+    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-tight text-fg md:text-5xl text-balance">
+      Auto or tourism — both live here.
+    </h2>
+    <BentoGrid className="mt-10">
+      <BentoItem
+        href="/buy-sell"
+        eyebrow="Auto · 01"
+        title="Buy & sell cars"
+        description="Photos on WhatsApp, same-day valuation. Honest numbers, clean paperwork."
+        imageUrl="/imagery/bento-buysell.webp"
+        imageAlt="Three luxury cars in a dimly lit showroom"
+      />
+      <BentoItem
+        href="/tourism/rentals"
+        eyebrow="Rentals · 02"
+        title="Rentals"
+        description="Airport pickup. Insurance included. Daily and weekly rates published."
+        imageUrl="/imagery/bento-rentals.webp"
+        imageAlt="Cyprus coastal road at golden hour"
+      />
+      <BentoItem
+        href="/tourism/taxi"
+        eyebrow="Auto · 03"
+        title="Transfers"
+        description="Airport pickup, on-demand. Fixed quote on WhatsApp. No meter surprises."
+        imageUrl="/imagery/bento-transfers.webp"
+        imageAlt="Black Mercedes-Benz at night"
+      />
+      <BentoItem
+        href="/detailing"
+        eyebrow="Auto · 04"
+        title="Detailing"
+        description="Hand wash, polish, ceramic, headlight restoration. Published tiers, no upsell."
+        imageUrl="/imagery/bento-detailing.webp"
+        imageAlt="Polished black metallic paint with water beads"
+      />
+      <BentoItem
+        href="/mechanical"
+        eyebrow="Auto · 05"
+        title="Mechanical"
+        description="Diagnostics, servicing, brakes, suspension, pre-purchase checks. Quote before work."
+        imageUrl="/imagery/bento-mechanical.webp"
+        imageAlt="Wrench on a dark surface — workshop tools"
+      />
+      <BentoItem
+        href="/recovery"
+        eyebrow="Auto · 06"
+        title="Recovery"
+        description="24/7 flat-bed pickup across Pafos region. Real ETA. Drop where you need."
+        imageUrl="/imagery/bento-recovery.webp"
+        imageAlt="Car loaded onto a flat-bed tow truck at night"
+      />
+    </BentoGrid>
+  </Section>
+
+  <!-- PAIN ANCHORS -->
+  <Section bg="elev">
+    <Eyebrow>Why locals pick us</Eyebrow>
+    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-tight text-fg md:text-5xl text-balance">
+      We name the problem. Then we fix it.
+    </h2>
+    <Spotlight
+      client:visible
+      className="mt-10 grid grid-cols-1 gap-4 rounded-lg border border-gold/10 bg-bg p-4 md:grid-cols-2 lg:grid-cols-4"
+    >
+      {painAnchors.map((p) => (
+        <Card>
+          <Badge>Pain</Badge>
+          <h3 class="mt-4 font-display text-xl text-fg">{p.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{p.body}</p>
+        </Card>
+      ))}
+    </Spotlight>
+  </Section>
+
+  <!-- TESTIMONIALS -->
+  <Section spacing="tight">
+    <Eyebrow>What locals say</Eyebrow>
+    <div class="mt-8">
+      <Marquee client:visible speed={28}>
+        {testimonials.map((t) => (
+          <div class="flex w-[280px] shrink-0 flex-col justify-between gap-4 rounded-lg border border-gold/10 bg-gold-soft p-5 text-bg md:w-[300px] min-h-[200px]">
+            <p class="font-display text-[15px] leading-snug md:text-base">&ldquo;{t.quote}&rdquo;</p>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-bg/60">{t.who}</p>
+          </div>
+        ))}
+      </Marquee>
+    </div>
+  </Section>
+
+  <!-- LOCATION + FINAL CTA -->
+  <section class="relative overflow-hidden border-t border-gold/10 bg-bg-elev py-24 md:py-32">
+    <BackgroundBeams />
+    <Container class="relative z-10">
+      <div class="grid gap-10 md:grid-cols-2">
+        <div>
+          <Eyebrow>Kissonerga, Cyprus</Eyebrow>
+          <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl text-balance">
+            Tap, text, done.
+          </h2>
+          <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div class="rounded-lg border border-gold/15 p-5">
+              <Eyebrow>Address</Eyebrow>
+              <div class="mt-3 font-medium leading-snug text-fg">
+                Eustathios Plaza, Leoforos Chrisoneras, Kat.5
+              </div>
+              <div class="mt-1 text-sm text-fg-muted">Kissonerga, Pafos 8574</div>
+            </div>
+            <div class="rounded-lg border border-gold/15 p-5">
+              <Eyebrow>Hours</Eyebrow>
+              <div class="mt-3 font-medium leading-snug text-fg">
+                Mon–Sat&nbsp;· 08:00–18:00
+              </div>
+              <div class="mt-1 text-sm text-fg-muted">Closed Sunday</div>
+            </div>
+          </div>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <WhatsAppButton
+              client:visible
+              template="contact.auto"
+              size="lg"
+              variant="primary"
+            >
+              Message Auto
+            </WhatsAppButton>
+            <WhatsAppButton
+              client:visible
+              template="contact.tourism"
+              size="lg"
+              variant="secondary"
+            >
+              Message Rentals
+            </WhatsAppButton>
+          </div>
+        </div>
+        <div class="rounded-lg border border-gold/10 bg-bg p-1">
+          <iframe
+            title="S.Prestige Services — Kissonerga location"
+            src="https://www.google.com/maps?q=S.PRESTIGE+SERVICES+Kissonerga+Cyprus&z=17&output=embed"
+            loading="lazy"
+            class="h-[360px] w-full rounded-[calc(var(--radius-lg)-4px)] grayscale contrast-125"
+            style="border: 0;"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

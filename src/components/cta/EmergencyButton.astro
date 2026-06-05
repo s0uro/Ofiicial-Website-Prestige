@@ -1,0 +1,49 @@
+---
+import { TEL_AUTO } from '../../lib/wa';
+
+export interface Props {
+  /** Compact = icon-only circle (used on mobile or tight slots). Full = pill with label. */
+  variant?: 'full' | 'compact';
+  class?: string;
+}
+
+const { variant = 'full', class: className = '' } = Astro.props;
+const href = `tel:${TEL_AUTO}`;
+---
+{variant === 'full' ? (
+  <a
+    href={href}
+    aria-label="Emergency 24/7 — call now"
+    class:list={[
+      'group relative inline-flex items-center gap-2.5 rounded-full border border-gold/40 bg-bg/60 px-4 py-2 text-xs font-medium uppercase tracking-[0.14em] text-gold transition-all duration-200 hover:border-gold hover:bg-gold/10',
+      className,
+    ]}
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span class="whitespace-nowrap">Emergency 24/7</span>
+    <span class="relative flex h-2 w-2" aria-hidden="true">
+      <span class="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 motion-safe:animate-ping"></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
+    </span>
+  </a>
+) : (
+  <a
+    href={href}
+    aria-label="Emergency 24/7 — call now"
+    class:list={[
+      'relative inline-flex h-10 items-center gap-1.5 rounded-full border border-red-500/60 bg-red-500/10 px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-red-400 transition-colors hover:border-red-500 hover:bg-red-500/15',
+      className,
+    ]}
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span class="whitespace-nowrap">SOS 24/7</span>
+    <span class="relative ml-0.5 flex h-1.5 w-1.5" aria-hidden="true">
+      <span class="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 motion-safe:animate-ping"></span>
+      <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-red-500"></span>
+    </span>
+  </a>
+)}

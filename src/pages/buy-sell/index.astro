@@ -1,0 +1,152 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/primitives/Section.astro';
+import Eyebrow from '../../components/primitives/Eyebrow.astro';
+import Card from '../../components/primitives/Card.astro';
+import Badge from '../../components/primitives/Badge.astro';
+import PriceTag from '../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
+import { autoDealerSchema } from '../../lib/schema';
+
+const schema = autoDealerSchema({ url: '/buy-sell' });
+
+const all = await getCollection('fleet');
+const forSale = all
+  .filter((e) => e.data.listingType === 'sale' && !('sold' in e.data ? e.data.sold : false))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const buyerGuarantees = [
+  {
+    title: 'Free delivery',
+    body: 'We bring the car to your address, anywhere in Cyprus — no transport fee.',
+  },
+  {
+    title: 'Any inspection welcome',
+    body: 'Bring your own mechanic, or use ours. The check happens before you sign anything.',
+  },
+  {
+    title: 'Paperwork on us',
+    body: 'Re-registration handled and paid for by S.Prestige. You pick up the keys, we handle the desk.',
+  },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Buy & sell cars"
+  description="Cars we stock, and how to sell us yours. Honest photos, honest numbers. WhatsApp-first."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={schema}
+>
+  <Section>
+    <Eyebrow>Auto · Buy & sell</Eyebrow>
+    <h1 class="mt-3 font-display text-4xl leading-[1.1] text-fg md:text-6xl">
+      <span class="block">Clean cars.</span>
+      <span class="block">Clean paperwork.</span>
+      <span class="block">Clean numbers.</span>
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
+      We stock a small, rotating inventory. If you're selling, WhatsApp us
+      three photos and the mileage — you get a same-day number.
+    </p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+      {buyerGuarantees.map((g) => (
+        <div class="flex items-start gap-4 rounded-lg border border-gold/10 bg-bg-elev p-5">
+          <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-display text-base text-fg">{g.title}</div>
+            <p class="mt-1 text-sm leading-relaxed text-fg-muted">{g.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <div class="flex items-end justify-between">
+      <div>
+        <Eyebrow>Inventory</Eyebrow>
+        <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Currently in stock</h2>
+      </div>
+      {forSale.length > 0 && (
+        <span class="text-sm text-fg-muted">{forSale.length} vehicles</span>
+      )}
+    </div>
+
+    {forSale.length === 0 ? (
+      <Card class="mt-8">
+        <div class="font-display text-xl text-fg">The lot is turning over</div>
+        <p class="mt-2 text-sm text-fg-muted">
+          No cars listed right now. Message us with what you're after — we
+          source as often as we stock.
+        </p>
+        <WhatsAppButton
+          client:visible
+          template="buysell.inquire"
+          vars={{ listing: 'any car' }}
+          size="sm"
+          variant="primary"
+          className="mt-4"
+        >
+          Message us
+        </WhatsAppButton>
+      </Card>
+    ) : (
+      <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {forSale.map((car) => (
+          <a href={`/buy-sell/${car.slug}`} class="block">
+            <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
+              <Image
+                src={car.data.images[0]}
+                alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
+                width={640}
+                widths={[320, 640]}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                format="webp"
+                quality={75}
+                loading="lazy"
+                class="aspect-[16/10] w-full rounded border border-gold/10 object-cover object-[center_65%]"
+              />
+              <div class="mt-4 flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="min-h-[3rem] font-display text-xl leading-tight text-fg">
+                    {car.data.make} {car.data.model}
+                  </div>
+                  <p class="mt-1 text-sm text-fg-muted">
+                    {car.data.year} · {car.data.transmission} · {car.data.fuel}
+                  </p>
+                </div>
+                {car.data.listingType === 'sale' && (
+                  <PriceTag amount={car.data.priceEUR} variant="exact" />
+                )}
+              </div>
+            </Card>
+          </a>
+        ))}
+      </div>
+    )}
+  </Section>
+
+  <Section>
+    <Eyebrow>Selling your car</Eyebrow>
+    <h2 class="mt-3 max-w-2xl font-display text-3xl text-fg md:text-5xl text-balance">
+      Three photos, mileage, condition. Same-day number.
+    </h2>
+    <p class="mt-4 max-w-xl text-fg-muted">
+      No forms. No viewings with strangers. Send it on WhatsApp — we reply
+      with a firm offer or a clean "not for us".
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <WhatsAppButton client:visible template="buysell.sell" size="lg" variant="primary">
+        Start a valuation
+      </WhatsAppButton>
+      <Badge>Reply same day</Badge>
+    </div>
+  </Section>
+</BaseLayout>

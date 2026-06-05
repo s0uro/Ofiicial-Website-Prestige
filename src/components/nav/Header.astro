@@ -1,0 +1,76 @@
+---
+import Container from '../primitives/Container.astro';
+import MobileMenu from './MobileMenu.tsx';
+import EmergencyButton from '../cta/EmergencyButton.astro';
+
+export interface Props {
+  lane?: 'auto' | 'tourism' | 'shared';
+}
+
+const { lane = 'shared' } = Astro.props;
+
+const navItems = [
+  { label: 'Buy & Sell', href: '/buy-sell' },
+  { label: 'Rentals', href: '/tourism/rentals' },
+  { label: 'Detailing', href: '/detailing' },
+  { label: 'Mechanical', href: '/mechanical' },
+  { label: 'Recovery', href: '/recovery' },
+  { label: 'Transfers', href: '/tourism/taxi' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const pathname = Astro.url.pathname;
+---
+<header
+  data-lane={lane}
+  class="sticky top-0 z-30 border-b border-gold/10 bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60"
+>
+  <Container class="flex h-16 items-center justify-between gap-4 md:h-20">
+    <a
+      href="/"
+      class="flex items-center gap-2 font-display text-lg font-semibold tracking-wide text-fg md:gap-2.5 md:text-xl"
+      aria-label="S.Prestige Services — home"
+    >
+      <img
+        src="/logo-mark.png"
+        alt=""
+        width="40"
+        height="40"
+        class="h-7 w-7 md:h-9 md:w-9"
+        aria-hidden="true"
+      />
+      <span><span class="text-gold">S.</span>Prestige</span>
+    </a>
+
+    <nav class="hidden items-center gap-6 text-sm text-fg-muted lg:flex" aria-label="Primary">
+      {navItems.map((item) => {
+        const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'));
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              'relative whitespace-nowrap transition-colors hover:text-gold',
+              active && 'text-gold',
+            ]}
+            aria-current={active ? 'page' : undefined}
+          >
+            {item.label}
+            {active && (
+              <span class="absolute inset-x-0 -bottom-1 h-px bg-gold" aria-hidden="true" />
+            )}
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <div class="hidden lg:block">
+        <EmergencyButton variant="full" />
+      </div>
+      <div class="lg:hidden">
+        <EmergencyButton variant="compact" />
+      </div>
+      <MobileMenu client:load items={navItems} />
+    </div>
+  </Container>
+</header>

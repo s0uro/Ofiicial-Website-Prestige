@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/primitives/Section.astro';
+import Eyebrow from '../../components/primitives/Eyebrow.astro';
+import Card from '../../components/primitives/Card.astro';
+import Badge from '../../components/primitives/Badge.astro';
+import PriceTag from '../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
+import { autoRepairSchema, breadcrumbSchema, faqPageSchema } from '../../lib/schema';
+
+const schema = autoRepairSchema({
+  name: 'S.Prestige — Ceramic coating',
+  description:
+    '1, 2 and 5 year ceramic coating tiers with paint correction and annual maintenance included.',
+  url: '/detailing/ceramic-coating',
+  priceFromEUR: 200,
+});
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Detailing', url: '/detailing' },
+  { name: 'Ceramic coating', url: '/detailing/ceramic-coating' },
+]);
+
+const faq = [
+  {
+    q: 'How long does ceramic coating actually last in Cyprus?',
+    a: 'We publish three tiers — 1, 2 and 5 years — and the number is the realistic life under Cypriot conditions (UV, salt air, dust). The 5-year tier uses a professional-grade coating with thicker layers and includes annual maintenance to keep the warranty intact.',
+  },
+  {
+    q: 'Will ceramic coating remove existing scratches?',
+    a: 'Coating itself does not remove scratches — paint correction does. Every tier above 1-year includes correction before the coat goes on (single-stage on 1-year, multi-step on 2 and 5-year). Deep scratches that have gone through the clear coat need repair before correction.',
+  },
+  {
+    q: 'How do I wash the car after coating?',
+    a: 'Two-bucket method, pH-neutral shampoo, dry with a clean microfibre. Avoid automated brush washes — they create swirl marks even on coated cars. We can recommend a maintenance routine and supply the right shampoo on request.',
+  },
+  {
+    q: 'Why is there such a price gap between the tiers?',
+    a: 'The difference is in the prep work, the coating product itself, and the maintenance included. 1-year is a single-stage polish plus one layer of consumer-grade coating. 5-year is a three-step correction, professional-grade coating with multiple layers, and yearly maintenance built into the price.',
+  },
+];
+const faqSchema = faqPageSchema(faq);
+
+// TODO: real pricing from client
+const tiers = [
+  {
+    name: '1-year',
+    from: 250,
+    includes: ['Single-stage polish', '1 layer coat', 'Wheels sealant'],
+  },
+  {
+    name: '2-year',
+    from: 450,
+    popular: true,
+    includes: ['2-step correction', '2 layers coat', 'Wheels + glass coat', 'Annual check-up'],
+  },
+  {
+    name: '5-year',
+    from: 900,
+    premium: true,
+    includes: ['3-step correction', 'Professional-grade coat', 'All trims sealed', 'Yearly maintenance included'],
+  },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Ceramic coating"
+  description="Published ceramic coating tiers — 1, 2 and 5 year — with maintenance included. S.Prestige, Kissonerga."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={[schema, breadcrumbs, faqSchema]}
+>
+  <Section>
+    <Eyebrow>Auto · Protection</Eyebrow>
+    <h1 class="mt-3 max-w-3xl font-display text-4xl text-fg md:text-6xl text-balance">
+      Ceramic, priced honestly. Maintenance included.
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
+      Three tiers. Each includes the paint-correction work the coat needs to
+      adhere properly. Each includes annual check-ups. If we cannot hit the
+      advertised durability, we say so before we quote — not after.
+    </p>
+  </Section>
+
+  <Section spacing="tight">
+    <div class="grid gap-5 md:grid-cols-3">
+      {tiers.map((t) => {
+        const isPopular = 'popular' in t && t.popular;
+        const isPremium = 'premium' in t && t.premium;
+        const cardClass = isPremium
+          ? 'border-gold/55 shadow-glow'
+          : isPopular
+          ? 'border-gold/30 shadow-glow-sm'
+          : '';
+        const buttonVariant = isPopular || isPremium ? 'primary' : 'secondary';
+        return (
+          <Card class={cardClass}>
+            {isPremium && (
+              <div
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent"
+              />
+            )}
+            <div class="flex items-center justify-between">
+              <div class={isPopular || isPremium ? 'font-display text-lg text-gold' : 'font-display text-lg text-fg'}>
+                {t.name}
+              </div>
+              {isPopular && <Badge variant="gold">Most chosen</Badge>}
+              {isPremium && <Badge variant="gold">Premium</Badge>}
+            </div>
+            <PriceTag amount={t.from} period="total" class="mt-2" />
+            <ul class="mt-4 space-y-1.5 text-sm text-fg-muted">
+              {t.includes.map((f) => <li>· {f}</li>)}
+            </ul>
+            <WhatsAppButton
+              client:visible
+              template="detailing.ceramic"
+              size="sm"
+              variant={buttonVariant}
+              className="mt-6"
+            >
+              Book {t.name}
+            </WhatsAppButton>
+          </Card>
+        );
+      })}
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>The contract</Eyebrow>
+    <h2 class="mt-3 max-w-2xl font-display text-3xl text-fg md:text-5xl">
+      What you pay for, and what you don't.
+    </h2>
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      <Card>
+        <div class="font-display text-lg text-gold">Included</div>
+        <ul class="mt-3 space-y-1.5 text-sm text-fg-muted">
+          <li>· Paint correction to match durability tier</li>
+          <li>· Annual inspection and maintenance wash</li>
+          <li>· Written care sheet for first 30 days</li>
+          <li>· Re-coat pricing locked at initial quote</li>
+        </ul>
+      </Card>
+      <Card>
+        <div class="font-display text-lg text-gold">Not included</div>
+        <ul class="mt-3 space-y-1.5 text-sm text-fg-muted">
+          <li>· Coats below professional grade (we do not stock them)</li>
+          <li>· Surprise supplements at pickup</li>
+          <li>· Vague "lifetime" claims</li>
+        </ul>
+      </Card>
+    </div>
+  </Section>
+
+  <Section>
+    <Eyebrow>FAQ</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Straight answers.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {faq.map((item) => (
+        <Card>
+          <div class="font-display text-lg text-fg">{item.q}</div>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{item.a}</p>
+        </Card>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

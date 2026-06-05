@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/primitives/Section.astro';
+import Eyebrow from '../../components/primitives/Eyebrow.astro';
+import Card from '../../components/primitives/Card.astro';
+import Badge from '../../components/primitives/Badge.astro';
+import PriceTag from '../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
+import { CallButton } from '../../components/cta/CallButton';
+import { taxiServiceSchema } from '../../lib/schema';
+
+const schema = taxiServiceSchema({ url: '/tourism/taxi' });
+
+// TODO: real transfer prices
+const transfers = [
+  { route: 'Pafos Airport → Kissonerga', from: 25, note: 'Fixed quote, includes meet-and-greet' },
+  { route: 'Pafos Airport → Coral Bay', from: 35, note: 'Fixed quote, up to 4 passengers' },
+  { route: 'Larnaca Airport → Pafos area', from: 110, note: 'Fixed quote, up to 4 passengers' },
+  { route: 'Limassol → Pafos area', from: 90, note: 'One-way, flexible time' },
+];
+---
+<BaseLayout
+  lane="auto"
+  title="Transfers & airport pickup"
+  description="Airport pickup and on-demand transfers in Pafos area, Cyprus. Fixed quotes, no meter surprises."
+  ogImage="/og/og-detailing.jpg"
+  jsonLd={schema}
+>
+  <Section>
+    <Eyebrow>Auto · Transfers</Eyebrow>
+    <h1 class="mt-3 max-w-3xl font-display text-4xl text-fg md:text-6xl text-balance">
+      A quote before the trip. A driver on time.
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
+      Airport pickups get a meet-and-greet at arrivals. On-demand taxis are
+      quoted by route, not by meter. What you agree on WhatsApp is what you
+      pay on arrival.
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <WhatsAppButton client:visible template="taxi.airport" size="lg" variant="primary">
+        Airport transfer
+      </WhatsAppButton>
+      <WhatsAppButton client:visible template="taxi.ondemand" size="lg" variant="secondary">
+        On-demand
+      </WhatsAppButton>
+      <CallButton client:visible lane="auto" size="lg" variant="ghost" />
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>Our fleet</Eyebrow>
+    <h2 class="mt-3 max-w-3xl font-display text-3xl text-fg md:text-5xl text-balance">
+      Two cars. Both ready.
+    </h2>
+    <p class="mt-4 max-w-2xl text-fg-muted">
+      A V-Class for groups and luggage, an E-Class AMG for solo and business
+      pickups. Same driver, same Cypriot-plate, same standard either way.
+    </p>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <article class="group overflow-hidden rounded-lg border border-gold/10 bg-bg transition-[border-color,box-shadow] duration-300 ease-out-expo hover:border-gold/30 hover:shadow-glow-sm">
+        <div class="relative aspect-[3/4] overflow-hidden">
+          <img
+            src="/imagery/transfer-vclass.webp"
+            alt="S.Prestige Mercedes V-Class — group transfer vehicle"
+            width="896"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.03]"
+          />
+          <div
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg via-bg/70 to-transparent"
+          />
+        </div>
+        <div class="p-6 md:p-8">
+          <div class="text-[10px] uppercase tracking-[0.2em] text-gold">
+            Group · Family · Luggage
+          </div>
+          <h3 class="mt-2 font-display text-2xl text-fg md:text-3xl">
+            Mercedes V-Class
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-fg-muted md:text-base">
+            Up to 7 passengers and full bags. The right call for airport runs
+            with family, golfers with clubs, or anyone arriving with more than
+            cabin luggage.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="inline-flex items-center rounded-full border border-gold/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-fg-muted">7 seats</span>
+            <span class="inline-flex items-center rounded-full border border-gold/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-fg-muted">Climate-controlled</span>
+            <span class="inline-flex items-center rounded-full border border-gold/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-fg-muted">Bottled water</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="group overflow-hidden rounded-lg border border-gold/10 bg-bg transition-[border-color,box-shadow] duration-300 ease-out-expo hover:border-gold/30 hover:shadow-glow-sm">
+        <div class="relative aspect-[3/4] overflow-hidden">
+          <img
+            src="/imagery/transfer-eclass.webp"
+            alt="S.Prestige Mercedes E-Class AMG — executive transfer vehicle"
+            width="896"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.03]"
+          />
+          <div
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg via-bg/70 to-transparent"
+          />
+        </div>
+        <div class="p-6 md:p-8">
+          <div class="text-[10px] uppercase tracking-[0.2em] text-gold">
+            Executive · Solo · Business
+          </div>
+          <h3 class="mt-2 font-display text-2xl text-fg md:text-3xl">
+            Mercedes E-Class AMG
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-fg-muted md:text-base">
+            One to three passengers, sharp executive feel. Default pick for
+            single-passenger airport pickups, business meetings and
+            point-to-point runs around Pafos.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="inline-flex items-center rounded-full border border-gold/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-fg-muted">3 seats</span>
+            <span class="inline-flex items-center rounded-full border border-gold/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-fg-muted">AMG package</span>
+            <span class="inline-flex items-center rounded-full border border-gold/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-fg-muted">Tinted rear</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </Section>
+
+  <Section>
+    <Eyebrow>Sample transfers</Eyebrow>
+    <p class="mt-3 max-w-2xl text-fg-muted">
+      A few common routes with starting-from quotes. We always reply with the
+      firm number for your trip — flight number, passengers and time.
+    </p>
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {transfers.map((t) => (
+        <Card>
+          <div class="font-display text-lg text-fg">{t.route}</div>
+          <div class="mt-2">
+            <PriceTag amount={t.from} period="total" />
+          </div>
+          <p class="mt-2 text-sm text-fg-muted">{t.note}</p>
+        </Card>
+      ))}
+    </div>
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <Badge variant="trust">No hidden fees</Badge>
+      <Badge variant="trust">English · Greek · Russian</Badge>
+      <Badge variant="trust">24-hour airport</Badge>
+    </div>
+  </Section>
+</BaseLayout>

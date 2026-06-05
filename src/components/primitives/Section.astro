@@ -1,0 +1,41 @@
+---
+import Container from './Container.astro';
+import { cn } from '../../lib/cn';
+
+export interface Props {
+  id?: string;
+  class?: string;
+  containerClass?: string;
+  width?: 'narrow' | 'default' | 'wide';
+  bg?: 'default' | 'elev';
+  spacing?: 'tight' | 'default' | 'loose';
+}
+
+const {
+  id,
+  class: className,
+  containerClass,
+  width,
+  bg = 'default',
+  spacing = 'default',
+} = Astro.props;
+
+const spacings: Record<NonNullable<Props['spacing']>, string> = {
+  tight: 'py-12 md:py-16',
+  default: 'py-16 md:py-24',
+  loose: 'py-24 md:py-32',
+};
+---
+<section
+  id={id}
+  class={cn(
+    'relative',
+    spacings[spacing],
+    bg === 'elev' && 'bg-bg-elev',
+    className,
+  )}
+>
+  <Container class={containerClass} width={width}>
+    <slot />
+  </Container>
+</section>

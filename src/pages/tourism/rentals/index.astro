@@ -1,0 +1,171 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/primitives/Section.astro';
+import Eyebrow from '../../../components/primitives/Eyebrow.astro';
+import Card from '../../../components/primitives/Card.astro';
+import Badge from '../../../components/primitives/Badge.astro';
+import PriceTag from '../../../components/primitives/PriceTag.astro';
+import { WhatsAppButton } from '../../../components/cta/WhatsAppButton';
+import { carRentalSchema } from '../../../lib/schema';
+
+const schema = carRentalSchema({ url: '/tourism/rentals' });
+
+const all = await getCollection('fleet');
+const rentals = all
+  .filter((e) => e.data.listingType === 'rental' && e.data.available)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const policies = [
+  { title: 'Insurance included', body: 'Full third-party + CDW baseline on every car.' },
+  { title: 'Minimum driver age 23', body: 'Younger driver surcharge — quoted upfront.' },
+  { title: 'Delivery to hotel', body: 'Hotel delivery within Pafos district — €25 flat.' },
+  { title: 'Fuel policy', body: 'Full-to-full. Empty return has a flat €25 refill fee.' },
+];
+---
+<BaseLayout
+  lane="tourism"
+  title="Car rentals"
+  description="Daily and weekly car rentals in Pafos area, Cyprus. Insurance included, hotel delivery, no hidden fees."
+  ogImage="/og/og-tourism.jpg"
+  jsonLd={schema}
+>
+  <Section>
+    <Eyebrow>Tourism · Rentals</Eyebrow>
+    <h1 class="mt-3 max-w-3xl font-display text-4xl text-fg md:text-6xl text-balance">
+      Pick a car. Pick your dates. We deliver.
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
+      Published daily and weekly rates. Insurance in the number. Delivered to
+      your hotel within the Pafos district.
+    </p>
+
+    <!-- Visual booking bar (v1 deep-links to WhatsApp with template) -->
+    <form
+      class="mt-8 grid gap-3 rounded-lg border border-gold/10 bg-bg-elev p-4 md:grid-cols-[1fr_1fr_1fr_auto]"
+      action="https://wa.me/35796828299"
+      target="_blank"
+    >
+      <label class="flex flex-col gap-1 text-xs text-fg-muted">
+        Pickup
+        <input
+          name="pickup"
+          placeholder="Hotel / airport"
+          class="h-10 rounded-md border border-gold/15 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
+        />
+      </label>
+      <label class="flex flex-col gap-1 text-xs text-fg-muted">
+        <span>From <span class="text-fg-muted/60">· DD/MM/YYYY</span></span>
+        <input
+          type="text"
+          name="from"
+          placeholder="DD/MM/YYYY"
+          inputmode="numeric"
+          maxlength="10"
+          pattern="\d{2}/\d{2}/\d{4}"
+          autocomplete="off"
+          data-date-mask
+          class="h-10 rounded-md border border-gold/15 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
+        />
+      </label>
+      <label class="flex flex-col gap-1 text-xs text-fg-muted">
+        <span>To <span class="text-fg-muted/60">· DD/MM/YYYY</span></span>
+        <input
+          type="text"
+          name="to"
+          placeholder="DD/MM/YYYY"
+          inputmode="numeric"
+          maxlength="10"
+          pattern="\d{2}/\d{2}/\d{4}"
+          autocomplete="off"
+          data-date-mask
+          class="h-10 rounded-md border border-gold/15 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
+        />
+      </label>
+      <button
+        type="submit"
+        class="mt-auto inline-flex h-10 items-center justify-center rounded-md bg-gold px-5 text-sm font-medium text-bg transition-colors hover:bg-gold-soft"
+      >
+        Check WhatsApp
+      </button>
+    </form>
+    <p class="mt-2 text-xs text-fg-muted">The search bar opens WhatsApp — we reply with availability and a firm total.</p>
+
+    <script is:inline>
+      // Auto-insert slashes as user types into DD/MM/YYYY fields. Locale-
+      // agnostic — does not rely on the OS-bound native date picker.
+      document.querySelectorAll('input[data-date-mask]').forEach((el) => {
+        el.addEventListener('input', (e) => {
+          const target = e.target;
+          let v = target.value.replace(/\D/g, '').slice(0, 8);
+          if (v.length >= 5) v = `${v.slice(0, 2)}/${v.slice(2, 4)}/${v.slice(4)}`;
+          else if (v.length >= 3) v = `${v.slice(0, 2)}/${v.slice(2)}`;
+          target.value = v;
+        });
+      });
+    </script>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>Fleet</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Currently available</h2>
+
+    {rentals.length === 0 ? (
+      <Card class="mt-8">
+        <div class="font-display text-xl text-fg">Fleet rotation in progress</div>
+        <p class="mt-2 text-sm text-fg-muted">
+          No fleet entries yet — we'll list them with photos and rates.
+          Meanwhile, tell us what you need on WhatsApp.
+        </p>
+        <WhatsAppButton client:visible template="rental.general" size="sm" variant="primary" className="mt-4">
+          Ask about availability
+        </WhatsAppButton>
+      </Card>
+    ) : (
+      <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {rentals.map((car) => (
+          <a href={`/tourism/rentals/${car.slug}`} class="block">
+            <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
+              <Image
+                src={car.data.images[0]}
+                alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
+                width={640}
+                widths={[320, 640]}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                format="webp"
+                quality={75}
+                loading="lazy"
+                class="aspect-[16/10] w-full rounded border border-gold/10 object-cover"
+              />
+              <div class="mt-4">
+                <div class="font-display text-xl text-fg">{car.data.make} {car.data.model}</div>
+                <p class="mt-1 text-sm text-fg-muted">
+                  {car.data.year} · {car.data.transmission} · {car.data.seats} seats · {car.data.fuel}
+                </p>
+                {car.data.listingType === 'rental' && (
+                  <div class="mt-3">
+                    <PriceTag amount={car.data.dailyRateFromEUR} period="per-day" />
+                  </div>
+                )}
+              </div>
+            </Card>
+          </a>
+        ))}
+      </div>
+    )}
+  </Section>
+
+  <Section>
+    <Eyebrow>Policies, one screen</Eyebrow>
+    <div class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {policies.map((p) => (
+        <Card>
+          <Badge variant="trust">Policy</Badge>
+          <div class="mt-3 font-display text-lg text-fg">{p.title}</div>
+          <p class="mt-2 text-sm text-fg-muted">{p.body}</p>
+        </Card>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

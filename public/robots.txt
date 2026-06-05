@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /legal/
+
+Sitemap: https://s-prestige.com.cy/sitemap-index.xml
