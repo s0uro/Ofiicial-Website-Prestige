@@ -93,6 +93,6 @@ const stickyLane: 'auto' | 'tourism' | 'both' = lane === 'shared' ? 'both' : lan
     </main>
     {showChrome && <Footer />}
     {showChrome && <StickyMobileCTA client:load lane={stickyLane} />}
-    <CookieBanner client:load />
+    <CookieBanner client:only="react" />
   </body>
 </html>
