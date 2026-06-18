@@ -17,9 +17,9 @@ const {
 ---
 <Tag
   class={cn(
-    'relative overflow-hidden rounded-lg bg-bg-elev',
-    bordered && 'border border-gold/10',
-    padded && 'p-6 md:p-8',
+    'relative overflow-hidden rounded-xl bg-bg-elev shadow-card transition-[border-color,box-shadow] duration-300 ease-out-expo',
+    bordered && 'border border-gold/10 hover:border-gold/25 hover:shadow-card-hover',
+    padded && 'p-6 md:p-7',
     className,
   )}
 >

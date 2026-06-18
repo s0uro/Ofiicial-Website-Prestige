@@ -23,12 +23,12 @@ const pathname = Astro.url.pathname;
 ---
 <header
   data-lane={lane}
-  class="sticky top-0 z-30 border-b border-gold/10 bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60"
+  class="sticky top-0 z-30 border-b border-gold/10 bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/65"
 >
-  <Container class="flex h-16 items-center justify-between gap-4 md:h-20">
+  <Container class="flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
     <a
       href="/"
-      class="flex items-center gap-2 font-display text-lg font-semibold tracking-wide text-fg md:gap-2.5 md:text-xl"
+      class="group flex items-center gap-2.5 font-display text-lg font-semibold tracking-wide text-fg transition-opacity hover:opacity-90 md:text-xl"
       aria-label="S.Prestige Services — home"
     >
       <img
@@ -36,28 +36,32 @@ const pathname = Astro.url.pathname;
         alt=""
         width="40"
         height="40"
-        class="h-7 w-7 md:h-9 md:w-9"
+        class="h-7 w-7 transition-transform duration-300 group-hover:scale-105 md:h-9 md:w-9"
         aria-hidden="true"
       />
       <span><span class="text-gold">S.</span>Prestige</span>
     </a>
 
-    <nav class="hidden items-center gap-6 text-sm text-fg-muted lg:flex" aria-label="Primary">
+    <nav class="hidden items-center gap-7 text-sm text-fg-muted lg:flex" aria-label="Primary">
       {navItems.map((item) => {
         const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'));
         return (
           <a
             href={item.href}
             class:list={[
-              'relative whitespace-nowrap transition-colors hover:text-gold',
-              active && 'text-gold',
+              'group relative whitespace-nowrap transition-colors duration-200 hover:text-fg',
+              active ? 'text-fg' : 'text-fg-muted',
             ]}
             aria-current={active ? 'page' : undefined}
           >
             {item.label}
-            {active && (
-              <span class="absolute inset-x-0 -bottom-1 h-px bg-gold" aria-hidden="true" />
-            )}
+            <span
+              class:list={[
+                'absolute inset-x-0 -bottom-px h-px origin-left bg-gradient-to-r from-gold to-gold/50 transition-transform duration-300 ease-out-expo',
+                active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
+              ]}
+              aria-hidden="true"
+            />
           </a>
         );
       })}

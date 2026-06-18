@@ -7,6 +7,7 @@ export default {
       colors: {
         bg: 'rgb(var(--bg) / <alpha-value>)',
         'bg-elev': 'rgb(var(--bg-elev) / <alpha-value>)',
+        'bg-subtle': 'rgb(var(--bg-subtle) / <alpha-value>)',
         fg: 'rgb(var(--fg) / <alpha-value>)',
         'fg-muted': 'rgb(var(--fg-muted) / <alpha-value>)',
         gold: {
@@ -58,6 +59,10 @@ export default {
       boxShadow: {
         glow: '0 0 40px -10px rgb(var(--gold) / 0.45)',
         'glow-sm': '0 0 20px -6px rgb(var(--gold) / 0.35)',
+        'glow-lg': '0 0 60px -10px rgb(var(--gold) / 0.55)',
+        'glow-border': '0 0 0 1px rgb(var(--gold) / 0.25), 0 0 20px -6px rgb(var(--gold) / 0.25)',
+        'card': '0 4px 24px -4px rgb(0 0 0 / 0.6)',
+        'card-hover': '0 8px 32px -4px rgb(0 0 0 / 0.7), 0 0 20px -8px rgb(var(--gold) / 0.25)',
       },
     },
   },

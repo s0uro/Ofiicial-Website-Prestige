@@ -20,16 +20,16 @@ function LaneActions({ lane }: { lane: Lane }): React.ReactElement {
         href={buildWaUrl(CONTACT_TEMPLATE[lane])}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-gold transition-colors hover:bg-gold/5"
+        className="flex flex-col items-center justify-center gap-1 pb-2 pt-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-gold transition-colors active:bg-gold/10"
       >
-        <MessageCircle className="h-3.5 w-3.5" aria-hidden />
+        <MessageCircle className="h-4 w-4" aria-hidden />
         WhatsApp
       </a>
       <a
         href={`tel:${telFor(lane)}`}
-        className="flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-fg transition-colors hover:bg-fg/5"
+        className="flex flex-col items-center justify-center gap-1 pb-2 pt-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-fg-muted transition-colors active:bg-fg/5"
       >
-        <Phone className="h-3.5 w-3.5" aria-hidden />
+        <Phone className="h-4 w-4" aria-hidden />
         Call
       </a>
     </>
@@ -38,27 +38,27 @@ function LaneActions({ lane }: { lane: Lane }): React.ReactElement {
 
 export function StickyMobileCTA({ lane, className }: Props): React.ReactElement {
   const base = cn(
-    'fixed inset-x-0 bottom-0 z-40 border-t border-gold/15 bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/70 md:hidden',
+    'fixed inset-x-0 bottom-0 z-40 border-t border-gold/20 bg-bg/92 backdrop-blur-md supports-[backdrop-filter]:bg-bg/75 md:hidden pb-[env(safe-area-inset-bottom)]',
     className,
   );
 
   if (lane === 'both') {
     return (
       <div className={base} data-sticky-cta role="toolbar" aria-label="Quick contact — Auto and Rentals">
-        <div className="grid grid-cols-2 divide-x divide-gold/10">
+        <div className="grid grid-cols-2 divide-x divide-gold/12">
           <div>
-            <div className="px-3 pt-1.5 text-[9px] uppercase tracking-[0.2em] text-fg-muted">
+            <div className="px-3 pt-2 text-[8px] font-bold uppercase tracking-[0.25em] text-gold/60">
               Auto
             </div>
-            <div className="grid grid-cols-2 divide-x divide-gold/5">
+            <div className="grid grid-cols-2 divide-x divide-gold/8">
               <LaneActions lane="auto" />
             </div>
           </div>
           <div>
-            <div className="px-3 pt-1.5 text-[9px] uppercase tracking-[0.2em] text-fg-muted">
+            <div className="px-3 pt-2 text-[8px] font-bold uppercase tracking-[0.25em] text-gold/60">
               Rentals
             </div>
-            <div className="grid grid-cols-2 divide-x divide-gold/5">
+            <div className="grid grid-cols-2 divide-x divide-gold/8">
               <LaneActions lane="tourism" />
             </div>
           </div>
@@ -74,7 +74,7 @@ export function StickyMobileCTA({ lane, className }: Props): React.ReactElement 
       role="toolbar"
       aria-label={lane === 'auto' ? 'Auto — quick contact' : 'Rentals — quick contact'}
     >
-      <div className="grid grid-cols-2 divide-x divide-gold/10">
+      <div className="grid grid-cols-2 divide-x divide-gold/12">
         <LaneActions lane={lane} />
       </div>
     </div>

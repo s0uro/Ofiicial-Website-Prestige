@@ -1,9 +1,10 @@
 :root {
   /* colors: space-separated RGB for Tailwind rgb(var(--x) / <alpha>) */
-  --bg: 10 10 10;               /* #0A0A0A near-black canvas */
-  --bg-elev: 19 19 19;          /* #131313 section lift */
-  --fg: 245 245 244;            /* #F5F5F4 primary text */
-  --fg-muted: 168 162 158;      /* #A8A29E secondary text */
+  --bg: 9 9 9;                  /* #090909 deeper canvas */
+  --bg-elev: 16 16 16;          /* #101010 section lift */
+  --bg-subtle: 22 22 22;        /* #161616 card surfaces */
+  --fg: 248 247 246;            /* #F8F7F6 crisper white */
+  --fg-muted: 178 172 168;      /* #B2ACA8 better readability */
   --gold: 245 197 24;           /* #F5C518 primary accent */
   --gold-deep: 199 154 15;      /* #C79A0F pressed / border */
   --gold-soft: 255 229 138;     /* #FFE58A highlight bubbles */
@@ -11,13 +12,13 @@
   /* radii */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
 
   /* motion */
   --duration-fast: 150ms;
-  --duration-med: 300ms;
-  --duration-slow: 600ms;
+  --duration-med: 280ms;
+  --duration-slow: 550ms;
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
 
