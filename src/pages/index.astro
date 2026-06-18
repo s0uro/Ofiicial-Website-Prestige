@@ -20,6 +20,7 @@ import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
 
 import { DISPLAY_PHONE_AUTO, DISPLAY_PHONE_TOURISM } from '../lib/wa';
+import { fetchGoogleReviews } from '../lib/googleReviews';
 
 const painAnchors = [
   {
@@ -40,15 +41,21 @@ const painAnchors = [
   },
 ];
 
-const rawTestimonials = await getCollection('testimonials');
-const testimonials = rawTestimonials
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .map((t) => ({
-    quote: t.data.quote,
-    who: t.data.locationOrNationality
-      ? `${t.data.name} · ${t.data.locationOrNationality}`
-      : t.data.name,
-  }));
+const googleReviews = await fetchGoogleReviews();
+
+const testimonials = googleReviews.length > 0
+  ? googleReviews.map((r) => ({ quote: r.quote, who: r.who, rating: r.rating }))
+  : await getCollection('testimonials').then((raw) =>
+      raw
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+        .map((t) => ({
+          quote: t.data.quote,
+          who: t.data.locationOrNationality
+            ? `${t.data.name} · ${t.data.locationOrNationality}`
+            : t.data.name,
+          rating: t.data.rating ?? 5,
+        }))
+    );
 ---
 <BaseLayout
   lane="shared"
@@ -295,8 +302,8 @@ const testimonials = rawTestimonials
           <div class="flex w-[290px] shrink-0 flex-col justify-between gap-4 rounded-xl border border-gold/20 bg-gradient-to-br from-gold-soft to-[#ffe082] p-5 text-bg shadow-card md:w-[310px] min-h-[190px]">
             <div>
               <div class="mb-3 flex gap-0.5">
-                {[...Array(5)].map(() => (
-                  <svg viewBox="0 0 12 12" fill="currentColor" class="h-3 w-3 text-gold-deep" aria-hidden="true">
+                {[...Array(5)].map((_, i) => (
+                  <svg viewBox="0 0 12 12" fill="currentColor" class:list={["h-3 w-3", i < t.rating ? "text-gold-deep" : "text-bg/20"]} aria-hidden="true">
                     <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>
                   </svg>
                 ))}
