@@ -90,6 +90,7 @@ const fleet = defineCollection({
         features: z.array(z.string()).default([]),
         available: z.boolean().default(true),
         sold: z.boolean().default(false),
+        badge: z.string().optional(),
         description: z.string(),
         order: z.number().default(0),
       })
