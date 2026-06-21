@@ -7,6 +7,25 @@ function abs(path: string): string {
   return new URL(path, SITE.url).toString();
 }
 
+function imageObject(url: string, width?: number, height?: number): Record<string, unknown> {
+  const obj: Record<string, unknown> = { '@type': 'ImageObject', url };
+  if (width) obj.width = width;
+  if (height) obj.height = height;
+  return obj;
+}
+
+const fuelTypeMap: Record<string, string> = {
+  petrol: 'https://schema.org/GasolineEnergy',
+  diesel: 'https://schema.org/DieselEnergy',
+  hybrid: 'https://schema.org/HybridEnergy',
+  electric: 'https://schema.org/ElectricEnergy',
+};
+
+const transmissionMap: Record<string, string> = {
+  automatic: 'https://schema.org/AutomaticTransmission',
+  manual: 'https://schema.org/ManualTransmission',
+};
+
 export function organizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -16,7 +35,7 @@ export function organizationSchema(): Record<string, unknown> {
     alternateName: SITE.shortName,
     description: SITE.description,
     url: SITE.url,
-    telephone: '+357 96 471717',
+    telephone: '+35796471717',
     address: {
       '@type': 'PostalAddress',
       streetAddress: SITE.address.streetAddress,
@@ -46,7 +65,7 @@ export function organizationSchema(): Record<string, unknown> {
       },
     ],
     priceRange: '€€',
-    image: abs(SITE.defaultOg),
+    image: imageObject(abs(SITE.defaultOg), 1200, 630),
     logo: {
       '@type': 'ImageObject',
       url: abs('/logo-mark.png'),
@@ -153,7 +172,7 @@ export function autoRepairSchema(input: {
       '@type': 'AdministrativeArea',
       name: 'Pafos District, Cyprus',
     },
-    image: abs('/og/og-detailing.jpg'),
+    image: imageObject(abs('/og/og-detailing.jpg'), 1200, 630),
     priceRange: '€€',
   };
   if (typeof input.priceFromEUR === 'number') {
@@ -161,10 +180,9 @@ export function autoRepairSchema(input: {
       '@type': 'Offer',
       url: abs(input.url),
       priceSpecification: {
-        '@type': 'PriceSpecification',
-        price: input.priceFromEUR,
-        priceCurrency: 'EUR',
+        '@type': 'UnitPriceSpecification',
         minPrice: input.priceFromEUR,
+        priceCurrency: 'EUR',
         unitText: input.priceUnit ?? 'starting from',
       },
     };
@@ -181,7 +199,7 @@ export function autoDealerSchema(input: { url: string }): Record<string, unknown
       'Curated inventory of prepared used cars. Transparent pricing, clean paperwork.',
     url: abs(input.url),
     parentOrganization: { '@id': ORG_ID },
-    image: abs('/og/og-detailing.jpg'),
+    image: imageObject(abs('/og/og-detailing.jpg'), 1200, 630),
   };
 }
 
@@ -194,7 +212,7 @@ export function carRentalSchema(input: { url: string }): Record<string, unknown>
       'Daily and weekly car rentals with hotel delivery in the Pafos district, Cyprus.',
     url: abs(input.url),
     parentOrganization: { '@id': ORG_ID },
-    image: abs('/og/og-tourism.jpg'),
+    image: imageObject(abs('/og/og-tourism.jpg'), 1200, 630),
   };
 }
 
@@ -230,9 +248,9 @@ export function touristTripSchema(
     duration: `PT${d.durationHours}H`,
     maximumAttendeeCapacity: d.maxGroupSize,
     inLanguage: d.languagesOffered,
-    itinerary: d.itinerary.map((stop) => ({
+    itinerary: d.itinerary.map((s: { time: string; stop: string }) => ({
       '@type': 'Place',
-      name: stop.stop,
+      name: s.stop,
     })),
     offers: {
       '@type': 'Offer',
@@ -264,8 +282,8 @@ export function saleListingSchema(
     brand: { '@type': 'Brand', name: d.make },
     model: d.model,
     vehicleModelDate: String(d.year),
-    vehicleTransmission: d.transmission,
-    fuelType: d.fuel,
+    vehicleTransmission: transmissionMap[d.transmission] ?? d.transmission,
+    fuelType: fuelTypeMap[d.fuel] ?? d.fuel,
     mileageFromOdometer: {
       '@type': 'QuantitativeValue',
       value: d.mileageKm,
@@ -275,7 +293,9 @@ export function saleListingSchema(
     numberOfSeats: d.seats,
     description: d.description,
     url: abs(url),
-    image: imageUrls.length > 0 ? imageUrls.map(abs) : abs('/og/og-detailing.jpg'),
+    image: imageUrls.length > 0
+      ? imageUrls.map((u) => imageObject(abs(u)))
+      : imageObject(abs('/og/og-detailing.jpg'), 1200, 630),
     offers: {
       '@type': 'Offer',
       price: d.priceEUR,
@@ -303,7 +323,9 @@ export function rentalListingSchema(
     description: d.description,
     brand: { '@type': 'Brand', name: d.make },
     url: abs(url),
-    image: imageUrls.length > 0 ? imageUrls.map(abs) : abs('/og/og-tourism.jpg'),
+    image: imageUrls.length > 0
+      ? imageUrls.map((u) => imageObject(abs(u)))
+      : imageObject(abs('/og/og-tourism.jpg'), 1200, 630),
     offers: {
       '@type': 'Offer',
       price: d.dailyRateFromEUR,
