@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { websiteSchema } from '../lib/schema';
+import { websiteSchema, aggregateRatingBlock } from '../lib/schema';
 import Section from '../components/primitives/Section.astro';
 import Container from '../components/primitives/Container.astro';
 import Eyebrow from '../components/primitives/Eyebrow.astro';
@@ -41,7 +41,7 @@ const painAnchors = [
   },
 ];
 
-const googleReviews = await fetchGoogleReviews();
+const { reviews: googleReviews, rating: placeRating, userRatingCount: placeReviewCount } = await fetchGoogleReviews();
 
 const testimonials = googleReviews.length > 0
   ? googleReviews.map((r) => ({ quote: r.quote, who: r.who, rating: r.rating }))
@@ -56,12 +56,27 @@ const testimonials = googleReviews.length > 0
           rating: t.data.rating ?? 5,
         }))
     );
+
+const ratingSchemas: object[] = [];
+if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
+  ratingSchemas.push(
+    aggregateRatingBlock({
+      ratingValue: placeRating,
+      reviewCount: placeReviewCount,
+      reviews: googleReviews.slice(0, 5).map((r) => ({
+        author: r.who,
+        rating: r.rating,
+        body: r.quote,
+      })),
+    }),
+  );
+}
 ---
 <BaseLayout
   lane="shared"
   title="S.Prestige Services"
   description="Detailing, mechanics, recovery, sales and rentals in Kissonerga, Pafos. Real starting prices, WhatsApp-first booking, no surprise charges at pickup."
-  jsonLd={websiteSchema()}
+  jsonLd={[websiteSchema(), ...ratingSchemas]}
 >
   <!-- HERO -->
   <AuroraBackground className="relative overflow-hidden">
@@ -187,7 +202,7 @@ const testimonials = googleReviews.length > 0
       <div class="flex flex-col items-center px-4 py-2 text-center md:px-8">
         <div class="flex items-baseline gap-1">
           <div class="font-display text-4xl text-gold md:text-5xl">
-            <NumberTicker client:visible value={4.9} decimals={1} />
+            <NumberTicker client:visible value={placeRating ?? 4.9} decimals={1} />
           </div>
           <svg viewBox="0 0 12 12" fill="currentColor" class="mb-1 h-4 w-4 shrink-0 self-end text-gold" aria-hidden="true">
             <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>

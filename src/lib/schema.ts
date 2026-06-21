@@ -309,6 +309,39 @@ export function saleListingSchema(
   };
 }
 
+export function aggregateRatingBlock(input: {
+  ratingValue: number;
+  reviewCount: number;
+  reviews?: Array<{ author: string; rating: number; body: string }>;
+}): Record<string, unknown> {
+  const block: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': ['LocalBusiness', 'AutomotiveBusiness'],
+    '@id': ORG_ID,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: input.ratingValue.toFixed(1),
+      bestRating: '5',
+      worstRating: '1',
+      reviewCount: input.reviewCount,
+    },
+  };
+  if (input.reviews && input.reviews.length > 0) {
+    block.review = input.reviews.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.author },
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: String(r.rating),
+        bestRating: '5',
+        worstRating: '1',
+      },
+      reviewBody: r.body,
+    }));
+  }
+  return block;
+}
+
 export function rentalListingSchema(
   entry: CollectionEntry<'fleet'>,
   url: string,
