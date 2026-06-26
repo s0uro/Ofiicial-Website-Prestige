@@ -15,7 +15,12 @@ const schema = autoDealerSchema({ url: '/buy-sell' });
 const all = await getCollection('fleet');
 const forSale = all
   .filter((e) => e.data.listingType === 'sale' && !('sold' in e.data ? e.data.sold : false))
-  .sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => {
+    const aNew = a.data.badge === 'New' ? 0 : 1;
+    const bNew = b.data.badge === 'New' ? 0 : 1;
+    if (aNew !== bNew) return aNew - bNew;
+    return a.data.order - b.data.order;
+  });
 
 const buyerGuarantees = [
   {
@@ -102,17 +107,22 @@ const buyerGuarantees = [
         {forSale.map((car) => (
           <a href={`/buy-sell/${car.slug}`} class="block">
             <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <Image
-                src={car.data.images[0]}
-                alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
-                width={640}
-                widths={[320, 640]}
-                sizes="(max-width: 768px) 100vw, 33vw"
-                format="webp"
-                quality={75}
-                loading="lazy"
-                class="aspect-[16/10] w-full rounded border border-gold/10 object-cover object-[center_65%]"
-              />
+              <div class="relative">
+                <Image
+                  src={car.data.images[0]}
+                  alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
+                  width={640}
+                  widths={[320, 640]}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  format="webp"
+                  quality={75}
+                  loading="lazy"
+                  class="aspect-[16/10] w-full rounded border border-gold/10 object-cover object-[center_65%]"
+                />
+                {car.data.badge && (
+                  <Badge variant="gold" class="absolute top-2 left-2">{car.data.badge}</Badge>
+                )}
+              </div>
               <div class="mt-4 flex items-start justify-between gap-2">
                 <div class="min-w-0">
                   <div class="min-h-[3rem] font-display text-xl leading-tight text-fg">

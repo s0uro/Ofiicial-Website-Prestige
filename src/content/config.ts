@@ -73,6 +73,7 @@ const fleet = defineCollection({
         model: z.string(),
         year: z.number().int(),
         trim: z.string().optional(),
+        badge: z.string().optional(),
         bodyStyle: z.enum([
           'sedan',
           'suv',
