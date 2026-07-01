@@ -5,7 +5,7 @@ import Eyebrow from '../../components/primitives/Eyebrow.astro';
 import Card from '../../components/primitives/Card.astro';
 import PriceTag from '../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
-import { autoRepairSchema, breadcrumbSchema, faqPageSchema } from '../../lib/schema';
+import { autoRepairSchema, breadcrumbSchema } from '../../lib/schema';
 
 const schema = autoRepairSchema({
   name: 'S.Prestige — Interior & biological cleaning',
@@ -22,26 +22,6 @@ const breadcrumbs = breadcrumbSchema([
 
 const startingFrom = 150;
 
-const faq = [
-  {
-    q: 'How long does the interior biological clean take?',
-    a: 'Typically 3–5 hours for a full interior biological clean. We recommend booking a morning slot — the car is ready by early afternoon.',
-  },
-  {
-    q: 'Is the enzymatic clean safe for leather seats?',
-    a: 'Yes. We use pH-appropriate solutions for each surface type. The enzymatic biological treatment targets fabric, carpet and seam areas. Leather receives a dedicated cleaner and conditioner after treatment.',
-  },
-  {
-    q: 'Will the odour come back after treatment?',
-    a: 'Odour molecules are neutralised at source rather than masked. Biological smells from spills or pets do not return once the source material has been fully removed. Heavy smoke saturation may require a second ozone treatment — we will advise you honestly before proceeding.',
-  },
-  {
-    q: 'Can you treat Cypriot dust inside air vents?',
-    a: 'The HEPA vacuum and hot-water extraction reach carpet padding and seat seams where fine Cypriot dust accumulates. Vent interiors can be treated with a pressurised air flush — mention it when booking if this is a priority.',
-  },
-];
-const faqSchema = faqPageSchema(faq);
-
 const steps = [
   { title: 'Vacuum + extract', body: 'HEPA vacuum + hot-water extraction lift sand from seams and carpet padding.' },
   { title: 'Enzymatic clean', body: 'Biological solution breaks down organic residue — sweat, spills, pets — at the source.' },
@@ -51,10 +31,10 @@ const steps = [
 ---
 <BaseLayout
   lane="auto"
-  title="Interior Car Cleaning Paphos, Cyprus"
-  description="Interior and biological car cleaning in Kissonerga, Paphos from €150. HEPA extraction, enzymatic clean and deodorising. Cypriot sand, pet smells and organic residue fully removed."
+  title="Interior + biological clean"
+  description="Fine Cypriot sand out of the seams. Smells gone, not masked. Interior and biological cleaning, Kissonerga."
   ogImage="/og/og-detailing.jpg"
-  jsonLd={[schema, breadcrumbs, faqSchema]}
+  jsonLd={[schema, breadcrumbs]}
 >
   <Section>
     <Eyebrow>Auto · Interior</Eyebrow>
@@ -92,24 +72,6 @@ const steps = [
           <p class="mt-2 text-sm leading-relaxed text-fg-muted">{s.body}</p>
         </Card>
       ))}
-    </div>
-  </Section>
-
-  <Section>
-    <Eyebrow>FAQ</Eyebrow>
-    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Straight answers.</h2>
-    <div class="mt-10 grid gap-4 md:grid-cols-2">
-      {faq.map((item) => (
-        <Card>
-          <div class="font-display text-lg text-fg">{item.q}</div>
-          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{item.a}</p>
-        </Card>
-      ))}
-    </div>
-    <div class="mt-8">
-      <WhatsAppButton client:visible template="detailing.interior" size="lg" variant="primary">
-        Book a slot
-      </WhatsAppButton>
     </div>
   </Section>
 </BaseLayout>
