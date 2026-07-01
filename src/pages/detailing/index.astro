@@ -7,7 +7,7 @@ import Badge from '../../components/primitives/Badge.astro';
 import PriceTag from '../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
 import { Spotlight } from '../../components/fx/Spotlight';
-import { autoRepairSchema } from '../../lib/schema';
+import { autoRepairSchema, breadcrumbSchema } from '../../lib/schema';
 
 const schema = autoRepairSchema({
   name: 'S.Prestige Detailing',
@@ -16,6 +16,11 @@ const schema = autoRepairSchema({
   url: '/detailing',
   priceFromEUR: 25,
 });
+
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Detailing', url: '/detailing' },
+]);
 
 type Tier = {
   name: string;
@@ -96,10 +101,10 @@ const services = [
 ---
 <BaseLayout
   lane="auto"
-  title="Detailing"
-  description="Hand wash, polish, biological interior, ceramic coating and headlight restoration in Kissonerga, Cyprus. Published starting prices."
+  title="Car Detailing Paphos, Cyprus"
+  description="Car detailing in Kissonerga, Paphos. Hand wash from €25, polish & seal from €200, correction & ceramic from €500. Real prices — no upsell at pickup."
   ogImage="/og/og-detailing.jpg"
-  jsonLd={schema}
+  jsonLd={[schema, breadcrumbs]}
 >
   <Section>
     <Eyebrow>Auto · Detailing</Eyebrow>

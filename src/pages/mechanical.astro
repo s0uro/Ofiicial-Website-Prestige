@@ -10,7 +10,7 @@ import { CallButton } from '../components/cta/CallButton';
 import { AuroraBackground } from '../components/fx/AuroraBackground';
 import { TextReveal } from '../components/fx/TextReveal';
 import { MagneticButton } from '../components/fx/MagneticButton';
-import { autoRepairSchema, faqPageSchema } from '../lib/schema';
+import { autoRepairSchema, breadcrumbSchema, faqPageSchema } from '../lib/schema';
 
 const schema = autoRepairSchema({
   name: 'S.Prestige — Mechanical service',
@@ -38,6 +38,10 @@ const faq = [
   },
 ];
 const faqSchema = faqPageSchema(faq);
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Mechanical', url: '/mechanical' },
+]);
 
 const services = [
   { title: 'Diagnostics', body: 'OBD scan, error codes read, plain-English explanation of what is wrong.' },
@@ -48,10 +52,10 @@ const services = [
 ---
 <BaseLayout
   lane="auto"
-  title="Mechanical service"
-  description="Mechanical diagnostics, servicing and repairs in Kissonerga, Pafos. Honest quotes, no hidden charges."
+  title="Mechanic Paphos, Cyprus"
+  description="Honest mechanic in Kissonerga, Paphos. OBD diagnostics, oil service, brakes, suspension and pre-purchase inspections. Quote before we touch anything."
   ogImage="/og/og-detailing.jpg"
-  jsonLd={[schema, faqSchema]}
+  jsonLd={[schema, faqSchema, breadcrumbs]}
 >
   <AuroraBackground className="relative overflow-hidden">
     <img

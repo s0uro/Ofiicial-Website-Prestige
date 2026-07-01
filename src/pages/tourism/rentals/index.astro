@@ -8,9 +8,14 @@ import Card from '../../../components/primitives/Card.astro';
 import Badge from '../../../components/primitives/Badge.astro';
 import PriceTag from '../../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../../components/cta/WhatsAppButton';
-import { carRentalSchema } from '../../../lib/schema';
+import { carRentalSchema, breadcrumbSchema } from '../../../lib/schema';
 
 const schema = carRentalSchema({ url: '/tourism/rentals' });
+
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Car Rentals', url: '/tourism/rentals' },
+]);
 
 const all = await getCollection('fleet');
 const rentals = all
@@ -26,10 +31,10 @@ const policies = [
 ---
 <BaseLayout
   lane="tourism"
-  title="Car rentals"
-  description="Daily and weekly car rentals in Pafos area, Cyprus. Insurance included, hotel delivery, no hidden fees."
+  title="Luxury Car Rental Paphos, Cyprus"
+  description="Luxury car rental in Paphos, Cyprus. Mercedes E-Class from €89/day, Jeep Wrangler from €110, Ford Mustang from €140. Insurance included, hotel delivery in Pafos district."
   ogImage="/og/og-tourism.jpg"
-  jsonLd={schema}
+  jsonLd={[schema, breadcrumbs]}
 >
   <Section>
     <Eyebrow>Tourism · Rentals</Eyebrow>

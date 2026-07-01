@@ -1,5 +1,6 @@
 export const SITE = {
   name: 'S.Prestige Services',
+  homeTitle: 'Car Detailing, Rentals & Recovery in Paphos, Cyprus | S.Prestige Services',
   shortName: 'S.Prestige',
   url: 'https://s-prestige.com.cy',
   locale: 'en_CY',
@@ -18,6 +19,9 @@ export const SITE = {
     longitude: 32.3858,
   },
   openingHours: 'Mo-Sa 08:00-18:00',
+  foundingDate: '2017',
+  googleRating: 4.9,
+  googleReviewCount: 0, // TODO: update with real Google review count
 } as const;
 
 export interface SeoProps {
@@ -32,6 +36,6 @@ export function canonical(path: string = '/'): string {
 }
 
 export function buildTitle(title?: string): string {
-  if (!title || title === SITE.name) return SITE.name;
+  if (!title || title === SITE.name) return SITE.homeTitle;
   return `${title} — ${SITE.name}`;
 }

@@ -10,7 +10,7 @@ import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
 import { AuroraBackground } from '../../components/fx/AuroraBackground';
 import { TextReveal } from '../../components/fx/TextReveal';
 import { MagneticButton } from '../../components/fx/MagneticButton';
-import { autoRepairSchema, breadcrumbSchema, faqPageSchema } from '../../lib/schema';
+import { autoRepairSchema, breadcrumbSchema, faqPageSchema, howToSchema } from '../../lib/schema';
 
 const schema = autoRepairSchema({
   name: 'S.Prestige — Headlight restoration',
@@ -42,13 +42,20 @@ const faq = [
   { q: 'What if the plastic is cracked?', a: 'Deep cracks mean new housings. We will tell you before starting — no surprise at pickup.' },
 ];
 const faqSchema = faqPageSchema(faq);
+const howTo = howToSchema({
+  name: 'How to Restore Yellow Headlights — S.Prestige Paphos',
+  description: 'Professional 4-step headlight restoration in Kissonerga, Paphos. From €45 per pair including UV seal.',
+  priceFromEUR: 45,
+  totalTimeMinutes: 60,
+  steps: steps.map((s) => ({ name: s.title, text: s.body })),
+});
 ---
 <BaseLayout
   lane="auto"
-  title="Headlight restoration"
-  description="Cypriot UV and salt turn headlights yellow in 18–24 months. We restore them in about an hour. Starting from €45."
+  title="Headlight Restoration Paphos, Cyprus"
+  description="Yellow headlights restored in about one hour from €45 per pair in Kissonerga, Paphos. Wet-sand, polish and 18–24 month UV seal. Book on WhatsApp."
   ogImage="/og/og-detailing.jpg"
-  jsonLd={[schema, breadcrumbs, faqSchema]}
+  jsonLd={[schema, breadcrumbs, faqSchema, howTo]}
 >
   <AuroraBackground className="relative">
     <Container class="relative z-10 py-24 md:py-32">

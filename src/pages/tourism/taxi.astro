@@ -7,9 +7,34 @@ import Badge from '../../components/primitives/Badge.astro';
 import PriceTag from '../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../components/cta/WhatsAppButton';
 import { CallButton } from '../../components/cta/CallButton';
-import { taxiServiceSchema } from '../../lib/schema';
+import { taxiServiceSchema, breadcrumbSchema, faqPageSchema } from '../../lib/schema';
 
 const schema = taxiServiceSchema({ url: '/tourism/taxi' });
+
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Transfers', url: '/tourism/taxi' },
+]);
+
+const faq = [
+  {
+    q: 'How do I book an airport transfer from Paphos?',
+    a: 'Send your flight number, arrival date, number of passengers and any luggage notes on WhatsApp. We confirm your driver, pick-up time and name board within the same day. No payment until arrival.',
+  },
+  {
+    q: 'What if my flight is delayed?',
+    a: 'We monitor your flight in real time. Your driver waits at arrivals until you clear customs — no extra charge for delays. Just let us know your flight number when booking.',
+  },
+  {
+    q: 'Do you offer child seats for airport transfers?',
+    a: 'Yes, available on request at no extra charge. Please mention the child\'s age and whether you need an infant seat, a toddler seat, or a booster when you book so we fit the right seat.',
+  },
+  {
+    q: 'Can I pay cash or by card in the vehicle?',
+    a: 'Both accepted. Cash in EUR or card payment in the vehicle. The price agreed on WhatsApp is the final price — no meter, no extras.',
+  },
+];
+const faqSchema = faqPageSchema(faq);
 
 // TODO: real transfer prices
 const transfers = [
@@ -21,10 +46,10 @@ const transfers = [
 ---
 <BaseLayout
   lane="auto"
-  title="Transfers & airport pickup"
-  description="Airport pickup and on-demand transfers in Pafos area, Cyprus. Fixed quotes, no meter surprises."
+  title="Airport Transfers & Taxi Paphos, Cyprus"
+  description="Airport transfers and taxi in Paphos, Cyprus. Pafos Airport pick-up from €25, Larnaca Airport from €110. V-Class and E-Class fleet. Fixed WhatsApp quote — flight delays monitored."
   ogImage="/og/og-detailing.jpg"
-  jsonLd={schema}
+  jsonLd={[schema, faqSchema, breadcrumbs]}
 >
   <Section>
     <Eyebrow>Auto · Transfers</Eyebrow>
@@ -154,6 +179,19 @@ const transfers = [
       <Badge variant="trust">No hidden fees</Badge>
       <Badge variant="trust">English · Greek · Russian</Badge>
       <Badge variant="trust">24-hour airport</Badge>
+    </div>
+  </Section>
+
+  <Section bg="elev">
+    <Eyebrow>FAQ</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Common questions.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {faq.map((item) => (
+        <Card>
+          <div class="font-display text-lg text-fg">{item.q}</div>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{item.a}</p>
+        </Card>
+      ))}
     </div>
   </Section>
 </BaseLayout>

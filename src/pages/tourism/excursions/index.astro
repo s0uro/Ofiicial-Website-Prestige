@@ -10,14 +10,20 @@ import Badge from '../../../components/primitives/Badge.astro';
 import PriceTag from '../../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../../components/cta/WhatsAppButton';
 import { Meteors } from '../../../components/fx/Meteors';
+import { breadcrumbSchema } from '../../../lib/schema';
 
 const excursions = (await getCollection('excursions')).sort((a, b) => a.data.order - b.data.order);
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Excursions', url: '/tourism/excursions' },
+]);
 ---
 <BaseLayout
   lane="tourism"
-  title="Safari & excursions"
-  description="Akamas 4x4 safari, wine country, Troodos and sunset trips in Cyprus. Small groups, published per-person rates."
+  title="Safari & Excursions Paphos, Cyprus"
+  description="Guided excursions from Paphos, Cyprus. Akamas 4x4 safari from €65/person, Troodos day trip from €75, wine country from €55. Small groups, hotel pickup included."
   ogImage="/og/og-tourism.jpg"
+  jsonLd={breadcrumbs}
 >
   <section class="relative overflow-hidden border-b border-gold/10 py-24 md:py-32">
     <Meteors client:visible number={14} />

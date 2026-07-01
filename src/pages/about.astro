@@ -4,7 +4,7 @@ import Section from '../components/primitives/Section.astro';
 import Eyebrow from '../components/primitives/Eyebrow.astro';
 import Card from '../components/primitives/Card.astro';
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
-import { aboutPageSchema } from '../lib/schema';
+import { aboutPageSchema, personSchema } from '../lib/schema';
 
 const facts = [
   { k: 'Founded', v: 'Kissonerga, 2017' },
@@ -12,12 +12,29 @@ const facts = [
   { k: 'Languages', v: 'English · Greek · Russian' },
   { k: 'Payment', v: 'Cash, card, bank transfer' },
 ];
+
+const persons = [
+  personSchema({
+    id: '/#dimitris',
+    name: 'Dimitris',
+    jobTitle: 'Head of Auto Services — Detailing, Mechanical, Recovery & Buy/Sell',
+    telephone: '+35796471717',
+    knowsLanguage: ['en', 'el'],
+  }),
+  personSchema({
+    id: '/#alexandra',
+    name: 'Alexandra',
+    jobTitle: 'Head of Tourism — Car Rentals & Transfers',
+    telephone: '+35796828299',
+    knowsLanguage: ['en', 'el', 'ru'],
+  }),
+];
 ---
 <BaseLayout
   lane="shared"
-  title="About"
-  description="S.Prestige Services — a Kissonerga-based auto detailing and tourism business. Published prices, WhatsApp-first."
-  jsonLd={aboutPageSchema()}
+  title="About S.Prestige Services — Kissonerga, Paphos"
+  description="S.Prestige Services: established in Kissonerga, Paphos in 2017. Car detailing, rentals, mechanical work, recovery and airport transfers. English, Greek & Russian spoken."
+  jsonLd={[aboutPageSchema(), ...persons]}
 >
   <Section>
     <Eyebrow>About</Eyebrow>

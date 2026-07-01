@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.s-prestige.com.cy" }],
+      "destination": "https://s-prestige.com.cy/:path*",
+      "permanent": true
+    }
+  ]
+}

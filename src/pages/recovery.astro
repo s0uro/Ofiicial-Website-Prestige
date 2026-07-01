@@ -10,7 +10,7 @@ import { CallButton } from '../components/cta/CallButton';
 import { AuroraBackground } from '../components/fx/AuroraBackground';
 import { TextReveal } from '../components/fx/TextReveal';
 import { MagneticButton } from '../components/fx/MagneticButton';
-import { autoRepairSchema } from '../lib/schema';
+import { autoRepairSchema, breadcrumbSchema, faqPageSchema } from '../lib/schema';
 
 const schema = autoRepairSchema({
   name: 'S.Prestige — Vehicle recovery',
@@ -18,6 +18,31 @@ const schema = autoRepairSchema({
     '24/7 vehicle recovery and towing across Pafos and the western Cyprus coast. Flat-bed truck, careful loading, fixed pickup time.',
   url: '/recovery',
 });
+
+const breadcrumbs = breadcrumbSchema([
+  { name: 'Home', url: '/' },
+  { name: 'Recovery', url: '/recovery' },
+]);
+
+const faq = [
+  {
+    q: 'Does car recovery in Paphos work 24 hours?',
+    a: 'Yes. The recovery line (+357 96 471717) runs 24 hours, 7 days a week. Call — do not text — for the fastest response. Night call-outs carry a surcharge quoted upfront before we dispatch.',
+  },
+  {
+    q: 'How much does vehicle recovery cost in Pafos?',
+    a: 'Call-out fees and per-kilometre rates depend on your location and chosen drop-off point. We quote on the spot when you call — no surprise charges at the end.',
+  },
+  {
+    q: 'Can you recover a car from the motorway?',
+    a: 'Yes. We operate in the Pafos region including motorway sections. Call immediately — do not wait on the hard shoulder longer than necessary.',
+  },
+  {
+    q: 'Where can you take my car after recovery?',
+    a: 'Wherever you need — your home address, our workshop in Kissonerga, your insurer-approved garage, or any other destination you specify. Multi-drop is available; additional stops are quoted upfront.',
+  },
+];
+const faqSchema = faqPageSchema(faq);
 
 const steps = [
   { n: '01', title: 'Call', body: 'Tap Emergency 24/7. Tell us where you are and what is wrong.' },
@@ -28,10 +53,10 @@ const steps = [
 ---
 <BaseLayout
   lane="auto"
-  title="Recovery"
-  description="24/7 vehicle recovery and towing across Pafos. Flat-bed, careful loading, fixed pickup time."
+  title="24/7 Vehicle Recovery Paphos, Cyprus"
+  description="Breakdown in Pafos? Flat-bed recovery and towing 24/7 across the Pafos district. Call +357 96 471717 — real ETA given, drop to any destination."
   ogImage="/og/og-detailing.jpg"
-  jsonLd={schema}
+  jsonLd={[schema, faqSchema, breadcrumbs]}
 >
   <AuroraBackground className="relative overflow-hidden">
     <!-- Desktop: photo absolutely positioned to right half, alpha-masked into bg -->
@@ -123,6 +148,19 @@ const steps = [
         <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Call. Don't text. We pick up.</h2>
       </div>
       <CallButton client:visible lane="auto" size="lg" variant="primary" />
+    </div>
+  </Section>
+
+  <Section>
+    <Eyebrow>FAQ</Eyebrow>
+    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Common questions.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {faq.map((item) => (
+        <Card>
+          <div class="font-display text-lg text-fg">{item.q}</div>
+          <p class="mt-2 text-sm leading-relaxed text-fg-muted">{item.a}</p>
+        </Card>
+      ))}
     </div>
   </Section>
 </BaseLayout>

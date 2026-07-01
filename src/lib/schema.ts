@@ -8,7 +8,7 @@ function abs(path: string): string {
 }
 
 export function organizationSchema(): Record<string, unknown> {
-  return {
+  const base: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'AutomotiveBusiness'],
     '@id': ORG_ID,
@@ -17,6 +17,10 @@ export function organizationSchema(): Record<string, unknown> {
     description: SITE.description,
     url: SITE.url,
     telephone: '+357 96 471717',
+    foundingDate: SITE.foundingDate,
+    knowsLanguage: ['en', 'el', 'ru'],
+    paymentAccepted: 'Cash, Credit Card, Bank Transfer',
+    currenciesAccepted: 'EUR',
     address: {
       '@type': 'PostalAddress',
       streetAddress: SITE.address.streetAddress,
@@ -53,6 +57,18 @@ export function organizationSchema(): Record<string, unknown> {
       'https://www.facebook.com/people/Prestige-Detailing/100076279789752/',
     ],
   };
+
+  if (SITE.googleReviewCount > 0) {
+    base.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: SITE.googleRating,
+      bestRating: 5,
+      worstRating: 1,
+      reviewCount: SITE.googleReviewCount,
+    };
+  }
+
+  return base;
 }
 
 export function websiteSchema(): Record<string, unknown> {
@@ -173,10 +189,14 @@ export function autoDealerSchema(input: { url: string }): Record<string, unknown
     '@type': 'AutoDealer',
     name: `${SITE.shortName} — Buy & Sell`,
     description:
-      'Curated inventory of prepared used cars. Transparent pricing, clean paperwork.',
+      'Curated inventory of prepared used cars in Paphos, Cyprus. Transparent pricing, clean paperwork, free delivery across Cyprus.',
     url: abs(input.url),
     parentOrganization: { '@id': ORG_ID },
     image: abs('/og/og-detailing.jpg'),
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Cyprus',
+    },
   };
 }
 
@@ -184,12 +204,17 @@ export function carRentalSchema(input: { url: string }): Record<string, unknown>
   return {
     '@context': 'https://schema.org',
     '@type': 'AutoRental',
-    name: `${SITE.shortName} — Rentals`,
+    name: `${SITE.shortName} — Luxury Car Rentals Paphos`,
     description:
-      'Daily and weekly car rentals with hotel delivery in the Pafos district, Cyprus.',
+      'Luxury daily and weekly car rentals with hotel delivery in the Pafos district, Cyprus. Insurance included.',
     url: abs(input.url),
     parentOrganization: { '@id': ORG_ID },
     image: abs('/og/og-tourism.jpg'),
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Pafos District, Cyprus',
+    },
+    priceRange: '€€€',
   };
 }
 
@@ -197,15 +222,67 @@ export function taxiServiceSchema(input: { url: string }): Record<string, unknow
   return {
     '@context': 'https://schema.org',
     '@type': 'TaxiService',
-    name: `${SITE.shortName} — Taxi & Transfers`,
+    name: `${SITE.shortName} — Airport Transfers & Taxi Paphos`,
     description:
-      'Fixed-quote taxi and airport transfers in the Pafos district, Cyprus.',
+      'Fixed-quote airport transfers and taxi in Paphos, Cyprus. Pafos and Larnaca airport transfers, on-demand taxi across Pafos district.',
     url: abs(input.url),
     provider: { '@id': ORG_ID },
     areaServed: {
       '@type': 'AdministrativeArea',
       name: 'Cyprus',
     },
+  };
+}
+
+export function howToSchema(input: {
+  name: string;
+  description: string;
+  priceFromEUR: number;
+  totalTimeMinutes: number;
+  steps: { name: string; text: string }[];
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: input.name,
+    description: input.description,
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'EUR',
+      value: String(input.priceFromEUR),
+    },
+    totalTime: `PT${input.totalTimeMinutes}M`,
+    supply: [
+      {
+        '@type': 'HowToSupply',
+        name: 'Vehicle with yellowed or oxidised headlights',
+      },
+    ],
+    step: input.steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+}
+
+export function personSchema(input: {
+  id: string;
+  name: string;
+  jobTitle: string;
+  telephone?: string;
+  knowsLanguage?: string[];
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': new URL(input.id, SITE.url).toString(),
+    name: input.name,
+    jobTitle: input.jobTitle,
+    worksFor: { '@id': ORG_ID },
+    ...(input.telephone ? { telephone: input.telephone } : {}),
+    ...(input.knowsLanguage ? { knowsLanguage: input.knowsLanguage } : {}),
   };
 }
 
@@ -219,12 +296,13 @@ export function touristTripSchema(
     '@context': 'https://schema.org',
     '@type': 'TouristTrip',
     name: d.title,
-    description: `${d.type} excursion — ${d.durationHours}h, from €${d.startingFromEUR} ${unit}.`,
+    description: `${d.type} excursion from Paphos — ${d.durationHours}h, from €${d.startingFromEUR} ${unit}. Hotel pickup included. Small groups, English/Greek/Russian guides.`,
     url: abs(url),
     provider: { '@id': ORG_ID },
     duration: `PT${d.durationHours}H`,
     maximumAttendeeCapacity: d.maxGroupSize,
     inLanguage: d.languagesOffered,
+    touristType: 'Tourist',
     itinerary: d.itinerary.map((stop) => ({
       '@type': 'Place',
       name: stop.stop,
@@ -294,7 +372,7 @@ export function rentalListingSchema(
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `${d.year} ${d.make} ${d.model} rental`,
+    name: `${d.year} ${d.make} ${d.model} rental — Paphos, Cyprus`,
     description: d.description,
     brand: { '@type': 'Brand', name: d.make },
     url: abs(url),
