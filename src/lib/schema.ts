@@ -47,7 +47,7 @@ export function organizationSchema(): Record<string, unknown> {
     ],
     priceRange: '€€',
     image: abs(SITE.defaultOg),
-    logo: abs('/logo-mark.png'),
+    logo: abs('/prestige-logo.jpeg'),
     sameAs: [
       'https://www.instagram.com/prestige_detailing.cy/',
       'https://www.facebook.com/people/Prestige-Detailing/100076279789752/',
