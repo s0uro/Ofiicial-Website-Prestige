@@ -2,18 +2,34 @@ import * as React from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TEL_AUTO } from '../../lib/wa';
+import { ui, getLang, type Lang } from '../../lib/i18n';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavItem {
   label: string;
   href: string;
+  key?: string;
 }
 
 interface Props {
   items: NavItem[];
 }
 
+function useLang(): Lang {
+  const [lang, setLangState] = React.useState<Lang>(() =>
+    typeof window === 'undefined' ? 'en' : getLang()
+  );
+  React.useEffect(() => {
+    const handle = (e: Event) => setLangState((e as CustomEvent<Lang>).detail);
+    window.addEventListener('sprestige:lang', handle);
+    return () => window.removeEventListener('sprestige:lang', handle);
+  }, []);
+  return lang;
+}
+
 export default function MobileMenu({ items }: Props): React.ReactElement {
   const [open, setOpen] = React.useState(false);
+  const lang = useLang();
 
   React.useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -35,6 +51,11 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  function label(item: NavItem): string {
+    if (!item.key) return item.label;
+    return ui[lang].nav[item.key as keyof typeof ui.en.nav] || item.label;
+  }
 
   return (
     <>
@@ -104,18 +125,21 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
                   }}
                   className="py-3 text-xl text-fg transition-colors hover:text-gold"
                 >
-                  {item.label}
+                  {label(item)}
                 </motion.a>
               ))}
             </motion.nav>
             <div className="mt-auto border-t border-gold/10 px-5 py-6">
+              <div className="mb-4 flex justify-center">
+                <LanguageSwitcher />
+              </div>
               <a
                 href={`tel:${TEL_AUTO}`}
                 onClick={() => setOpen(false)}
                 className="group relative flex items-center justify-center gap-3 rounded-full border border-gold/40 bg-bg/60 px-5 py-3 text-sm font-medium uppercase tracking-[0.14em] text-gold transition-colors hover:border-gold hover:bg-gold/10"
               >
                 <Phone className="h-4 w-4" aria-hidden />
-                <span>Emergency 24/7</span>
+                <span>{ui[lang].emergency}</span>
                 <span className="relative flex h-2.5 w-2.5" aria-hidden>
                   <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 motion-safe:animate-ping" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />

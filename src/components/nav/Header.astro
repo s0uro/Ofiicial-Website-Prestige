@@ -2,6 +2,7 @@
 import Container from '../primitives/Container.astro';
 import MobileMenu from './MobileMenu.tsx';
 import EmergencyButton from '../cta/EmergencyButton.astro';
+import LanguageSwitcher from './LanguageSwitcher.tsx';
 
 export interface Props {
   lane?: 'auto' | 'tourism' | 'shared';
@@ -10,13 +11,13 @@ export interface Props {
 const { lane = 'shared' } = Astro.props;
 
 const navItems = [
-  { label: 'Buy & Sell', href: '/buy-sell' },
-  { label: 'Rentals', href: '/tourism/rentals' },
-  { label: 'Detailing', href: '/detailing' },
-  { label: 'Mechanical', href: '/mechanical' },
-  { label: 'Recovery', href: '/recovery' },
-  { label: 'Transfers', href: '/tourism/taxi' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Buy & Sell', href: '/buy-sell', key: 'buySell' },
+  { label: 'Rentals', href: '/tourism/rentals', key: 'rentals' },
+  { label: 'Detailing', href: '/detailing', key: 'detailing' },
+  { label: 'Mechanical', href: '/mechanical', key: 'mechanical' },
+  { label: 'Recovery', href: '/recovery', key: 'recovery' },
+  { label: 'Transfers', href: '/tourism/taxi', key: 'transfers' },
+  { label: 'Contact', href: '/contact', key: 'contact' },
 ];
 
 const pathname = Astro.url.pathname;
@@ -54,7 +55,7 @@ const pathname = Astro.url.pathname;
             ]}
             aria-current={active ? 'page' : undefined}
           >
-            {item.label}
+            <span data-nav-key={item.key}>{item.label}</span>
             <span
               class:list={[
                 'absolute inset-x-0 -bottom-px h-px origin-left bg-gradient-to-r from-gold to-gold/50 transition-transform duration-300 ease-out-expo',
@@ -68,6 +69,9 @@ const pathname = Astro.url.pathname;
     </nav>
 
     <div class="flex items-center gap-3">
+      <div class="hidden lg:flex">
+        <LanguageSwitcher client:load />
+      </div>
       <div class="hidden lg:block">
         <EmergencyButton variant="full" />
       </div>
@@ -78,3 +82,26 @@ const pathname = Astro.url.pathname;
     </div>
   </Container>
 </header>
+
+<script>
+  import { getLang, ui } from '../../lib/i18n';
+
+  function applyLang(lang: string) {
+    const dict = ui[lang as keyof typeof ui];
+    if (!dict) return;
+
+    document.querySelectorAll<HTMLElement>('[data-nav-key]').forEach((el) => {
+      const key = el.dataset.navKey as keyof typeof dict.nav;
+      if (dict.nav[key]) el.textContent = dict.nav[key];
+    });
+
+    const emEl = document.querySelector<HTMLElement>('[data-t-emergency]');
+    if (emEl) emEl.textContent = dict.emergency;
+  }
+
+  applyLang(getLang());
+
+  window.addEventListener('sprestige:lang', (e) => {
+    applyLang((e as CustomEvent<string>).detail);
+  });
+</script>

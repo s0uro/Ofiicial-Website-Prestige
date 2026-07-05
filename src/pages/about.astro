@@ -5,6 +5,7 @@ import Eyebrow from '../components/primitives/Eyebrow.astro';
 import Card from '../components/primitives/Card.astro';
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
 import { aboutPageSchema } from '../lib/schema';
+import ScrollReveal from '../components/fx/ScrollReveal';
 
 const facts = [
   { k: 'Founded', v: 'Kissonerga, 2017' },
@@ -24,12 +25,16 @@ const facts = [
     <h1 class="mt-3 max-w-3xl font-display text-4xl leading-tight text-fg md:text-6xl text-balance">
       Two services. One bar. Quiet confidence.
     </h1>
-    <p class="mt-6 max-w-2xl text-lg text-fg-muted text-pretty">
-      We started on the detailing bay in Kissonerga. Tourists kept asking for
-      a ride after their car came back clean — so we put the second lane on the
-      sign. Same phone-number discipline. Same published prices. No hidden
-      charges at pickup.
-    </p>
+    <ScrollReveal
+      client:visible
+      text="We started on the detailing bay in Kissonerga. Tourists kept asking for a ride after their car came back clean — so we put the second lane on the sign. Same phone-number discipline. Same published prices. No hidden charges at pickup."
+      baseOpacity={0}
+      enableBlur={true}
+      baseRotation={0}
+      blurStrength={6}
+      containerClassName="mt-6 max-w-2xl !m-0 mt-6"
+      textClassName="!text-lg !font-normal leading-relaxed text-fg-muted"
+    />
   </Section>
 
   <Section bg="elev">

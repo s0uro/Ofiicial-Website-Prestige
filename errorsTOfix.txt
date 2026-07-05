@@ -1,0 +1,51 @@
+Κρίσιμα 
+
+  1. Rental form — το WhatsApp ανοίγει κενό
+  src/pages/tourism/rentals/index.astro ~line 46
+  Η φόρμα κράτησης στέλνει τα στοιχεία (pickup, ημερομηνίες) στο WhatsApp, αλλά το wa.me αγνοεί τα query parameters. Αποτέλεσμα: ο χρήστης πατάει "Check WhatsApp" και το μήνυμα
+  ανοίγει άδειο — τα στοιχεία χάνονται.
+
+  2. Tourism σελίδα — marked as noindex
+  src/pages/tourism/index.astro line 16
+  Το noindex={true} κάνει ολόκληρη τη σελίδα /tourism αόρατη στο Google. Αυτό σημαίνει ότι και οι υποσελίδες (rentals, excursions, taxi) δεν ακολουθούνται από τους crawlers.
+  Πιθανώς ξεχάστηκε από το development.
+
+  ---
+  Σημαντικά 
+  3. Taxi σελίδα — λάθος lane
+  src/pages/tourism/taxi.astro line 23
+  Έχει lane="auto" αντί lane="tourism". Αποτέλεσμα: τα κουμπιά επικοινωνίας στο mobile δείχνουν Auto αντί Tourism.
+
+  4. Meteors animation — hydration mismatch
+  src/components/fx/Meteors.tsx lines 14–23
+  Χρησιμοποιεί Math.random() που παράγει διαφορετικές τιμές server/client. Προκαλεί React warning και flicker κατά το φόρτωμα.
+
+  5. Duplicate SVG id
+  src/components/fx/BackgroundBeams.tsx line 28
+  Το gradient έχει id="beam-grad" hardcoded. Αν το component εμφανιστεί 2 φορές στη σελίδα, το animation/gradient σπάει.
+
+  ---
+  Μέτρια (Moderate)
+
+  6. Buy-sell filter — unsafe type check
+  src/pages/buy-sell/index.astro line 17
+  Χρησιμοποιεί 'sold' in e.data αντί e.data.sold. Τώρα δουλεύει τυχαία, αλλά αν αλλάξει το schema μπορεί να εμφανίζει πουλημένα αυτοκίνητα.
+
+  7. Content schema — 2 keys λείπουν
+  src/content/config.ts lines 3–18
+  Τα mechanical.general και recovery.general λείπουν από το enum. Αν προστεθεί νέο MDX που τα χρησιμοποιεί, το build σπάει.
+
+  ---
+  Μικρά (Low)
+
+  8. €NaN στις τιμές detailing
+  src/pages/detailing/index.astro line 161
+  Non-null assertion t.from! — αν προστεθεί tier χωρίς τιμή, εμφανίζεται €NaN.
+
+  9. Duplicate JSON-LD scripts
+  src/components/primitives/JsonLd.astro
+  Κίνδυνος duplicate structured data tags αν το layout χρησιμοποιηθεί σε reactive context.
+
+  10. og:image:type hardcoded
+  src/layouts/BaseLayout.astro line 63
+  Πάντα image/jpeg — αν χρησιμοποιηθεί PNG/WebP OG image, το Facebook/LinkedIn validator θα αποτύχει.
