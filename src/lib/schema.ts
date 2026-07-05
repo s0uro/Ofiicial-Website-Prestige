@@ -361,17 +361,9 @@ export function rentalListingSchema(
       : imageObject(abs('/og/og-tourism.jpg'), 1200, 630),
     offers: {
       '@type': 'Offer',
-      price: d.dailyRateFromEUR,
-      priceCurrency: 'EUR',
       availability: d.available
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
-      priceSpecification: {
-        '@type': 'UnitPriceSpecification',
-        price: d.dailyRateFromEUR,
-        priceCurrency: 'EUR',
-        unitText: 'per day',
-      },
       seller: { '@id': ORG_ID },
     },
   };
