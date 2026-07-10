@@ -17,7 +17,6 @@ const rentals = all
   .sort((a, b) => a.data.order - b.data.order);
 
 const policies = [
-  { title: 'Insurance included', body: 'Full third-party + CDW baseline on every car.' },
   { title: 'Minimum driver age 23', body: 'Younger driver surcharge — quoted upfront.' },
   { title: 'Delivery to hotel', body: 'Hotel delivery within Pafos district — €25 flat.' },
   { title: 'Fuel policy', body: 'Full-to-full. Empty return has a flat €25 refill fee.' },
@@ -26,7 +25,7 @@ const policies = [
 <BaseLayout
   lane="tourism"
   title="Car Rentals in Pafos, Cyprus"
-  description="Car rentals in Pafos, Cyprus. Message us for a quote. Insurance included, hotel delivery to your door. No hidden fees."
+  description="Car rentals in Pafos, Cyprus. Message us for a quote. Hotel delivery to your door. No hidden fees."
   ogImage="/og/og-tourism.jpg"
   jsonLd={schema}
 >
@@ -36,15 +35,14 @@ const policies = [
       Car Rentals in Pafos, Cyprus. Pick your dates and we deliver.
     </h1>
     <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
-      Ask us for a quote on WhatsApp. Insurance included. Delivered to
+      Ask us for a quote on WhatsApp. Delivered to
       your hotel within the Pafos district.
     </p>
 
-    <!-- Visual booking bar (v1 deep-links to WhatsApp with template) -->
+    <!-- Visual booking bar — deep-links to WhatsApp with a pre-filled message (wa.me ignores query params, so the form fields are composed into a ?text= message on submit) -->
     <form
+      id="rental-search-form"
       class="mt-8 grid gap-3 rounded-lg border border-gold/10 bg-bg-elev p-4 md:grid-cols-[1fr_1fr_1fr_auto]"
-      action="https://wa.me/35796828299"
-      target="_blank"
     >
       <label class="flex flex-col gap-1 text-xs text-fg-muted">
         Pickup
@@ -103,6 +101,22 @@ const policies = [
           target.value = v;
         });
       });
+
+      // wa.me only understands a ?text= parameter, not arbitrary form fields,
+      // so submitting this form directly would open WhatsApp with an empty
+      // message. Compose the fields into one message instead.
+      document.getElementById('rental-search-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const pickup = form.pickup.value.trim();
+        const from = form.from.value.trim();
+        const to = form.to.value.trim();
+        let message = "Hi, I'd like to check car rental availability.";
+        if (pickup) message += ` Pickup: ${pickup}.`;
+        if (from) message += ` From: ${from}.`;
+        if (to) message += ` To: ${to}.`;
+        window.open(`https://wa.me/35796828299?text=${encodeURIComponent(message)}`, '_blank');
+      });
     </script>
   </Section>
 
@@ -126,17 +140,19 @@ const policies = [
         {rentals.map((car) => (
           <a href={`/tourism/rentals/${car.slug}`} class="block">
             <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <Image
-                src={car.data.images[0]}
-                alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
-                width={640}
-                widths={[320, 640]}
-                sizes="(max-width: 768px) 100vw, 33vw"
-                format="webp"
-                quality={75}
-                loading="lazy"
-                class="aspect-[16/10] w-full rounded border border-gold/10 object-cover"
-              />
+              <div class="aspect-[16/10] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
+                <Image
+                  src={car.data.images[0]}
+                  alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
+                  width={640}
+                  widths={[320, 640]}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  format="webp"
+                  quality={75}
+                  loading="lazy"
+                  class="h-full w-full object-contain"
+                />
+              </div>
               <div class="mt-4">
                 <div class="font-display text-xl text-fg">{car.data.make} {car.data.model}</div>
                 <p class="mt-1 text-sm text-fg-muted">

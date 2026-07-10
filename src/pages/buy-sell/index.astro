@@ -14,7 +14,7 @@ const schema = autoDealerSchema({ url: '/buy-sell' });
 
 const all = await getCollection('fleet');
 const forSale = all
-  .filter((e) => e.data.listingType === 'sale' && !('sold' in e.data ? e.data.sold : false))
+  .filter((e) => e.data.listingType === 'sale' && !e.data.sold)
   .sort((a, b) => {
     const aNew = a.data.badge === 'New' ? 0 : 1;
     const bNew = b.data.badge === 'New' ? 0 : 1;
@@ -106,7 +106,7 @@ const buyerGuarantees = [
         {forSale.map((car) => (
           <a href={`/buy-sell/${car.slug}`} class="block">
             <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <div class="relative">
+              <div class="relative aspect-[16/10] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
                 <Image
                   src={car.data.images[0]}
                   alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
@@ -116,7 +116,7 @@ const buyerGuarantees = [
                   format="webp"
                   quality={75}
                   loading="lazy"
-                  class="aspect-[16/10] w-full rounded border border-gold/10 object-cover object-[center_65%]"
+                  class="h-full w-full object-contain"
                 />
                 {car.data.badge && (
                   <Badge variant="gold" class="absolute top-2 left-2">{car.data.badge}</Badge>

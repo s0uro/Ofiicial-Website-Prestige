@@ -26,7 +26,7 @@ if (d.listingType !== 'rental') throw new Error('Expected a rental listing');
 
 const vehicle = `${d.year} ${d.make} ${d.model}${d.trim ? ' ' + d.trim : ''}`;
 const seoTitle = `${d.year} ${d.make} ${d.model}`;
-const metaDescription = `${vehicle} for rent in Pafos, Cyprus. Ask for price, ${d.transmission} ${d.fuel}, ${d.seats} seats. Insurance included. Hotel delivery in Pafos district.`.slice(0, 158);
+const metaDescription = `${vehicle} for rent in Pafos, Cyprus. Ask for price, ${d.transmission} ${d.fuel}, ${d.seats} seats. Hotel delivery in Pafos district.`.slice(0, 158);
 const breadcrumbs = breadcrumbSchema([
   { name: 'Home', url: '/' },
   { name: 'Rentals', url: '/tourism/rentals' },
@@ -53,12 +53,11 @@ const schema = rentalListingSchema(entry, `/tourism/rentals/${entry.slug}`, sche
     <h1 class="mt-3 font-display text-4xl text-fg md:text-6xl text-balance">{vehicle}</h1>
     <div class="mt-4 flex flex-wrap items-center gap-4">
       <span class="font-display text-2xl font-semibold text-gold">Ask for price</span>
-      {d.insuranceIncluded && <Badge variant="trust">Insurance included</Badge>}
       {d.available ? <Badge variant="gold">Available</Badge> : <Badge variant="muted">On hire</Badge>}
     </div>
 
     <div class="mt-10 grid gap-8 md:grid-cols-[1.4fr_1fr]">
-      <div class="overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
+      <div class="aspect-[16/10] w-full overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
         <Image
           src={d.images[0]}
           alt={vehicle}
@@ -67,7 +66,7 @@ const schema = rentalListingSchema(entry, `/tourism/rentals/${entry.slug}`, sche
           sizes="(max-width: 768px) 100vw, 60vw"
           format="webp"
           quality={78}
-          class="aspect-[16/10] w-full rounded-[calc(var(--radius-lg)-4px)] object-cover"
+          class="h-full w-full rounded-[calc(var(--radius-lg)-4px)] object-contain"
         />
       </div>
       <Card>

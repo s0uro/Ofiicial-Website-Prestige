@@ -7,6 +7,8 @@ const whatsappTemplateKey = z.enum([
   'detailing.interior',
   'buysell.sell',
   'buysell.inquire',
+  'mechanical.general',
+  'recovery.general',
   'rental.general',
   'rental.specific',
   'excursion.general',

@@ -157,9 +157,9 @@ const services = [
                 <span class="text-[10px] uppercase tracking-[0.2em] text-fg-muted">from</span>
                 <span class="font-display text-2xl font-semibold text-gold">€{t.fromRange.from}–{t.fromRange.to}</span>
               </div>
-            ) : (
-              <PriceTag amount={t.from!} period="total" class="mt-2" />
-            )}
+            ) : t.from != null ? (
+              <PriceTag amount={t.from} period="total" class="mt-2" />
+            ) : null}
             {t.note && (
               <div class="mt-2 text-xs italic text-fg-muted">{t.note}</div>
             )}

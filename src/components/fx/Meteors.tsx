@@ -10,8 +10,12 @@ export function Meteors({
   number = 18,
   className,
 }: Props): React.ReactElement {
-  const meteors = React.useMemo(
-    () =>
+  const [meteors, setMeteors] = React.useState<
+    { id: number; top: number; left: number; delay: string; duration: string }[]
+  >([]);
+
+  React.useEffect(() => {
+    setMeteors(
       Array.from({ length: number }).map((_, i) => ({
         id: i,
         top: Math.random() * 60,
@@ -19,8 +23,8 @@ export function Meteors({
         delay: `${Math.random() * 1.2}s`,
         duration: `${Math.random() * 6 + 4}s`,
       })),
-    [number],
-  );
+    );
+  }, [number]);
 
   return (
     <div

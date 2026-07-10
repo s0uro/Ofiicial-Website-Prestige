@@ -10,6 +10,7 @@ export function BackgroundBeams({
   className,
   lines = 12,
 }: Props): React.ReactElement {
+  const gradientId = `beam-grad-${React.useId()}`;
   return (
     <div
       aria-hidden
@@ -25,7 +26,7 @@ export function BackgroundBeams({
         fill="none"
       >
         <defs>
-          <linearGradient id="beam-grad" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="rgba(245,197,24,0)" />
             <stop offset="50%" stopColor="rgba(245,197,24,0.35)" />
             <stop offset="100%" stopColor="rgba(245,197,24,0)" />
@@ -40,7 +41,7 @@ export function BackgroundBeams({
               y1={0}
               x2={x + 220}
               y2={600}
-              stroke="url(#beam-grad)"
+              stroke={`url(#${gradientId})`}
               strokeWidth={1}
               opacity={0.35 + ((i % 3) * 0.2)}
             />
