@@ -12,12 +12,12 @@ const autoMessage = encodeURIComponent('Hi S.Prestige — I have a question.');
 const rentalsMessage = encodeURIComponent('Hi S.Prestige — I have a rentals question.');
 
 const iconBtn =
-  'inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold/30 text-gold transition-colors hover:border-gold hover:bg-gold/10';
+  'inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold/25 bg-gold/5 text-gold transition-all duration-200 hover:border-gold/50 hover:bg-gold/15 hover:shadow-glow-sm';
 ---
 <BaseLayout
   lane="shared"
-  title="Contact"
-  description="Phone numbers, hours and location for S.Prestige Services, Kissonerga, Cyprus."
+  title="Contact Us in Kissonerga, Pafos"
+  description="Contact S.Prestige Services in Kissonerga, Pafos. Phone numbers, opening hours and location for our auto and tourism desks."
   jsonLd={contactPageSchema()}
 >
   <Section>
@@ -137,13 +137,13 @@ const iconBtn =
           </dl>
         </div>
       </div>
-      <div class="rounded-lg border border-gold/10 bg-bg p-1">
+      <div class="overflow-hidden rounded-xl border border-gold/12 bg-bg shadow-card">
         <iframe
           title="S.Prestige Services — map"
           src={mapUrl}
           loading="lazy"
-          class="h-[360px] w-full rounded-[calc(var(--radius-lg)-4px)]"
-          style="border: 0;"
+          class="h-[360px] w-full"
+          style="border: 0; display: block;"
           allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"
         />

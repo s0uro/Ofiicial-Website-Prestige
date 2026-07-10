@@ -10,7 +10,7 @@ export function BentoGrid({ children, className }: GridProps): React.ReactElemen
   return (
     <div
       className={cn(
-        'grid auto-rows-[17rem] grid-cols-1 gap-4 md:auto-rows-[19rem] md:grid-cols-3',
+        'grid auto-rows-[18rem] grid-cols-1 gap-4 md:auto-rows-[20rem] md:grid-cols-3',
         className,
       )}
     >
@@ -63,24 +63,39 @@ export function BentoItem({
           {headerContent}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-bg-elev via-bg-elev/70 to-transparent"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bg-elev via-bg-elev/80 to-transparent"
           />
         </div>
       )}
-      <div className="flex flex-col gap-2 pt-3">
+      <div className="flex flex-col gap-1.5 pt-3">
         {eyebrow && (
-          <div className="text-[10px] uppercase tracking-[0.2em] text-gold">
+          <div className="text-[10px] uppercase tracking-[0.2em] text-gold/70 transition-colors duration-200 group-hover:text-gold">
             {eyebrow}
           </div>
         )}
         {icon && <div className="text-gold">{icon}</div>}
         {title && (
-          <div className="font-display text-2xl leading-tight text-fg md:text-3xl">
-            {title}
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-display text-xl leading-tight text-fg transition-colors duration-200 group-hover:text-fg md:text-2xl">
+              {title}
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4 shrink-0 translate-x-1 text-gold/0 opacity-0 transition-all duration-300 ease-out-expo group-hover:translate-x-0 group-hover:text-gold/70 group-hover:opacity-100"
+              aria-hidden
+            >
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
           </div>
         )}
         {description && (
-          <p className="text-sm leading-relaxed text-fg-muted md:text-base">{description}</p>
+          <p className="text-sm leading-relaxed text-fg-muted">{description}</p>
         )}
         {children}
       </div>
@@ -88,7 +103,7 @@ export function BentoItem({
   );
 
   const classes = cn(
-    'group relative flex flex-col overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-5 md:p-6 transition-[border-color,box-shadow] duration-300 ease-out-expo hover:border-gold/30 hover:shadow-glow-sm',
+    'group relative flex flex-col overflow-hidden rounded-xl border border-gold/10 bg-bg-elev p-5 shadow-card md:p-6 transition-[border-color,box-shadow,transform] duration-300 ease-out-expo hover:border-gold/30 hover:shadow-card-hover hover:-translate-y-0.5',
     className,
   );
 

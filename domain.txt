@@ -1,0 +1,2 @@
+Type	Name	  Value
+TXT     _vercel   vc-domain-verify=s-prestige.com.cy,608fb9961f0d38198d18

@@ -9,9 +9,10 @@ const { class: className } = Astro.props;
 ---
 <p
   class={cn(
-    'text-xs font-medium uppercase tracking-[0.2em] text-gold',
+    'inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold',
     className,
   )}
 >
+  <span class="h-px w-4 bg-gradient-to-r from-gold/60 to-gold/20" aria-hidden="true" />
   <slot />
 </p>

@@ -6,7 +6,6 @@ import Section from '../../../components/primitives/Section.astro';
 import Eyebrow from '../../../components/primitives/Eyebrow.astro';
 import Card from '../../../components/primitives/Card.astro';
 import Badge from '../../../components/primitives/Badge.astro';
-import PriceTag from '../../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../../components/cta/WhatsAppButton';
 import { carRentalSchema } from '../../../lib/schema';
 
@@ -26,18 +25,18 @@ const policies = [
 ---
 <BaseLayout
   lane="tourism"
-  title="Car rentals"
-  description="Daily and weekly car rentals in Pafos area, Cyprus. Insurance included, hotel delivery, no hidden fees."
+  title="Car Rentals in Pafos, Cyprus"
+  description="Car rentals in Pafos, Cyprus. Message us for a quote. Insurance included, hotel delivery to your door. No hidden fees."
   ogImage="/og/og-tourism.jpg"
   jsonLd={schema}
 >
   <Section>
     <Eyebrow>Tourism · Rentals</Eyebrow>
     <h1 class="mt-3 max-w-3xl font-display text-4xl text-fg md:text-6xl text-balance">
-      Pick a car. Pick your dates. We deliver.
+      Car Rentals in Pafos, Cyprus. Pick your dates and we deliver.
     </h1>
     <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
-      Published daily and weekly rates. Insurance in the number. Delivered to
+      Ask us for a quote on WhatsApp. Insurance included. Delivered to
       your hotel within the Pafos district.
     </p>
 
@@ -145,7 +144,7 @@ const policies = [
                 </p>
                 {car.data.listingType === 'rental' && (
                   <div class="mt-3">
-                    <PriceTag amount={car.data.dailyRateFromEUR} period="per-day" />
+                    <span class="font-display text-lg text-gold">Ask for price</span>
                   </div>
                 )}
               </div>

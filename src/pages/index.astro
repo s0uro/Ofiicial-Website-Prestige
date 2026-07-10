@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { websiteSchema } from '../lib/schema';
+import { websiteSchema, aggregateRatingBlock } from '../lib/schema';
 import Section from '../components/primitives/Section.astro';
 import Container from '../components/primitives/Container.astro';
 import Eyebrow from '../components/primitives/Eyebrow.astro';
@@ -20,6 +20,7 @@ import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
 
 import { DISPLAY_PHONE_AUTO, DISPLAY_PHONE_TOURISM } from '../lib/wa';
+import { fetchGoogleReviews } from '../lib/googleReviews';
 
 const painAnchors = [
   {
@@ -40,21 +41,42 @@ const painAnchors = [
   },
 ];
 
-const rawTestimonials = await getCollection('testimonials');
-const testimonials = rawTestimonials
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .map((t) => ({
-    quote: t.data.quote,
-    who: t.data.locationOrNationality
-      ? `${t.data.name} · ${t.data.locationOrNationality}`
-      : t.data.name,
-  }));
+const { reviews: googleReviews, rating: placeRating, userRatingCount: placeReviewCount } = await fetchGoogleReviews();
+
+const testimonials = googleReviews.length > 0
+  ? googleReviews.map((r) => ({ quote: r.quote, who: r.who, rating: r.rating }))
+  : await getCollection('testimonials').then((raw) =>
+      raw
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+        .map((t) => ({
+          quote: t.data.quote,
+          who: t.data.locationOrNationality
+            ? `${t.data.name} · ${t.data.locationOrNationality}`
+            : t.data.name,
+          rating: t.data.rating ?? 5,
+        }))
+    );
+
+const ratingSchemas: object[] = [];
+if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
+  ratingSchemas.push(
+    aggregateRatingBlock({
+      ratingValue: placeRating,
+      reviewCount: placeReviewCount,
+      reviews: googleReviews.slice(0, 5).map((r) => ({
+        author: r.who,
+        rating: r.rating,
+        body: r.quote,
+      })),
+    }),
+  );
+}
 ---
 <BaseLayout
   lane="shared"
   title="S.Prestige Services"
   description="Detailing, mechanics, recovery, sales and rentals in Kissonerga, Pafos. Real starting prices, WhatsApp-first booking, no surprise charges at pickup."
-  jsonLd={websiteSchema()}
+  jsonLd={[websiteSchema(), ...ratingSchemas]}
 >
   <!-- HERO -->
   <AuroraBackground className="relative overflow-hidden">
@@ -164,30 +186,35 @@ const testimonials = rawTestimonials
 
   <!-- TRUST STRIP -->
   <Section bg="elev" spacing="tight">
-    <div class="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
-      <div>
+    <div class="grid grid-cols-2 divide-x divide-gold/10 md:grid-cols-4">
+      <div class="flex flex-col items-center px-4 py-2 text-center first:pl-0 last:pr-0 md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
           <NumberTicker client:visible value={1200} suffix="+" />
         </div>
-        <p class="mt-2 text-sm text-fg-muted">Cars detailed</p>
+        <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">Cars detailed</p>
       </div>
-      <div>
+      <div class="flex flex-col items-center px-4 py-2 text-center md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
           <NumberTicker client:visible value={8} suffix=" yr" />
         </div>
-        <p class="mt-2 text-sm text-fg-muted">On the island</p>
+        <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">On the island</p>
       </div>
-      <div>
-        <div class="font-display text-4xl text-gold md:text-5xl">
-          <NumberTicker client:visible value={4.9} decimals={1} />
+      <div class="flex flex-col items-center px-4 py-2 text-center md:px-8">
+        <div class="flex items-baseline gap-1">
+          <div class="font-display text-4xl text-gold md:text-5xl">
+            <NumberTicker client:visible value={placeRating ?? 4.9} decimals={1} />
+          </div>
+          <svg viewBox="0 0 12 12" fill="currentColor" class="mb-1 h-4 w-4 shrink-0 self-end text-gold" aria-hidden="true">
+            <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>
+          </svg>
         </div>
-        <p class="mt-2 text-sm text-fg-muted">Google rating</p>
+        <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">Google rating</p>
       </div>
-      <div>
+      <div class="flex flex-col items-center px-4 py-2 text-center last:pr-0 md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
           <NumberTicker client:visible value={0} prefix="€" />
         </div>
-        <p class="mt-2 text-sm text-fg-muted">Hidden fees</p>
+        <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">Hidden fees</p>
       </div>
     </div>
   </Section>
@@ -195,8 +222,8 @@ const testimonials = rawTestimonials
   <!-- TWO-LANE SPLIT -->
   <Section>
     <Eyebrow>Pick your lane</Eyebrow>
-    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-tight text-fg md:text-5xl text-balance">
-      Auto or tourism — both live here.
+    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-[1.1] text-fg md:text-4xl lg:text-5xl text-balance">
+      Auto or tourism —<br class="hidden sm:block" /> both live here.
     </h2>
     <BentoGrid className="mt-10">
       <BentoItem
@@ -253,18 +280,29 @@ const testimonials = rawTestimonials
   <!-- PAIN ANCHORS -->
   <Section bg="elev">
     <Eyebrow>Why locals pick us</Eyebrow>
-    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-tight text-fg md:text-5xl text-balance">
-      We name the problem. Then we fix it.
+    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-[1.1] text-fg md:text-4xl lg:text-5xl text-balance">
+      We name the problem.<br class="hidden sm:block" /> Then we fix it.
     </h2>
     <Spotlight
       client:visible
-      className="mt-10 grid grid-cols-1 gap-4 rounded-lg border border-gold/10 bg-bg p-4 md:grid-cols-2 lg:grid-cols-4"
+      className="mt-10 grid grid-cols-1 gap-3 rounded-xl border border-gold/10 bg-bg p-3 md:grid-cols-2 lg:grid-cols-4"
     >
-      {painAnchors.map((p) => (
-        <Card>
-          <Badge>Pain</Badge>
-          <h3 class="mt-4 font-display text-xl text-fg">{p.title}</h3>
+      {painAnchors.map((p, i) => (
+        <Card class="group/pain">
+          <div class="flex items-start justify-between gap-2">
+            <Badge>Pain</Badge>
+            <span class="font-display text-3xl font-semibold leading-none text-gold/12 transition-colors duration-300 group-hover/pain:text-gold/25 select-none">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <h3 class="mt-4 font-display text-xl leading-snug text-fg">{p.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-fg-muted">{p.body}</p>
+          <div class="mt-4 flex items-center gap-1 text-xs font-medium text-gold/0 transition-all duration-300 ease-out-expo group-hover/pain:translate-x-0.5 group-hover/pain:text-gold/60">
+            Our approach
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4"/>
+            </svg>
+          </div>
         </Card>
       ))}
     </Spotlight>
@@ -273,12 +311,21 @@ const testimonials = rawTestimonials
   <!-- TESTIMONIALS -->
   <Section spacing="tight">
     <Eyebrow>What locals say</Eyebrow>
-    <div class="mt-8">
+    <div class="mt-8 overflow-hidden">
       <Marquee client:visible speed={28}>
         {testimonials.map((t) => (
-          <div class="flex w-[280px] shrink-0 flex-col justify-between gap-4 rounded-lg border border-gold/10 bg-gold-soft p-5 text-bg md:w-[300px] min-h-[200px]">
-            <p class="font-display text-[15px] leading-snug md:text-base">&ldquo;{t.quote}&rdquo;</p>
-            <p class="text-[10px] uppercase tracking-[0.2em] text-bg/60">{t.who}</p>
+          <div class="flex w-[290px] shrink-0 flex-col justify-between gap-4 rounded-xl border border-gold/20 bg-gradient-to-br from-gold-soft to-[#ffe082] p-5 text-bg shadow-card md:w-[310px] min-h-[190px]">
+            <div>
+              <div class="mb-3 flex gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <svg viewBox="0 0 12 12" fill="currentColor" class:list={["h-3 w-3", i < t.rating ? "text-gold-deep" : "text-bg/20"]} aria-hidden="true">
+                    <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>
+                  </svg>
+                ))}
+              </div>
+              <p class="font-display text-[15px] leading-snug text-bg/90 md:text-base">&ldquo;{t.quote}&rdquo;</p>
+            </div>
+            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-bg/55">{t.who}</p>
           </div>
         ))}
       </Marquee>
@@ -286,24 +333,25 @@ const testimonials = rawTestimonials
   </Section>
 
   <!-- LOCATION + FINAL CTA -->
-  <section class="relative overflow-hidden border-t border-gold/10 bg-bg-elev py-24 md:py-32">
+  <section class="relative overflow-hidden bg-bg-elev py-24 md:py-32">
+    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" aria-hidden="true" />
     <BackgroundBeams />
     <Container class="relative z-10">
-      <div class="grid gap-10 md:grid-cols-2">
+      <div class="grid gap-10 md:grid-cols-2 md:items-start">
         <div>
           <Eyebrow>Kissonerga, Cyprus</Eyebrow>
-          <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl text-balance">
+          <h2 class="mt-3 font-display text-3xl leading-[1.1] text-fg md:text-4xl lg:text-5xl text-balance">
             Tap, text, done.
           </h2>
           <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div class="rounded-lg border border-gold/15 p-5">
+            <div class="rounded-xl border border-gold/15 bg-bg/50 p-5 backdrop-blur-sm transition-[border-color] duration-200 hover:border-gold/30">
               <Eyebrow>Address</Eyebrow>
               <div class="mt-3 font-medium leading-snug text-fg">
                 Eustathios Plaza, Leoforos Chrisoneras, Kat.5
               </div>
               <div class="mt-1 text-sm text-fg-muted">Kissonerga, Pafos 8574</div>
             </div>
-            <div class="rounded-lg border border-gold/15 p-5">
+            <div class="rounded-xl border border-gold/15 bg-bg/50 p-5 backdrop-blur-sm transition-[border-color] duration-200 hover:border-gold/30">
               <Eyebrow>Hours</Eyebrow>
               <div class="mt-3 font-medium leading-snug text-fg">
                 Mon–Sat&nbsp;· 08:00–18:00
@@ -330,13 +378,13 @@ const testimonials = rawTestimonials
             </WhatsAppButton>
           </div>
         </div>
-        <div class="rounded-lg border border-gold/10 bg-bg p-1">
+        <div class="overflow-hidden rounded-xl border border-gold/12 bg-bg shadow-card">
           <iframe
             title="S.Prestige Services — Kissonerga location"
             src="https://www.google.com/maps?q=S.PRESTIGE+SERVICES+Kissonerga+Cyprus&z=17&output=embed"
             loading="lazy"
-            class="h-[360px] w-full rounded-[calc(var(--radius-lg)-4px)]"
-            style="border: 0;"
+            class="h-[380px] w-full"
+            style="border: 0; display: block;"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"
           />

@@ -30,22 +30,23 @@ type ButtonAsAnchor = ButtonBaseProps &
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 const base =
-  'inline-flex select-none items-center justify-center gap-2 rounded-md font-medium transition-all duration-200 ease-out-expo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50';
+  'inline-flex select-none items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 ease-out-expo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50';
 
 const sizes: Record<ButtonSize, string> = {
   sm: 'h-9 px-4 text-sm',
   md: 'h-11 px-5 text-[0.95rem]',
-  lg: 'h-14 px-7 text-base',
+  lg: 'h-14 px-7 text-base tracking-wide',
 };
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-gold text-bg hover:bg-gold-soft active:bg-gold-deep',
+  primary:
+    'bg-gradient-to-br from-gold-soft via-gold to-gold-deep text-bg shadow-glow-sm hover:from-gold hover:to-gold-deep hover:shadow-glow active:opacity-90',
   secondary:
-    'border border-gold/40 bg-transparent text-gold hover:bg-gold/10 hover:border-gold/60',
-  ghost: 'text-fg hover:bg-fg/5',
-  whatsapp: 'bg-[#25D366] text-black hover:bg-[#1fb657]',
+    'border border-gold/35 bg-gold/5 text-gold backdrop-blur-sm hover:bg-gold/12 hover:border-gold/55 active:bg-gold/8',
+  ghost: 'text-fg-muted hover:bg-fg/6 hover:text-fg',
+  whatsapp: 'bg-[#25D366] text-black shadow-sm hover:bg-[#1fb657] active:bg-[#18a34a]',
   call:
-    'border border-gold/40 bg-transparent text-gold hover:bg-gold/10 hover:border-gold/60',
+    'border border-gold/35 bg-gold/5 text-gold backdrop-blur-sm hover:bg-gold/12 hover:border-gold/55',
 };
 
 export function Button({

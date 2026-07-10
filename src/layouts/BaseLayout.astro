@@ -6,6 +6,7 @@ import Header from '../components/nav/Header.astro';
 import Footer from '../components/nav/Footer.astro';
 import JsonLd from '../components/primitives/JsonLd.astro';
 import { StickyMobileCTA } from '../components/cta/StickyMobileCTA';
+import { CookieBanner } from '../components/CookieBanner';
 
 export interface Props {
   title?: string;
@@ -93,5 +94,6 @@ const stickyLane: 'auto' | 'tourism' | 'both' = lane === 'shared' ? 'both' : lan
     </main>
     {showChrome && <Footer />}
     {showChrome && <StickyMobileCTA client:load lane={stickyLane} />}
+    <CookieBanner client:only="react" />
   </body>
 </html>
