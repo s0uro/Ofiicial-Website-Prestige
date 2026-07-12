@@ -8,7 +8,7 @@ import Card from '../components/primitives/Card.astro';
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
 import { CallButton } from '../components/cta/CallButton';
 import { AuroraBackground } from '../components/fx/AuroraBackground';
-import { TextReveal } from '../components/fx/TextReveal';
+import TextReveal from '../components/fx/TextReveal.astro';
 import { MagneticButton } from '../components/fx/MagneticButton';
 import { autoRepairSchema } from '../lib/schema';
 
@@ -51,7 +51,6 @@ const steps = [
       <div class="md:max-w-[56%]">
         <Eyebrow>Auto · Recovery</Eyebrow>
         <TextReveal
-          client:visible
           as="h1"
           text={`Vehicle Recovery in Pafos, Cyprus.\nWe come to you, 24 hours a day.`}
           className="mt-4 pb-2 font-display text-4xl font-semibold leading-[1.15] md:text-5xl gold-gradient-text"
@@ -67,11 +66,10 @@ const steps = [
           <Badge>Pafos region</Badge>
         </div>
         <div class="mt-8 flex flex-wrap items-center gap-3">
-          <MagneticButton client:visible>
-            <CallButton client:visible lane="auto" size="lg" variant="primary" />
+          <MagneticButton client:idle>
+            <CallButton lane="auto" size="lg" variant="primary" />
           </MagneticButton>
           <WhatsAppButton
-            client:visible
             template="recovery.general"
             size="lg"
             variant="secondary"
@@ -122,7 +120,7 @@ const steps = [
         <Eyebrow>Roadside now?</Eyebrow>
         <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Call. Don't text. We pick up.</h2>
       </div>
-      <CallButton client:visible lane="auto" size="lg" variant="primary" />
+      <CallButton lane="auto" size="lg" variant="primary" />
     </div>
   </Section>
 </BaseLayout>

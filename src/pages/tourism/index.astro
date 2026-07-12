@@ -30,18 +30,17 @@ import { DISPLAY_PHONE_TOURISM } from '../../lib/wa';
     </div>
 
     <div class="mt-10 flex flex-wrap gap-3">
-      <WhatsAppButton client:visible template="contact.tourism" size="lg" variant="primary">
+      <WhatsAppButton template="contact.tourism" size="lg" variant="primary">
         Ask about tourism
       </WhatsAppButton>
-      <CallButton client:visible lane="tourism" size="lg" variant="call" />
+      <CallButton lane="tourism" size="lg" variant="call" />
     </div>
   </Section>
 
   <Section bg="elev">
     <Eyebrow>What we do</Eyebrow>
-    <BentoGrid client:visible className="mt-8">
+    <BentoGrid className="mt-8">
       <BentoItem
-        client:visible
         href="/tourism/taxi"
         eyebrow="Transfers"
         title="Taxi & airport pickup"
@@ -49,14 +48,12 @@ import { DISPLAY_PHONE_TOURISM } from '../../lib/wa';
         className="md:col-span-2"
       />
       <BentoItem
-        client:visible
         href="/tourism/rentals"
         eyebrow="Fleet"
         title="Car rentals"
         description="Daily and weekly rentals, ask for price. Delivery to hotel."
       />
       <BentoItem
-        client:visible
         href="/tourism/excursions"
         eyebrow="Guided"
         title="Safari & day trips"

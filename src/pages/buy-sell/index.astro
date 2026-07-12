@@ -91,7 +91,6 @@ const buyerGuarantees = [
           source as often as we stock.
         </p>
         <WhatsAppButton
-          client:visible
           template="buysell.inquire"
           vars={{ listing: 'any car' }}
           size="sm"
@@ -152,7 +151,7 @@ const buyerGuarantees = [
       with a firm offer or a clean "not for us".
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <WhatsAppButton client:visible template="buysell.sell" size="lg" variant="primary">
+      <WhatsAppButton template="buysell.sell" size="lg" variant="primary">
         Start a valuation
       </WhatsAppButton>
       <Badge>Reply same day</Badge>

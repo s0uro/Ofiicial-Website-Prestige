@@ -92,7 +92,6 @@ const schema = saleListingSchema(entry, `/buy-sell/${entry.slug}`, schemaImageUr
           <dt class="text-fg-muted">Registered</dt><dd class="text-right text-fg">{d.registrationCountry}</dd>
         </dl>
         <WhatsAppButton
-          client:visible
           template="buysell.inquire"
           vars={{ listing: listingLabel }}
           size="lg"

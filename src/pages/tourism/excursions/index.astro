@@ -31,7 +31,7 @@ const excursions = (await getCollection('excursions')).sort((a, b) => a.data.ord
         Per-person rates published — no "contact for price".
       </p>
       <div class="mt-8">
-        <WhatsAppButton client:visible template="excursion.general" size="lg" variant="primary">
+        <WhatsAppButton template="excursion.general" size="lg" variant="primary">
           Ask about excursions
         </WhatsAppButton>
       </div>
@@ -47,7 +47,7 @@ const excursions = (await getCollection('excursions')).sort((a, b) => a.data.ord
           We're between seasons. Tell us what you'd like to see — we usually
           have something that fits.
         </p>
-        <WhatsAppButton client:visible template="excursion.general" size="sm" variant="primary" className="mt-4">
+        <WhatsAppButton template="excursion.general" size="sm" variant="primary" className="mt-4">
           Ask what's running
         </WhatsAppButton>
       </Card>

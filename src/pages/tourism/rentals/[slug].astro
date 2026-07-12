@@ -80,7 +80,6 @@ const schema = rentalListingSchema(entry, `/tourism/rentals/${entry.slug}`, sche
           {d.minRentalDays && <><dt class="text-fg-muted">Min. rental</dt><dd class="text-right text-fg">{d.minRentalDays} days</dd></>}
         </dl>
         <WhatsAppButton
-          client:visible
           template="rental.specific"
           vars={{ vehicle }}
           size="lg"

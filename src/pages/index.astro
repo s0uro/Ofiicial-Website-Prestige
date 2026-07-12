@@ -13,7 +13,7 @@ import { Spotlight } from '../components/fx/Spotlight';
 import { MagneticButton } from '../components/fx/MagneticButton';
 import { NumberTicker } from '../components/fx/NumberTicker';
 import { Marquee } from '../components/fx/Marquee';
-import { TextReveal } from '../components/fx/TextReveal';
+import TextReveal from '../components/fx/TextReveal.astro';
 import { BackgroundBeams } from '../components/fx/BackgroundBeams';
 import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
 
@@ -85,7 +85,6 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
         <div class="relative z-10">
           <Eyebrow>Kissonerga · Cyprus</Eyebrow>
           <TextReveal
-            client:visible
             as="h1"
             text={`Prestige cars.\nServiced, sold, rented.`}
             className="mt-4 font-display text-[clamp(2rem,5.5vw,3.75rem)] font-semibold leading-[1.05] gold-gradient-text [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[clamp(1.4rem,3.6vw,2.4rem)] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
@@ -97,9 +96,8 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
           </p>
 
           <div class="mt-8 flex flex-wrap items-center gap-3">
-            <MagneticButton client:visible>
+            <MagneticButton client:idle>
               <WhatsAppButton
-                client:visible
                 template="detailing.general"
                 size="lg"
                 variant="primary"
@@ -107,9 +105,8 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
                 Message Auto
               </WhatsAppButton>
             </MagneticButton>
-            <MagneticButton client:visible>
+            <MagneticButton client:idle>
               <WhatsAppButton
-                client:visible
                 template="rental.general"
                 size="lg"
                 variant="secondary"
@@ -189,20 +186,20 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
     <div class="grid grid-cols-2 divide-x divide-gold/10 md:grid-cols-4">
       <div class="flex flex-col items-center px-4 py-2 text-center first:pl-0 last:pr-0 md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
-          <NumberTicker client:visible value={1200} suffix="+" />
+          <NumberTicker client:idle value={1200} suffix="+" />
         </div>
         <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">Cars detailed</p>
       </div>
       <div class="flex flex-col items-center px-4 py-2 text-center md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
-          <NumberTicker client:visible value={8} suffix=" yr" />
+          <NumberTicker client:idle value={8} suffix=" yr" />
         </div>
         <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">On the island</p>
       </div>
       <div class="flex flex-col items-center px-4 py-2 text-center md:px-8">
         <div class="flex items-baseline gap-1">
           <div class="font-display text-4xl text-gold md:text-5xl">
-            <NumberTicker client:visible value={placeRating ?? 4.9} decimals={1} />
+            <NumberTicker client:idle value={placeRating ?? 4.9} decimals={1} />
           </div>
           <svg viewBox="0 0 12 12" fill="currentColor" class="mb-1 h-4 w-4 shrink-0 self-end text-gold" aria-hidden="true">
             <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>
@@ -212,7 +209,7 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
       </div>
       <div class="flex flex-col items-center px-4 py-2 text-center last:pr-0 md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
-          <NumberTicker client:visible value={0} prefix="€" />
+          <NumberTicker client:idle value={0} prefix="€" />
         </div>
         <p class="mt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-fg-muted">Hidden fees</p>
       </div>
@@ -312,7 +309,7 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
   <Section spacing="tight">
     <Eyebrow>What locals say</Eyebrow>
     <div class="mt-8 overflow-hidden">
-      <Marquee client:visible speed={28}>
+      <Marquee speed={28}>
         {testimonials.map((t) => (
           <div class="flex w-[290px] shrink-0 flex-col justify-between gap-4 rounded-xl border border-gold/20 bg-gradient-to-br from-gold-soft to-[#ffe082] p-5 text-bg shadow-card md:w-[310px] min-h-[190px]">
             <div>
@@ -361,7 +358,6 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
           </div>
           <div class="mt-8 flex flex-wrap gap-3">
             <WhatsAppButton
-              client:visible
               template="contact.auto"
               size="lg"
               variant="primary"
@@ -369,7 +365,6 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
               Message Auto
             </WhatsAppButton>
             <WhatsAppButton
-              client:visible
               template="contact.tourism"
               size="lg"
               variant="secondary"
