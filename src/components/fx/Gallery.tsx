@@ -59,7 +59,7 @@ export default function Gallery({ images }: Props): React.ReactElement {
             <button
               type="button"
               onClick={() => setOpenIndex(i)}
-              className="group relative block aspect-[4/3] w-full overflow-hidden rounded-md border border-gold/10 bg-bg-elev transition-[border-color,box-shadow] duration-300 ease-out hover:border-gold/30 hover:shadow-glow-sm"
+              className="group relative block aspect-[3/4] w-full overflow-hidden rounded-md border border-gold/10 bg-bg-elev transition-[border-color,box-shadow] duration-300 ease-out hover:border-gold/30 hover:shadow-glow-sm"
               aria-label={`Open photo ${i + 1} of ${images.length}`}
             >
               <img

@@ -56,8 +56,8 @@ const schema = rentalListingSchema(entry, `/tourism/rentals/${entry.slug}`, sche
       {d.available ? <Badge variant="gold">Available</Badge> : <Badge variant="muted">On hire</Badge>}
     </div>
 
-    <div class="mt-10 grid gap-8 md:grid-cols-[1.4fr_1fr]">
-      <div class="aspect-[16/10] w-full overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
+    <div class="mt-10 grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-start">
+      <div class="aspect-[3/4] w-full max-w-md mx-auto md:max-w-none overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
         <Image
           src={d.images[0]}
           alt={vehicle}
@@ -66,7 +66,7 @@ const schema = rentalListingSchema(entry, `/tourism/rentals/${entry.slug}`, sche
           sizes="(max-width: 768px) 100vw, 60vw"
           format="webp"
           quality={78}
-          class="h-full w-full rounded-[calc(var(--radius-lg)-4px)] object-contain"
+          class="h-full w-full rounded-[calc(var(--radius-lg)-4px)] object-cover"
         />
       </div>
       <Card>

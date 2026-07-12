@@ -106,7 +106,7 @@ const buyerGuarantees = [
         {forSale.map((car) => (
           <a href={`/buy-sell/${car.slug}`} class="block">
             <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <div class="relative aspect-[16/10] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
+              <div class="relative aspect-[3/4] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
                 <Image
                   src={car.data.images[0]}
                   alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
@@ -116,7 +116,7 @@ const buyerGuarantees = [
                   format="webp"
                   quality={75}
                   loading="lazy"
-                  class="h-full w-full object-contain"
+                  class="h-full w-full object-cover"
                 />
                 {car.data.badge && (
                   <Badge variant="gold" class="absolute top-2 left-2">{car.data.badge}</Badge>

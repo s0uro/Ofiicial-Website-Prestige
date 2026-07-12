@@ -140,7 +140,7 @@ const policies = [
         {rentals.map((car) => (
           <a href={`/tourism/rentals/${car.slug}`} class="block">
             <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <div class="aspect-[16/10] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
+              <div class="aspect-[3/4] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
                 <Image
                   src={car.data.images[0]}
                   alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
@@ -150,7 +150,7 @@ const policies = [
                   format="webp"
                   quality={75}
                   loading="lazy"
-                  class="h-full w-full object-contain"
+                  class="h-full w-full object-cover"
                 />
               </div>
               <div class="mt-4">
