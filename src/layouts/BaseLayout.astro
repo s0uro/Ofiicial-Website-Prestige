@@ -100,7 +100,7 @@ const ogImageType = OG_IMAGE_TYPES[ogImageExt] ?? 'image/jpeg';
       Skip to content
     </a>
     {showChrome && <Header lane={lane} />}
-    <main id="main">
+    <main id="main" class:list={[showChrome && 'pt-24 md:pt-28']}>
       <slot />
     </main>
     {showChrome && <Footer />}

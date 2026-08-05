@@ -1,7 +1,6 @@
 ---
-import Container from '../primitives/Container.astro';
 import MobileMenu from './MobileMenu.tsx';
-import EmergencyButton from '../cta/EmergencyButton.astro';
+import { DISPLAY_PHONE_AUTO, TEL_AUTO, WA_AUTO } from '../../lib/wa';
 
 export interface Props {
   lane?: 'auto' | 'tourism' | 'shared';
@@ -9,68 +8,143 @@ export interface Props {
 
 const { lane = 'shared' } = Astro.props;
 
-const navItems = [
+const primaryNav = [
   { label: 'Buy & Sell', href: '/buy-sell' },
   { label: 'Rentals', href: '/tourism/rentals' },
+];
+
+const moreNav = [
   { label: 'Detailing', href: '/detailing' },
   { label: 'Mechanical', href: '/mechanical' },
   { label: 'Recovery', href: '/recovery' },
   { label: 'Transfers', href: '/tourism/taxi' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
+const allNavItems = [...primaryNav, ...moreNav];
+
 const pathname = Astro.url.pathname;
+const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 ---
-<header
-  data-lane={lane}
-  class="sticky top-0 z-30 border-b border-gold/10 bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60"
->
-  <Container class="flex h-16 items-center justify-between gap-4 md:h-20">
-    <a
-      href="/"
-      class="flex items-center gap-2 font-display text-lg font-semibold tracking-wide text-fg md:gap-2.5 md:text-xl"
-      aria-label="S.Prestige Services — home"
-    >
-      <img
-        src="/logo-mark.png"
-        alt=""
-        width="40"
-        height="40"
-        class="h-7 w-7 md:h-9 md:w-9"
-        aria-hidden="true"
-      />
-      <span><span class="text-gold">S.</span>Prestige</span>
-    </a>
+<div data-lane={lane} class="fixed inset-x-4 top-3 z-30 md:inset-x-10 md:top-4 lg:inset-x-20 xl:inset-x-32">
+  <header class="mx-auto max-w-[1040px] rounded-2xl border border-gold/15 bg-bg-elev/95 shadow-card backdrop-blur supports-[backdrop-filter]:bg-bg-elev/85">
+    <div class="flex h-16 items-center justify-between gap-4 px-4 md:h-[72px] md:px-6">
+      <a
+        href="/"
+        class="flex shrink-0 items-center gap-2 font-display text-lg font-semibold tracking-wide text-fg md:gap-2.5 md:text-xl"
+        aria-label="S.Prestige Services — home"
+      >
+        <img
+          src="/logo-mark.png"
+          alt=""
+          width="40"
+          height="40"
+          class="h-7 w-7 md:h-9 md:w-9"
+          aria-hidden="true"
+        />
+        <span><span class="text-gold">S.</span>Prestige</span>
+      </a>
 
-    <nav class="hidden items-center gap-6 text-sm text-fg-muted lg:flex" aria-label="Primary">
-      {navItems.map((item) => {
-        const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'));
-        return (
-          <a
-            href={item.href}
-            class:list={[
-              'relative whitespace-nowrap transition-colors hover:text-gold',
-              active && 'text-gold',
-            ]}
-            aria-current={active ? 'page' : undefined}
+      <nav class="hidden items-center gap-2 text-sm text-fg-muted lg:flex" aria-label="Primary">
+        {primaryNav.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <a
+              href={item.href}
+              class:list={[
+                'rounded-lg px-3 py-2 whitespace-nowrap transition-colors hover:bg-bg hover:text-gold',
+                active && 'bg-bg text-gold',
+              ]}
+              aria-current={active ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+
+        <details class="group relative">
+          <summary
+            class="flex cursor-pointer list-none items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 transition-colors hover:bg-bg hover:text-gold [&::-webkit-details-marker]:hidden"
           >
-            {item.label}
-            {active && (
-              <span class="absolute inset-x-0 -bottom-1 h-px bg-gold" aria-hidden="true" />
-            )}
-          </a>
-        );
-      })}
-    </nav>
+            More
+            <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-2.5 w-2.5 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+              <path d="M1 1.5l5 5 5-5" />
+            </svg>
+          </summary>
+          <div class="absolute left-0 top-full z-10 mt-2 w-56 rounded-xl border border-gold/15 bg-bg-elev py-2 shadow-card">
+            {moreNav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <a
+                  href={item.href}
+                  class:list={[
+                    'block px-4 py-2 text-sm transition-colors hover:bg-bg hover:text-gold',
+                    active ? 'text-gold' : 'text-fg-muted',
+                  ]}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+          </div>
+        </details>
+      </nav>
 
-    <div class="flex items-center gap-3">
-      <div class="hidden lg:block">
-        <EmergencyButton variant="full" />
+      <div class="hidden items-center gap-3 lg:flex">
+        <div class="flex items-center gap-2">
+          <a
+            href={`https://wa.me/${WA_AUTO}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Message us on WhatsApp"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-bg text-fg-muted transition-colors hover:text-gold"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M17.5 14.4c-.3-.15-1.7-.85-2-.95-.27-.1-.46-.15-.66.15-.2.3-.75.95-.92 1.14-.17.2-.34.22-.63.08-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.61.15-.15.34-.4.5-.6.17-.2.22-.34.34-.57.11-.23.06-.42-.04-.6-.1-.16-.9-2.17-1.23-2.97-.24-.6-.5-.52-.7-.53h-.6c-.2 0-.53.08-.72.4-.2.3-.75 1.15-.75 2.8 0 1.65 1.2 3.24 1.37 3.47.17.23 2.36 3.62 5.72 4.93 3.37 1.3 3.37.87 3.98.81.6-.06 1.94-.79 2.22-1.55.27-.76.27-1.42.19-1.55-.08-.14-.3-.23-.63-.38z"/>
+              <path d="M12.04 2C6.5 2 2 6.48 2 12c0 2.06.61 3.98 1.66 5.58L2 22l4.6-1.53A9.94 9.94 0 0 0 12.04 22C17.58 22 22 17.52 22 12S17.58 2 12.04 2zm0 18.1a8.1 8.1 0 0 1-4.34-1.26l-.31-.19-3.03 1 1-2.94-.2-.32A8.06 8.06 0 0 1 3.9 12c0-4.5 3.66-8.16 8.14-8.16 4.48 0 8.14 3.66 8.14 8.16 0 4.5-3.66 8.1-8.14 8.1z"/>
+            </svg>
+          </a>
+          <a
+            href="https://www.instagram.com/prestige_detailing.cy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="S.Prestige on Instagram"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-bg text-fg-muted transition-colors hover:text-gold"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
+            </svg>
+          </a>
+          <a
+            href="https://www.facebook.com/people/Prestige-Detailing/100076279789752/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="S.Prestige on Facebook"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-bg text-fg-muted transition-colors hover:text-gold"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.24-1.46 1.49-1.46H17V4.4c-.27-.04-1.23-.12-2.34-.12-2.32 0-3.91 1.42-3.91 4.02v2.25H8v3h2.75V21h2.75Z" />
+            </svg>
+          </a>
+        </div>
+
+        <a href={`tel:${TEL_AUTO}`} class="hidden shrink-0 flex-col leading-tight transition-colors hover:text-gold xl:flex">
+          <span class="font-display text-base font-semibold text-fg">{DISPLAY_PHONE_AUTO}</span>
+          <span class="text-[11px] text-fg-muted">Mon&ndash;Sat &middot; 08:00&ndash;18:00</span>
+        </a>
+
+        <span class="hidden shrink-0 rounded-lg bg-bg px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-gold xl:inline-flex">
+          EN
+        </span>
       </div>
+
       <div class="lg:hidden">
-        <EmergencyButton variant="compact" />
+        <MobileMenu client:load items={allNavItems} />
       </div>
-      <MobileMenu client:load items={navItems} />
     </div>
-  </Container>
-</header>
+  </header>
+</div>
