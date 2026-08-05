@@ -27,9 +27,13 @@ const allNavItems = [...primaryNav, ...moreNav];
 const pathname = Astro.url.pathname;
 const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 ---
-<div data-lane={lane} class="fixed inset-x-4 top-3 z-30 md:inset-x-10 md:top-4 lg:inset-x-20 xl:inset-x-32">
+<div
+  id="site-header"
+  data-lane={lane}
+  class="fixed inset-x-4 top-6 z-30 transition-transform duration-300 ease-out-expo will-change-transform md:inset-x-10 md:top-8 lg:inset-x-20 xl:inset-x-32"
+>
   <header class="mx-auto max-w-[1040px] rounded-2xl border border-gold/15 bg-bg-elev/95 shadow-card backdrop-blur supports-[backdrop-filter]:bg-bg-elev/85">
-    <div class="flex h-16 items-center justify-between gap-4 px-4 md:h-[72px] md:px-6">
+    <div class="flex h-20 items-center justify-between gap-4 px-4 md:h-24 md:px-6">
       <a
         href="/"
         class="flex shrink-0 items-center gap-2 font-display text-lg font-semibold tracking-wide text-fg md:gap-2.5 md:text-xl"
@@ -40,10 +44,10 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
           alt=""
           width="40"
           height="40"
-          class="h-7 w-7 md:h-9 md:w-9"
+          class="h-8 w-8 md:h-10 md:w-10"
           aria-hidden="true"
         />
-        <span><span class="text-gold">S.</span>Prestige</span>
+        <span><span class="text-gold">S.</span>Prestige <span class="text-gold">Services</span></span>
       </a>
 
       <nav class="hidden items-center gap-2 text-sm text-fg-muted lg:flex" aria-label="Primary">
@@ -99,9 +103,9 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Message us on WhatsApp"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-bg text-fg-muted transition-colors hover:text-gold"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#25D366] text-white transition-transform hover:scale-105"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
               <path d="M17.5 14.4c-.3-.15-1.7-.85-2-.95-.27-.1-.46-.15-.66.15-.2.3-.75.95-.92 1.14-.17.2-.34.22-.63.08-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.61.15-.15.34-.4.5-.6.17-.2.22-.34.34-.57.11-.23.06-.42-.04-.6-.1-.16-.9-2.17-1.23-2.97-.24-.6-.5-.52-.7-.53h-.6c-.2 0-.53.08-.72.4-.2.3-.75 1.15-.75 2.8 0 1.65 1.2 3.24 1.37 3.47.17.23 2.36 3.62 5.72 4.93 3.37 1.3 3.37.87 3.98.81.6-.06 1.94-.79 2.22-1.55.27-.76.27-1.42.19-1.55-.08-.14-.3-.23-.63-.38z"/>
               <path d="M12.04 2C6.5 2 2 6.48 2 12c0 2.06.61 3.98 1.66 5.58L2 22l4.6-1.53A9.94 9.94 0 0 0 12.04 22C17.58 22 22 17.52 22 12S17.58 2 12.04 2zm0 18.1a8.1 8.1 0 0 1-4.34-1.26l-.31-.19-3.03 1 1-2.94-.2-.32A8.06 8.06 0 0 1 3.9 12c0-4.5 3.66-8.16 8.14-8.16 4.48 0 8.14 3.66 8.14 8.16 0 4.5-3.66 8.1-8.14 8.1z"/>
             </svg>
@@ -111,9 +115,9 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
             target="_blank"
             rel="noopener noreferrer"
             aria-label="S.Prestige on Instagram"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-bg text-fg-muted transition-colors hover:text-gold"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-tr from-[#833AB4] via-[#FD1D1D] to-[#FCB045] text-white transition-transform hover:scale-105"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="5" />
               <circle cx="12" cy="12" r="4" />
               <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
@@ -124,9 +128,9 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
             target="_blank"
             rel="noopener noreferrer"
             aria-label="S.Prestige on Facebook"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-bg text-fg-muted transition-colors hover:text-gold"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#1877F2] text-white transition-transform hover:scale-105"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
               <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.24-1.46 1.49-1.46H17V4.4c-.27-.04-1.23-.12-2.34-.12-2.32 0-3.91 1.42-3.91 4.02v2.25H8v3h2.75V21h2.75Z" />
             </svg>
           </a>
@@ -148,3 +152,43 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
     </div>
   </header>
 </div>
+
+<script>
+  (function () {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+
+    const REVEAL_ABOVE = 96; // always show near the top of the page
+    const IGNORE_DELTA = 8; // ignore tiny scroll jitters
+
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    function update() {
+      const y = window.scrollY;
+      const delta = y - lastY;
+
+      if (y <= REVEAL_ABOVE) {
+        header.style.transform = '';
+      } else if (delta > IGNORE_DELTA) {
+        header.style.transform = 'translateY(-150%)';
+      } else if (delta < -IGNORE_DELTA) {
+        header.style.transform = '';
+      }
+
+      lastY = y;
+      ticking = false;
+    }
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+  })();
+</script>
