@@ -5,7 +5,6 @@ import { organizationSchema } from '../lib/schema';
 import Header from '../components/nav/Header.astro';
 import Footer from '../components/nav/Footer.astro';
 import JsonLd from '../components/primitives/JsonLd.astro';
-import { StickyMobileCTA } from '../components/cta/StickyMobileCTA';
 import { CookieBanner } from '../components/CookieBanner';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import Analytics from '@vercel/analytics/astro';
@@ -37,7 +36,6 @@ const allSchemas = [...globalSchemas, ...pageSchemas];
 const fullTitle = buildTitle(title);
 const canonicalUrl = canonical(Astro.url.pathname);
 const ogImageUrl = new URL(ogImage, SITE.url).toString();
-const stickyLane: 'auto' | 'tourism' | 'both' = lane === 'shared' ? 'both' : lane;
 
 const OG_IMAGE_TYPES: Record<string, string> = {
   jpg: 'image/jpeg',
@@ -104,7 +102,6 @@ const ogImageType = OG_IMAGE_TYPES[ogImageExt] ?? 'image/jpeg';
       <slot />
     </main>
     {showChrome && <Footer />}
-    {showChrome && <StickyMobileCTA client:load lane={stickyLane} />}
     <CookieBanner client:only="react" />
     <SpeedInsights />
     <Analytics />

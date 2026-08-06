@@ -20,17 +20,17 @@ function LaneActions({ lane }: { lane: Lane }): React.ReactElement {
         href={buildWaUrl(CONTACT_TEMPLATE[lane])}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex flex-col items-center justify-center gap-1 pb-2 pt-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-gold transition-colors active:bg-gold/10"
+        aria-label="Message us on WhatsApp"
+        className="flex items-center justify-center py-3 text-gold transition-colors active:bg-gold/10"
       >
-        <MessageCircle className="h-4 w-4" aria-hidden />
-        WhatsApp
+        <MessageCircle className="h-5 w-5" aria-hidden />
       </a>
       <a
         href={`tel:${telFor(lane)}`}
-        className="flex flex-col items-center justify-center gap-1 pb-2 pt-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-fg-muted transition-colors active:bg-fg/5"
+        aria-label="Call us"
+        className="flex items-center justify-center py-3 text-fg-muted transition-colors active:bg-fg/5"
       >
-        <Phone className="h-4 w-4" aria-hidden />
-        Call
+        <Phone className="h-5 w-5" aria-hidden />
       </a>
     </>
   );
@@ -46,21 +46,11 @@ export function StickyMobileCTA({ lane, className }: Props): React.ReactElement 
     return (
       <div className={base} data-sticky-cta role="toolbar" aria-label="Quick contact — Auto and Rentals">
         <div className="grid grid-cols-2 divide-x divide-gold/12">
-          <div>
-            <div className="px-3 pt-2 text-[8px] font-bold uppercase tracking-[0.25em] text-gold/60">
-              Auto
-            </div>
-            <div className="grid grid-cols-2 divide-x divide-gold/8">
-              <LaneActions lane="auto" />
-            </div>
+          <div className="grid grid-cols-2 divide-x divide-gold/8">
+            <LaneActions lane="auto" />
           </div>
-          <div>
-            <div className="px-3 pt-2 text-[8px] font-bold uppercase tracking-[0.25em] text-gold/60">
-              Rentals
-            </div>
-            <div className="grid grid-cols-2 divide-x divide-gold/8">
-              <LaneActions lane="tourism" />
-            </div>
+          <div className="grid grid-cols-2 divide-x divide-gold/8">
+            <LaneActions lane="tourism" />
           </div>
         </div>
       </div>
