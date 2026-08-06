@@ -41,6 +41,10 @@ export default {
         'marquee-reverse': 'marquee 40s linear infinite reverse',
         aurora: 'aurora 20s ease-in-out infinite',
         shimmer: 'shimmer 2s linear infinite',
+        'fade-in': 'fadeIn 1.2s ease-out 0.3s forwards',
+        'fade-in-1': 'fadeIn 1s ease-out 0.3s forwards',
+        'fade-in-2': 'fadeIn 1s ease-out 1.1s forwards',
+        'fade-in-3': 'fadeIn 1s ease-out 1.9s forwards',
       },
       keyframes: {
         marquee: {
@@ -54,6 +58,10 @@ export default {
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
       },
       boxShadow: {

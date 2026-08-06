@@ -14,102 +14,60 @@ interface Props {
 
 export default function MobileMenu({ items }: Props): React.ReactElement {
   const [open, setOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    if (open) {
-      document.body.dataset.menuOpen = 'true';
-    } else {
-      delete document.body.dataset.menuOpen;
-    }
-    return () => {
-      document.body.style.overflow = '';
-      delete document.body.dataset.menuOpen;
-    };
-  }, [open]);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setOpen(false);
     }
+    function onClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClickOutside);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClickOutside);
+    };
   }, []);
 
   return (
-    <>
+    <div ref={containerRef} className="relative lg:hidden">
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center rounded-lg p-2 text-fg transition-colors hover:bg-fg/5 lg:hidden"
+        onClick={() => setOpen((o) => !o)}
+        className="inline-flex items-center justify-center rounded-2xl p-3 text-black transition-colors"
         aria-label="Open menu"
+        aria-expanded={open}
       >
-        <Menu className="h-5 w-5" aria-hidden />
+        {open ? <X className="h-9 w-9" strokeWidth={2.75} aria-hidden /> : <Menu className="h-9 w-9" strokeWidth={2.75} aria-hidden />}
       </button>
       <AnimatePresence>
         {open && (
           <motion.div
-            role="dialog"
-            aria-modal="true"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            role="menu"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[60] flex min-h-dvh flex-col bg-bg lg:hidden"
+            className="absolute right-0 top-full z-[60] mt-3 w-[min(90vw,22rem)] rounded-3xl bg-bg-elev p-4 shadow-card"
           >
-            <div className="flex h-16 shrink-0 items-center justify-between border-b border-gold/10 px-5">
-              <span className="flex items-center gap-2 font-display text-lg font-semibold tracking-wide text-fg">
-                <img
-                  src="/logo-mark.png"
-                  alt=""
-                  width="32"
-                  height="32"
-                  className="h-7 w-7"
-                  aria-hidden
-                />
-                <span>
-                  <span className="text-gold">S.</span>Prestige <span className="text-gold">Services</span>
-                </span>
-              </span>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex items-center justify-center rounded-lg p-2 text-fg transition-colors hover:bg-fg/5"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" aria-hidden />
-              </button>
-            </div>
-            <motion.nav
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.05 } },
-              }}
-              className="flex flex-col gap-1 px-5 py-8"
-            >
+            <nav className="flex flex-col gap-1">
               {items.map((item) => (
-                <motion.a
+                <a
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  variants={{
-                    hidden: { opacity: 0, x: 20 },
-                    show: {
-                      opacity: 1,
-                      x: 0,
-                      transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-                    },
-                  }}
-                  className="py-3 text-xl text-fg transition-colors hover:text-gold"
+                  className="rounded-lg px-3 py-3 text-lg text-fg transition-colors hover:bg-bg hover:text-gold"
                 >
                   {item.label}
-                </motion.a>
+                </a>
               ))}
-            </motion.nav>
+            </nav>
 
-            <div className="flex items-center justify-center gap-4 border-t border-gold/10 px-5 py-5">
+            <div className="mt-3 flex items-center justify-center gap-4 border-t border-gold/10 pt-3">
               <a
                 href={`https://wa.me/${WA_AUTO}`}
                 target="_blank"
@@ -149,18 +107,18 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
               <a
                 href={`tel:${TEL_AUTO}`}
                 aria-label="Call us"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold/20 bg-bg-elev text-fg-muted transition-colors hover:border-gold/50 hover:text-gold"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold/20 bg-bg text-fg-muted transition-colors hover:border-gold/50 hover:text-gold"
               >
                 <Phone className="h-5 w-5" aria-hidden />
               </a>
             </div>
 
-            <div className="flex items-center justify-center gap-2 px-5 pb-8 text-xs font-medium uppercase tracking-[0.18em]">
-              <span className="rounded-lg bg-bg-elev px-3 py-1.5 text-gold">EN</span>
+            <div className="mt-3 flex items-center justify-center border-t border-gold/10 pt-3 text-xs font-medium uppercase tracking-[0.18em]">
+              <span className="rounded-lg bg-bg px-3 py-1.5 text-gold">EN</span>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

@@ -90,18 +90,35 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
       preload="auto"
       aria-hidden="true"
     />
-    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-bg via-bg/70 to-bg/20" aria-hidden="true" />
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-bg/80 via-bg/20 to-transparent" aria-hidden="true" />
+
+    <div class="pointer-events-none absolute inset-x-0 top-[30%] z-0 flex flex-col items-center gap-3 lg:hidden">
+      <img
+        src="/logo-mark.png"
+        alt=""
+        width="128"
+        height="128"
+        class="h-32 w-32 opacity-0 animate-fade-in-1"
+      />
+      <div class="flex flex-col items-center font-display font-semibold tracking-wide text-fg opacity-0 animate-fade-in-2">
+        <span class="text-5xl"><span class="text-gold">S.</span>Prestige</span>
+        <span class="text-3xl text-gold">Services</span>
+      </div>
+      <p class="mt-16 max-w-sm text-center font-medium leading-relaxed tracking-wide text-gold text-pretty text-xl opacity-0 animate-fade-in-3">
+        Detailing, mechanics, recovery, sales and rentals — one address
+        in Kissonerga. Real starting prices, no surprise charges at
+        pickup. WhatsApp answers the same day.
+      </p>
+    </div>
 
     <Container class="relative z-10 py-16 md:py-24 lg:py-28">
       <div class="max-w-2xl">
-        <Eyebrow>Kissonerga · Cyprus</Eyebrow>
+        <Eyebrow class="hidden lg:inline-flex">Kissonerga · Cyprus</Eyebrow>
         <TextReveal
           as="h1"
           text={`Prestige cars.\nServiced, sold, rented.`}
-          className="mt-4 font-display text-[clamp(2rem,5.5vw,3.75rem)] font-semibold leading-[1.05] gold-gradient-text [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[clamp(1.4rem,3.6vw,2.4rem)] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
+          className="hidden mt-4 font-display text-[clamp(2rem,5.5vw,3.75rem)] font-semibold leading-[1.05] gold-gradient-text [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[clamp(1.4rem,3.6vw,2.4rem)] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold lg:block"
         />
-        <p class="mt-6 max-w-xl text-lg text-fg-muted text-pretty">
+        <p class="hidden mt-6 max-w-xl text-lg text-fg-muted text-pretty lg:block">
           Detailing, mechanics, recovery, sales and rentals — one address
           in Kissonerga. Real starting prices, no surprise charges at
           pickup. WhatsApp answers the same day.
