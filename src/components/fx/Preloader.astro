@@ -1,0 +1,89 @@
+<div
+  id="preloader"
+  class="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-8 bg-bg lg:hidden"
+  aria-hidden="true"
+>
+  <div class="preloader-stage">
+    <img src="/logo-mark.png" alt="" width="96" height="96" class="h-24 w-24" />
+  </div>
+  <div class="h-[3px] w-40 overflow-hidden rounded-full bg-gold/15">
+    <div class="preloader-bar h-full w-full origin-left rounded-full bg-gold"></div>
+  </div>
+</div>
+
+<noscript>
+  <style>
+    #preloader {
+      display: none;
+    }
+  </style>
+</noscript>
+
+<style>
+  #preloader {
+    transition:
+      opacity 0.5s ease,
+      visibility 0.5s ease;
+  }
+  #preloader[data-hide='true'] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .preloader-stage {
+    perspective: 600px;
+  }
+  .preloader-stage img {
+    animation: preloader-spin-3d 1.8s ease-in-out infinite;
+    transform-style: preserve-3d;
+  }
+  @keyframes preloader-spin-3d {
+    0% {
+      transform: rotateY(0deg) rotateX(0deg) scale(1);
+    }
+    50% {
+      transform: rotateY(180deg) rotateX(12deg) scale(1.08);
+    }
+    100% {
+      transform: rotateY(360deg) rotateX(0deg) scale(1);
+    }
+  }
+  .preloader-bar {
+    transform: scaleX(0);
+    animation: preloader-fill 1.8s ease-out forwards;
+  }
+  @keyframes preloader-fill {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .preloader-stage img,
+    .preloader-bar {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const el = document.getElementById('preloader');
+    if (!el) return;
+
+    let hidden = false;
+    function hide() {
+      if (hidden) return;
+      hidden = true;
+      el.setAttribute('data-hide', 'true');
+      window.setTimeout(() => el.remove(), 600);
+    }
+
+    if (document.readyState === 'complete') {
+      hide();
+    } else {
+      window.addEventListener('load', hide);
+    }
+    // Safety net in case the load event is delayed (slow video, etc.)
+    window.setTimeout(hide, 3000);
+  })();
+</script>

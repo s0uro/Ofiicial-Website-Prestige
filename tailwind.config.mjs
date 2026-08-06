@@ -45,6 +45,7 @@ export default {
         'fade-in-1': 'fadeIn 1s ease-out 0.3s forwards',
         'fade-in-2': 'fadeIn 1s ease-out 1.1s forwards',
         'fade-in-3': 'fadeIn 1s ease-out 1.9s forwards',
+        'fade-in-4': 'fadeIn 1s ease-out 2.6s forwards',
       },
       keyframes: {
         marquee: {

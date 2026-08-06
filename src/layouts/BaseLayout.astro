@@ -4,6 +4,7 @@ import { SITE, buildTitle, canonical } from '../lib/seo';
 import { organizationSchema } from '../lib/schema';
 import Header from '../components/nav/Header.astro';
 import Footer from '../components/nav/Footer.astro';
+import Preloader from '../components/fx/Preloader.astro';
 import JsonLd from '../components/primitives/JsonLd.astro';
 import { CookieBanner } from '../components/CookieBanner';
 import SpeedInsights from '@vercel/speed-insights/astro';
@@ -91,6 +92,7 @@ const ogImageType = OG_IMAGE_TYPES[ogImageExt] ?? 'image/jpeg';
     <JsonLd data={allSchemas} />
   </head>
   <body data-lane={lane} class="min-h-dvh pb-[env(safe-area-inset-bottom)]">
+    {showChrome && <Preloader />}
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[60] focus:rounded focus:bg-gold focus:px-3 focus:py-2 focus:text-bg"

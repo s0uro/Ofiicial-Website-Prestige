@@ -166,6 +166,22 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
         </a>
       </MagneticButton>
     </div>
+
+    <div class="pointer-events-none absolute inset-x-0 bottom-8 z-10 flex flex-col items-center gap-2 opacity-0 animate-fade-in-4 lg:hidden">
+      <span class="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold/80">Scroll to explore</span>
+      <svg
+        class="h-5 w-5 animate-bounce text-gold"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </div>
   </section>
 
   <!-- TRUST STRIP -->
