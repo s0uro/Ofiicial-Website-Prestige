@@ -13,6 +13,7 @@ import { MagneticButton } from '../components/fx/MagneticButton';
 import { NumberTicker } from '../components/fx/NumberTicker';
 import { Marquee } from '../components/fx/Marquee';
 import TextReveal from '../components/fx/TextReveal.astro';
+import LetterReveal from '../components/fx/LetterReveal.astro';
 import { BackgroundBeams } from '../components/fx/BackgroundBeams';
 import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
 
@@ -103,11 +104,14 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
         <span class="text-3xl"><span class="text-gold">S.</span>Prestige</span>
         <span class="text-xl text-gold">Services</span>
       </div>
-      <p class="mt-16 max-w-sm text-center font-medium leading-relaxed tracking-wide text-gold text-pretty text-xl opacity-0 animate-fade-in-3">
-        Detailing, mechanics, recovery, sales and rentals — one address
-        in Kissonerga. Real starting prices, no surprise charges at
-        pickup. WhatsApp answers the same day.
-      </p>
+      <LetterReveal
+        as="p"
+        text="Detailing, mechanics, recovery, sales and rentals — one address in Kissonerga. Real starting prices, no surprise charges at pickup. WhatsApp answers the same day."
+        delay={1.9}
+        stagger={0.035}
+        duration={0.5}
+        className="mt-16 max-w-sm text-center font-medium leading-relaxed tracking-wide text-gold text-pretty text-xl"
+      />
     </div>
 
     <Container class="relative z-10 py-16 md:py-24 lg:py-28">
