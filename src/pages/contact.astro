@@ -5,8 +5,16 @@ import Eyebrow from '../components/primitives/Eyebrow.astro';
 import Card from '../components/primitives/Card.astro';
 import { DIMITRIS_LINES, ALEXANDRA_LINE } from '../lib/wa';
 import { contactPageSchema } from '../lib/schema';
+import { SITE } from '../lib/seo';
+import { MapFlyTo } from '../components/fx/MapFlyTo';
 
 const mapUrl = 'https://www.google.com/maps?q=S.PRESTIGE+SERVICES+Kissonerga+Cyprus&z=17&output=embed';
+
+const addressLines = [
+  SITE.address.streetAddress,
+  `${SITE.address.addressLocality}, ${SITE.address.addressRegion} ${SITE.address.postalCode}`,
+  'Cyprus',
+];
 
 const autoMessage = encodeURIComponent('Hi S.Prestige — I have a question.');
 const rentalsMessage = encodeURIComponent('Hi S.Prestige — I have a rentals question.');
@@ -137,17 +145,14 @@ const iconBtn =
           </dl>
         </div>
       </div>
-      <div class="overflow-hidden rounded-xl border border-gold/12 bg-bg shadow-card">
-        <iframe
-          title="S.Prestige Services — map"
-          src={mapUrl}
-          loading="lazy"
-          class="h-[360px] w-full"
-          style="border: 0; display: block;"
-          allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade"
-        />
-      </div>
+      <MapFlyTo
+        client:visible
+        lat={SITE.geo.latitude}
+        lng={SITE.geo.longitude}
+        addressLines={addressLines}
+        label={SITE.name}
+        fallbackSrc={mapUrl}
+      />
     </div>
   </Section>
 </BaseLayout>
