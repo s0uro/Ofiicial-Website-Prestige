@@ -14,8 +14,11 @@ export const SITE = {
     addressCountry: 'CY',
   },
   geo: {
-    latitude: 34.8264,
-    longitude: 32.3858,
+    // Efstathiou Plaza, Leoforos Kissonergas, Kissonerga 8574 — anchored to
+    // the plaza (same building as Pafos Computers, per OSM). Replace with the
+    // exact Google Maps pin if it differs.
+    latitude: 34.82334,
+    longitude: 32.39217,
   },
   openingHours: 'Mo-Sa 08:00-18:00',
 } as const;

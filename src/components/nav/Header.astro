@@ -31,7 +31,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
 <div
   id="site-header"
   data-lane={lane}
-  class="fixed inset-x-3 top-3 z-30 md:inset-x-6 md:top-5 lg:inset-x-10 xl:inset-x-16"
+  class="fixed inset-x-3 top-3 z-30 transition-transform duration-300 ease-out-expo will-change-transform data-[hidden=true]:-translate-y-[150%] md:inset-x-6 md:top-5 lg:inset-x-10 xl:inset-x-16"
 >
   <header
     id="site-header-bar"
@@ -118,14 +118,36 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(href
 
 <script>
   (function () {
+    const wrap = document.getElementById('site-header') as HTMLElement | null;
     const bar = document.getElementById('site-header-bar') as HTMLElement | null;
-    if (!bar) return;
-    const node = bar;
+    if (!wrap || !bar) return;
+    const wrapEl = wrap;
+    const barEl = bar;
+
+    const REVEAL_ABOVE = 80; // always visible near the top
+    const IGNORE_DELTA = 6; // ignore scroll jitter
+
+    let lastY = window.scrollY;
     let ticking = false;
+
     function update() {
-      node.dataset.scrolled = window.scrollY > 24 ? 'true' : 'false';
+      const y = window.scrollY;
+      const delta = y - lastY;
+
+      barEl.dataset.scrolled = y > 24 ? 'true' : 'false';
+
+      if (y <= REVEAL_ABOVE) {
+        wrapEl.dataset.hidden = 'false';
+      } else if (delta > IGNORE_DELTA) {
+        wrapEl.dataset.hidden = 'true'; // scrolling down — hide
+      } else if (delta < -IGNORE_DELTA) {
+        wrapEl.dataset.hidden = 'false'; // scrolling up — reveal
+      }
+
+      lastY = y;
       ticking = false;
     }
+
     update();
     window.addEventListener(
       'scroll',
