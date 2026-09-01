@@ -19,9 +19,22 @@ import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
 import { MapFlyTo } from '../components/fx/MapFlyTo';
 
-import { buildWaUrl } from '../lib/wa';
+import { buildWaUrl, TEL_AUTO, DISPLAY_PHONE_AUTO } from '../lib/wa';
 import { fetchGoogleReviews } from '../lib/googleReviews';
 import { SITE } from '../lib/seo';
+
+const heroServices = [
+  { label: 'Detailing', href: '/detailing' },
+  { label: 'Mechanical', href: '/mechanical' },
+  { label: 'Recovery', href: '/recovery' },
+  { label: 'Buy & sell', href: '/buy-sell' },
+  { label: 'Rentals', href: '/tourism/rentals' },
+  { label: 'Transfers', href: '/tourism/taxi' },
+];
+
+const directionsUrl =
+  'https://www.google.com/maps/dir/?api=1&destination=' +
+  encodeURIComponent('S.PRESTIGE SERVICES, Kissonerga, Pafos');
 
 const painAnchors = [
   {
@@ -94,7 +107,18 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
     />
     <Container class="relative z-10 py-24 md:py-28">
       <div class="max-w-2xl">
-        <Eyebrow class="opacity-0 animate-fade-in-1 [text-shadow:0_1px_14px_rgba(0,0,0,0.55)]">Kissonerga · Cyprus</Eyebrow>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 opacity-0 animate-fade-in-1 [text-shadow:0_1px_14px_rgba(0,0,0,0.55)]">
+          <Eyebrow>Kissonerga · Cyprus</Eyebrow>
+          <span
+            id="hero-status"
+            class="inline-flex items-center gap-1.5 rounded-full border border-hairline/15 bg-bg/40 px-2.5 py-1 text-[11px] font-medium text-fg-muted backdrop-blur-sm"
+            data-open="unknown"
+          >
+            <span id="hero-status-dot" class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+            <span id="hero-status-text">Mon–Sat · 08:00–18:00</span>
+          </span>
+        </div>
+
         <TextReveal
           as="h1"
           text={`Prestige cars.\nServiced, sold, rented.`}
@@ -102,11 +126,12 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
           className="mt-4 font-display text-display-1 font-semibold gold-gradient-text [filter:drop-shadow(0_2px_14px_rgba(0,0,0,0.5))] [&>span]:!whitespace-normal [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[0.62em] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
         />
         <p class="mt-6 max-w-xl text-base text-fg-muted text-pretty opacity-0 animate-fade-in-2 [text-shadow:0_1px_14px_rgba(0,0,0,0.6)] sm:text-lg">
-          Detailing, mechanics, recovery, sales and rentals — one address
-          in Kissonerga. Real starting prices, no surprise charges at
-          pickup. WhatsApp answers the same day.
+          One workshop in Kissonerga for detailing, mechanical work, 24/7
+          recovery, used-car sales and rentals. Published starting prices,
+          a quote before any work, and no surprise charges at pickup.
         </p>
-        <div class="mt-8 opacity-0 animate-fade-in-2">
+
+        <div class="mt-7 flex flex-wrap items-center gap-3 opacity-0 animate-fade-in-2">
           <a
             href={buildWaUrl('detailing.general')}
             target="_blank"
@@ -116,11 +141,91 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
             <WhatsAppGlyph class="h-5 w-5" />
             Message us
           </a>
+          <a
+            href={`tel:${TEL_AUTO}`}
+            class="inline-flex h-12 items-center gap-2.5 rounded-md border border-hairline/20 bg-bg/40 px-5 text-base font-medium text-fg backdrop-blur-sm transition-colors duration-200 hover:border-gold/50 hover:!text-gold"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            {DISPLAY_PHONE_AUTO}
+          </a>
         </div>
+
+        <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-fg-muted opacity-0 animate-fade-in-2 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)]">
+          <span class="inline-flex items-center gap-1.5">
+            <svg viewBox="0 0 12 12" fill="currentColor" class="h-3.5 w-3.5 text-gold" aria-hidden="true">
+              <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>
+            </svg>
+            <span class="font-medium text-fg">{(placeRating ?? 4.9).toFixed(1)}</span>
+            <span>on Google{placeReviewCount ? ` · ${placeReviewCount} reviews` : ''}</span>
+          </span>
+          <span aria-hidden="true" class="hidden h-3 w-px bg-hairline/20 sm:block"></span>
+          <a href={directionsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 transition-colors hover:text-fg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-gold" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            {SITE.address.streetAddress.split(',')[0]}, Kissonerga — directions
+          </a>
+        </div>
+
+        <nav class="mt-7 flex flex-wrap gap-2 opacity-0 animate-fade-in-4" aria-label="Services">
+          {heroServices.map((s) => (
+            <a
+              href={s.href}
+              class="rounded-full border border-hairline/15 bg-bg/40 px-3.5 py-1.5 text-sm text-fg-muted backdrop-blur-sm transition-colors duration-200 hover:border-gold/40 hover:!text-fg"
+            >
+              {s.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </Container>
 
-    <div class="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 opacity-0 animate-fade-in-4">
+    <script is:inline>
+      // Live open/closed status in Cyprus local time (Mon–Sat 08:00–18:00).
+      (function () {
+        var wrap = document.getElementById('hero-status');
+        var dot = document.getElementById('hero-status-dot');
+        var text = document.getElementById('hero-status-text');
+        if (!wrap || !dot || !text) return;
+
+        function cyprusNow() {
+          var s = new Date().toLocaleString('en-US', { timeZone: 'Asia/Nicosia' });
+          return new Date(s);
+        }
+
+        function render() {
+          var now = cyprusNow();
+          var day = now.getDay(); // 0 Sun … 6 Sat
+          var mins = now.getHours() * 60 + now.getMinutes();
+          var OPEN = 8 * 60;
+          var CLOSE = 18 * 60;
+          var isWorkday = day >= 1 && day <= 6;
+          var open = isWorkday && mins >= OPEN && mins < CLOSE;
+
+          if (open) {
+            var left = CLOSE - mins;
+            text.textContent =
+              left <= 60 ? 'Open · closes in ' + left + ' min' : 'Open now · closes 18:00';
+            dot.style.background = 'rgb(var(--success))';
+            wrap.dataset.open = 'true';
+          } else {
+            var opensMonday = day === 0 || (day === 6 && mins >= CLOSE);
+            text.textContent = opensMonday
+              ? 'Closed · opens Mon 08:00'
+              : 'Closed · opens 08:00';
+            dot.style.background = 'rgb(var(--danger))';
+            wrap.dataset.open = 'false';
+          }
+        }
+
+        render();
+        setInterval(render, 60000);
+      })();
+    </script>
+
+    <div class="pointer-events-none absolute inset-x-0 bottom-6 z-10 hidden flex-col items-center gap-2 opacity-0 animate-fade-in-4 md:flex">
       <span class="u-label text-fg-muted">Scroll</span>
       <svg
         class="h-5 w-5 animate-bounce text-gold"
