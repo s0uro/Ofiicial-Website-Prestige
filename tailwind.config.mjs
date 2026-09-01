@@ -15,7 +15,18 @@ export default {
           deep: 'rgb(var(--gold-deep) / <alpha-value>)',
           soft: 'rgb(var(--gold-soft) / <alpha-value>)',
         },
-        line: 'rgb(var(--gold) / 0.15)',
+        line: 'rgb(var(--hairline) / 0.08)',
+        hairline: 'rgb(var(--hairline) / <alpha-value>)',
+        success: 'rgb(var(--success) / <alpha-value>)',
+        danger: 'rgb(var(--danger) / <alpha-value>)',
+        info: 'rgb(var(--info) / <alpha-value>)',
+      },
+      fontSize: {
+        // fluid display scale — one ramp every hero/section heading routes through
+        'display-1': ['clamp(2.5rem, 1.6rem + 4vw, 4rem)', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        'display-2': ['clamp(2rem, 1.5rem + 2.4vw, 3rem)', { lineHeight: '1.1', letterSpacing: '-0.015em' }],
+        'display-3': ['clamp(1.6rem, 1.35rem + 1.2vw, 2.125rem)', { lineHeight: '1.15', letterSpacing: '-0.01em' }],
+        'label': ['0.6875rem', { lineHeight: '1', letterSpacing: '0.18em' }],
       },
       fontFamily: {
         display: ['"Fraunces Variable"', 'Fraunces', 'ui-serif', 'Georgia', 'serif'],
@@ -41,9 +52,9 @@ export default {
         'marquee-reverse': 'marquee 40s linear infinite reverse',
         aurora: 'aurora 20s ease-in-out infinite',
         shimmer: 'shimmer 2s linear infinite',
-        'fade-in-1': 'fadeIn 1s ease-out 0.3s forwards',
-        'fade-in-2': 'fadeIn 1s ease-out 1.1s forwards',
-        'fade-in-4': 'fadeIn 1s ease-out 7.6s forwards',
+        'fade-in-1': 'fadeIn 0.7s ease-out 0.15s forwards',
+        'fade-in-2': 'fadeIn 0.7s ease-out 0.5s forwards',
+        'fade-in-4': 'fadeIn 0.8s ease-out 1.4s forwards',
       },
       keyframes: {
         marquee: {

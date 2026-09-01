@@ -56,6 +56,24 @@ body[data-menu-open='true'] [data-sticky-cta] {
   display: none !important;
 }
 
+@layer components {
+  /* One heading ramp. Every page hero / section title routes through these
+     so the type scale is actually a scale (not per-page text-4xl md:text-6xl). */
+  .h-display {
+    @apply font-display font-semibold text-display-1 text-fg text-balance;
+  }
+  .h-section {
+    @apply font-display font-semibold text-display-2 text-fg text-balance;
+  }
+  .h-sub {
+    @apply font-display font-medium text-display-3 text-fg text-balance;
+  }
+  /* Micro-caps label — replaces scattered text-[10px] tracking-[0.2em]. */
+  .u-label {
+    @apply text-label font-semibold uppercase text-fg-muted;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

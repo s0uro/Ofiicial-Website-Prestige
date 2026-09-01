@@ -103,7 +103,7 @@ const services = [
 >
   <Section>
     <Eyebrow>Auto · Detailing</Eyebrow>
-    <h1 class="mt-3 max-w-3xl font-display text-4xl leading-tight text-fg md:text-6xl text-balance">
+    <h1 class="mt-3 max-w-3xl h-display">
       Car Detailing in Kissonerga, Pafos. Real prices, no upsell.
     </h1>
     <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
@@ -153,10 +153,7 @@ const services = [
                 ))}
               </div>
             ) : t.fromRange ? (
-              <div class="mt-2 inline-flex items-baseline gap-1.5">
-                <span class="text-[10px] uppercase tracking-[0.2em] text-fg-muted">from</span>
-                <span class="font-display text-2xl font-semibold text-gold">€{t.fromRange.from}–{t.fromRange.to}</span>
-              </div>
+              <PriceTag amount={t.fromRange.from} to={t.fromRange.to} class="mt-2" />
             ) : t.from != null ? (
               <PriceTag amount={t.from} period="total" class="mt-2" />
             ) : null}
@@ -182,15 +179,16 @@ const services = [
 
   <Section bg="elev">
     <Eyebrow>Specialist services</Eyebrow>
-    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Go deeper.</h2>
-    <Spotlight className="mt-10 grid gap-4 rounded-lg border border-gold/10 bg-bg p-4 md:grid-cols-3">
+    <h2 class="mt-3 h-section">Go deeper.</h2>
+    <Spotlight className="mt-10 grid gap-4 rounded-lg border border-hairline/10 bg-bg p-4 md:grid-cols-3">
       {services.map((s) => (
         <a href={s.href} class="group block rounded-md p-6 transition-colors hover:bg-gold/5">
-          <div class="text-[10px] uppercase tracking-[0.2em] text-gold">{s.eyebrow}</div>
+          <div class="u-label text-gold">{s.eyebrow}</div>
           <h3 class="mt-2 font-display text-xl text-fg">{s.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-fg-muted">{s.body}</p>
-          <span class="mt-4 inline-flex text-sm text-gold opacity-0 transition-opacity group-hover:opacity-100">
-            Read more →
+          <span class="mt-4 inline-flex items-center gap-1 text-sm text-fg-muted/70 transition-colors group-hover:text-gold">
+            Read more
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           </span>
         </a>
       ))}

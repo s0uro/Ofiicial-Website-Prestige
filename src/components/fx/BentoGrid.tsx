@@ -69,7 +69,7 @@ export function BentoItem({
       )}
       <div className="flex flex-col gap-1.5 pt-3">
         {eyebrow && (
-          <div className="text-[10px] uppercase tracking-[0.2em] text-gold/70 transition-colors duration-200 group-hover:text-gold">
+          <div className="text-label font-semibold uppercase text-gold/70 transition-colors duration-200 group-hover:text-gold">
             {eyebrow}
           </div>
         )}
@@ -87,7 +87,7 @@ export function BentoItem({
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-4 w-4 shrink-0 translate-x-1 text-gold/0 opacity-0 transition-all duration-300 ease-out-expo group-hover:translate-x-0 group-hover:text-gold/70 group-hover:opacity-100"
+              className="h-4 w-4 shrink-0 text-gold/50 transition-all duration-300 ease-out-expo group-hover:translate-x-1 group-hover:text-gold"
               aria-hidden
             >
               <path d="M3 8h10M9 4l4 4-4 4" />
@@ -103,7 +103,7 @@ export function BentoItem({
   );
 
   const classes = cn(
-    'group relative flex flex-col overflow-hidden rounded-xl border border-gold/10 bg-bg-elev p-5 shadow-card md:p-6 transition-[border-color,box-shadow,transform] duration-300 ease-out-expo hover:border-gold/30 hover:shadow-card-hover hover:-translate-y-0.5',
+    'group relative flex flex-col overflow-hidden rounded-lg border border-hairline/10 bg-bg-elev p-5 shadow-card md:p-6 transition-[border-color,box-shadow,transform] duration-300 ease-out-expo hover:border-gold/30 hover:shadow-card-hover hover:-translate-y-0.5',
     className,
   );
 

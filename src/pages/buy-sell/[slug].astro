@@ -59,7 +59,7 @@ const schema = saleListingSchema(entry, `/buy-sell/${entry.slug}`, schemaImageUr
   jsonLd={schema ? [schema, breadcrumbs] : breadcrumbs}
 >
   <Section>
-    <h1 class="mt-3 font-display text-4xl text-fg md:text-6xl text-balance">{listingLabel}</h1>
+    <h1 class="mt-3 h-display">{listingLabel}</h1>
     <div class="mt-4 flex flex-wrap items-center gap-4">
       <PriceTag amount={d.priceEUR} variant="exact" />
       {d.badge && <Badge variant="gold">{d.badge}</Badge>}
@@ -68,7 +68,7 @@ const schema = saleListingSchema(entry, `/buy-sell/${entry.slug}`, schemaImageUr
     </div>
 
     <div class="mt-10 grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-start">
-      <div class="aspect-[3/4] w-full max-w-md mx-auto md:max-w-none overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
+      <div class="aspect-[4/3] w-full overflow-hidden rounded-lg border border-hairline/10 bg-bg-elev p-1">
         <Image
           src={d.images[0]}
           alt={listingLabel}
@@ -121,7 +121,7 @@ const schema = saleListingSchema(entry, `/buy-sell/${entry.slug}`, schemaImageUr
   {galleryImages.length > 1 && (
     <Section>
       <Eyebrow>Gallery</Eyebrow>
-      <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl text-balance">
+      <h2 class="mt-3 h-section">
         All {galleryImages.length} photos.
       </h2>
       <p class="mt-3 max-w-2xl text-sm text-fg-muted">

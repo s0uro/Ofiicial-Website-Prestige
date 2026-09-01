@@ -9,6 +9,15 @@
   --gold-deep: 199 154 15;      /* #C79A0F pressed / border */
   --gold-soft: 255 229 138;     /* #FFE58A highlight bubbles */
 
+  /* neutral hairline — default border colour, so gold reads as an accent
+     rather than an outline on every surface */
+  --hairline: 255 255 255;      /* used at low alpha, e.g. rgb(var(--hairline) / 0.08) */
+
+  /* semantic */
+  --success: 74 222 128;        /* #4ADE80 */
+  --danger: 248 113 113;        /* #F87171 */
+  --info: 125 211 252;          /* #7DD3FC */
+
   /* radii */
   --radius-sm: 6px;
   --radius-md: 10px;

@@ -6,6 +6,7 @@ import Section from '../../../components/primitives/Section.astro';
 import Eyebrow from '../../../components/primitives/Eyebrow.astro';
 import Card from '../../../components/primitives/Card.astro';
 import Badge from '../../../components/primitives/Badge.astro';
+import PriceTag from '../../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../../components/cta/WhatsAppButton';
 import { rentalListingSchema, breadcrumbSchema } from '../../../lib/schema';
 
@@ -50,14 +51,14 @@ const schema = rentalListingSchema(entry, `/tourism/rentals/${entry.slug}`, sche
 >
   <Section>
     <Eyebrow>Tourism · Rental</Eyebrow>
-    <h1 class="mt-3 font-display text-4xl text-fg md:text-6xl text-balance">{vehicle}</h1>
+    <h1 class="mt-3 h-display">{vehicle}</h1>
     <div class="mt-4 flex flex-wrap items-center gap-4">
-      <span class="font-display text-2xl font-semibold text-gold">Ask for price</span>
+      <PriceTag onRequest variant="exact" />
       {d.available ? <Badge variant="gold">Available</Badge> : <Badge variant="muted">On hire</Badge>}
     </div>
 
     <div class="mt-10 grid gap-8 md:grid-cols-[1.4fr_1fr] md:items-start">
-      <div class="aspect-[3/4] w-full max-w-md mx-auto md:max-w-none overflow-hidden rounded-lg border border-gold/10 bg-bg-elev p-1">
+      <div class="aspect-[4/3] w-full overflow-hidden rounded-lg border border-hairline/10 bg-bg-elev p-1">
         <Image
           src={d.images[0]}
           alt={vehicle}

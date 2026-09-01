@@ -6,6 +6,7 @@ import Section from '../../../components/primitives/Section.astro';
 import Eyebrow from '../../../components/primitives/Eyebrow.astro';
 import Card from '../../../components/primitives/Card.astro';
 import Badge from '../../../components/primitives/Badge.astro';
+import PriceTag from '../../../components/primitives/PriceTag.astro';
 import { WhatsAppButton } from '../../../components/cta/WhatsAppButton';
 import { carRentalSchema } from '../../../lib/schema';
 
@@ -31,7 +32,7 @@ const policies = [
 >
   <Section>
     <Eyebrow>Tourism · Rentals</Eyebrow>
-    <h1 class="mt-3 max-w-3xl font-display text-4xl text-fg md:text-6xl text-balance">
+    <h1 class="mt-3 max-w-3xl h-display">
       Car Rentals in Pafos, Cyprus. Pick your dates and we deliver.
     </h1>
     <p class="mt-4 max-w-2xl text-lg text-fg-muted text-pretty">
@@ -42,14 +43,14 @@ const policies = [
     <!-- Visual booking bar — deep-links to WhatsApp with a pre-filled message (wa.me ignores query params, so the form fields are composed into a ?text= message on submit) -->
     <form
       id="rental-search-form"
-      class="mt-8 grid gap-3 rounded-lg border border-gold/10 bg-bg-elev p-4 md:grid-cols-[1fr_1fr_1fr_auto]"
+      class="mt-8 grid gap-3 rounded-lg border border-hairline/10 bg-bg-elev p-4 md:grid-cols-[1fr_1fr_1fr_auto]"
     >
       <label class="flex flex-col gap-1 text-xs text-fg-muted">
         Pickup
         <input
           name="pickup"
           placeholder="Hotel / airport"
-          class="h-10 rounded-md border border-gold/15 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
+          class="h-10 rounded-md border border-hairline/12 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
         />
       </label>
       <label class="flex flex-col gap-1 text-xs text-fg-muted">
@@ -63,7 +64,7 @@ const policies = [
           pattern="\d{2}/\d{2}/\d{4}"
           autocomplete="off"
           data-date-mask
-          class="h-10 rounded-md border border-gold/15 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
+          class="h-10 rounded-md border border-hairline/12 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
         />
       </label>
       <label class="flex flex-col gap-1 text-xs text-fg-muted">
@@ -77,7 +78,7 @@ const policies = [
           pattern="\d{2}/\d{2}/\d{4}"
           autocomplete="off"
           data-date-mask
-          class="h-10 rounded-md border border-gold/15 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
+          class="h-10 rounded-md border border-hairline/12 bg-bg px-3 text-sm text-fg placeholder:text-fg-muted focus-visible:border-gold focus-visible:outline-none"
         />
       </label>
       <button
@@ -122,7 +123,7 @@ const policies = [
 
   <Section bg="elev">
     <Eyebrow>Fleet</Eyebrow>
-    <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Currently available</h2>
+    <h2 class="mt-3 h-section">Currently available</h2>
 
     {rentals.length === 0 ? (
       <Card class="mt-8">
@@ -138,31 +139,33 @@ const policies = [
     ) : (
       <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {rentals.map((car) => (
-          <a href={`/tourism/rentals/${car.slug}`} class="block">
-            <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <div class="aspect-[3/4] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
+          <a href={`/tourism/rentals/${car.slug}`} class="group block">
+            <Card padded={false} class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
+              <div class="relative aspect-[4/3] w-full overflow-hidden bg-bg-elev">
                 <Image
                   src={car.data.images[0]}
                   alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
-                  width={640}
-                  widths={[320, 640]}
+                  width={720}
+                  widths={[360, 720]}
                   sizes="(max-width: 768px) 100vw, 33vw"
                   format="webp"
                   quality={75}
                   loading="lazy"
-                  class="h-full w-full object-cover"
+                  class="h-full w-full object-cover grayscale-[0.18] saturate-[0.9] transition duration-500 ease-out-expo group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:saturate-100"
                 />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/95 via-bg/20 to-transparent" aria-hidden="true"></div>
+                <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.45)]" aria-hidden="true"></div>
+                {car.data.listingType === 'rental' && (
+                  <div class="absolute bottom-3 left-3">
+                    <PriceTag onRequest variant="exact" />
+                  </div>
+                )}
               </div>
-              <div class="mt-4">
+              <div class="p-5">
                 <div class="font-display text-xl text-fg">{car.data.make} {car.data.model}</div>
                 <p class="mt-1 text-sm text-fg-muted">
                   {car.data.year} · {car.data.transmission} · {car.data.seats} seats · {car.data.fuel}
                 </p>
-                {car.data.listingType === 'rental' && (
-                  <div class="mt-3">
-                    <span class="font-display text-lg text-gold">Ask for price</span>
-                  </div>
-                )}
               </div>
             </Card>
           </a>

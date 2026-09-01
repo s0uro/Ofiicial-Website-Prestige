@@ -3,6 +3,13 @@ import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TEL_AUTO, WA_AUTO } from '../../lib/wa';
 
+const WhatsAppGlyph = ({ className = 'h-5 w-5' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+    <path d="M17.5 14.4c-.3-.15-1.7-.85-2-.95-.27-.1-.46-.15-.66.15-.2.3-.75.95-.92 1.14-.17.2-.34.22-.63.08-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.61.15-.15.34-.4.5-.6.17-.2.22-.34.34-.57.11-.23.06-.42-.04-.6-.1-.16-.9-2.17-1.23-2.97-.24-.6-.5-.52-.7-.53h-.6c-.2 0-.53.08-.72.4-.2.3-.75 1.15-.75 2.8 0 1.65 1.2 3.24 1.37 3.47.17.23 2.36 3.62 5.72 4.93 3.37 1.3 3.37.87 3.98.81.6-.06 1.94-.79 2.22-1.55.27-.76.27-1.42.19-1.55-.08-.14-.3-.23-.63-.38z" />
+    <path d="M12.04 2C6.5 2 2 6.48 2 12c0 2.06.61 3.98 1.66 5.58L2 22l4.6-1.53A9.94 9.94 0 0 0 12.04 22C17.58 22 22 17.52 22 12S17.58 2 12.04 2zm0 18.1a8.1 8.1 0 0 1-4.34-1.26l-.31-.19-3.03 1 1-2.94-.2-.32A8.06 8.06 0 0 1 3.9 12c0-4.5 3.66-8.16 8.14-8.16 4.48 0 8.14 3.66 8.14 8.16 0 4.5-3.66 8.1-8.14 8.1z" />
+  </svg>
+);
+
 interface NavItem {
   label: string;
   href: string;
@@ -38,11 +45,11 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex items-center justify-center rounded-2xl p-3 text-black transition-colors"
-        aria-label="Open menu"
+        className="inline-flex items-center justify-center rounded-md p-2 text-fg transition-colors hover:text-gold"
+        aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
       >
-        {open ? <X className="h-9 w-9" strokeWidth={2.75} aria-hidden /> : <Menu className="h-9 w-9" strokeWidth={2.75} aria-hidden />}
+        {open ? <X className="h-7 w-7" strokeWidth={2.25} aria-hidden /> : <Menu className="h-7 w-7" strokeWidth={2.25} aria-hidden />}
       </button>
       <AnimatePresence>
         {open && (
@@ -52,7 +59,7 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 top-full z-[60] mt-3 w-[min(90vw,22rem)] rounded-3xl bg-bg-elev p-4 shadow-card"
+            className="absolute right-0 top-full z-[60] mt-3 w-[min(90vw,22rem)] rounded-lg border border-hairline/10 bg-bg-elev p-4 shadow-card"
           >
             <nav className="flex flex-col gap-1">
               {items.map((item) => (
@@ -67,7 +74,7 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
               ))}
             </nav>
 
-            <div className="mt-3 flex items-center justify-center gap-4 border-t border-gold/10 pt-3">
+            <div className="mt-3 flex items-center justify-center gap-4 border-t border-hairline/10 pt-3">
               <a
                 href={`https://wa.me/${WA_AUTO}`}
                 target="_blank"
@@ -75,10 +82,7 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
                 aria-label="Message us on WhatsApp"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366] text-white"
               >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                  <path d="M17.5 14.4c-.3-.15-1.7-.85-2-.95-.27-.1-.46-.15-.66.15-.2.3-.75.95-.92 1.14-.17.2-.34.22-.63.08-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.61.15-.15.34-.4.5-.6.17-.2.22-.34.34-.57.11-.23.06-.42-.04-.6-.1-.16-.9-2.17-1.23-2.97-.24-.6-.5-.52-.7-.53h-.6c-.2 0-.53.08-.72.4-.2.3-.75 1.15-.75 2.8 0 1.65 1.2 3.24 1.37 3.47.17.23 2.36 3.62 5.72 4.93 3.37 1.3 3.37.87 3.98.81.6-.06 1.94-.79 2.22-1.55.27-.76.27-1.42.19-1.55-.08-.14-.3-.23-.63-.38z"/>
-                  <path d="M12.04 2C6.5 2 2 6.48 2 12c0 2.06.61 3.98 1.66 5.58L2 22l4.6-1.53A9.94 9.94 0 0 0 12.04 22C17.58 22 22 17.52 22 12S17.58 2 12.04 2zm0 18.1a8.1 8.1 0 0 1-4.34-1.26l-.31-.19-3.03 1 1-2.94-.2-.32A8.06 8.06 0 0 1 3.9 12c0-4.5 3.66-8.16 8.14-8.16 4.48 0 8.14 3.66 8.14 8.16 0 4.5-3.66 8.1-8.14 8.1z"/>
-                </svg>
+                <WhatsAppGlyph className="h-5 w-5" />
               </a>
               <a
                 href="https://www.instagram.com/prestige_detailing.cy/"
@@ -107,13 +111,13 @@ export default function MobileMenu({ items }: Props): React.ReactElement {
               <a
                 href={`tel:${TEL_AUTO}`}
                 aria-label="Call us"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold/20 bg-bg text-fg-muted transition-colors hover:border-gold/50 hover:text-gold"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline/12 bg-bg text-fg-muted transition-colors hover:border-gold/50 hover:text-gold"
               >
                 <Phone className="h-5 w-5" aria-hidden />
               </a>
             </div>
 
-            <div className="mt-3 flex items-center justify-center border-t border-gold/10 pt-3 text-xs font-medium uppercase tracking-[0.18em]">
+            <div className="mt-3 flex items-center justify-center border-t border-hairline/10 pt-3 text-xs font-medium uppercase tracking-[0.18em]">
               <span className="rounded-lg bg-bg px-3 py-1.5 text-gold">EN</span>
             </div>
           </motion.div>

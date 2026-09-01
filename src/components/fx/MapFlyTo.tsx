@@ -102,7 +102,7 @@ export function MapFlyTo({
     return (
       <div
         className={cn(
-          'h-[360px] rounded-xl border border-gold/12 bg-bg shadow-card md:h-[440px]',
+          'h-[360px] rounded-xl border border-hairline/10 bg-bg shadow-card md:h-[440px]',
           className,
         )}
       />
@@ -114,7 +114,7 @@ export function MapFlyTo({
       return (
         <div
           className={cn(
-            'overflow-hidden rounded-xl border border-gold/12 bg-bg shadow-card',
+            'overflow-hidden rounded-xl border border-hairline/10 bg-bg shadow-card',
             className,
           )}
         >
@@ -133,7 +133,7 @@ export function MapFlyTo({
     return (
       <div
         className={cn(
-          'grid h-[360px] place-items-center rounded-xl border border-gold/12 bg-bg text-sm text-fg-muted shadow-card md:h-[440px]',
+          'grid h-[360px] place-items-center rounded-xl border border-hairline/10 bg-bg text-sm text-fg-muted shadow-card md:h-[440px]',
           className,
         )}
       >
@@ -145,7 +145,7 @@ export function MapFlyTo({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-xl border border-gold/12 bg-bg shadow-card',
+        'relative overflow-hidden rounded-xl border border-hairline/10 bg-bg shadow-card',
         className,
       )}
     >

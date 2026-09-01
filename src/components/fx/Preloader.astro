@@ -50,7 +50,7 @@
   }
   .preloader-bar {
     transform: scaleX(0);
-    animation: preloader-fill 2.6s ease-out forwards;
+    animation: preloader-fill 1s ease-out forwards;
   }
   @keyframes preloader-fill {
     to {
@@ -69,14 +69,29 @@
   (function () {
     const el = document.getElementById('preloader');
     if (!el) return;
+    const node = el as HTMLElement;
 
+    var hidden = false;
     function hide() {
-      el.setAttribute('data-hide', 'true');
-      window.setTimeout(() => el.remove(), 600);
+      if (hidden) return;
+      hidden = true;
+      node.setAttribute('data-hide', 'true');
+      window.setTimeout(function () { node.remove(); }, 500);
     }
 
-    // Always show for a fixed 3s on every load/refresh, regardless of
-    // how fast the page actually finishes loading.
-    window.setTimeout(hide, 3000);
+    // Show only until the page is ready — a short floor so it doesn't
+    // flash, a hard ceiling so a slow asset can't trap the visitor.
+    var MIN = 400;
+    var MAX = 1600;
+    var start = performance.now();
+
+    function ready() {
+      var waited = performance.now() - start;
+      window.setTimeout(hide, Math.max(0, MIN - waited));
+    }
+
+    if (document.readyState === 'complete') ready();
+    else window.addEventListener('load', ready, { once: true });
+    window.setTimeout(hide, MAX);
   })();
 </script>

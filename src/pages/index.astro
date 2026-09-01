@@ -9,18 +9,19 @@ import Badge from '../components/primitives/Badge.astro';
 import Card from '../components/primitives/Card.astro';
 
 import { Spotlight } from '../components/fx/Spotlight';
-import { MagneticButton } from '../components/fx/MagneticButton';
 import { NumberTicker } from '../components/fx/NumberTicker';
 import { Marquee } from '../components/fx/Marquee';
 import TextReveal from '../components/fx/TextReveal.astro';
-import LetterReveal from '../components/fx/LetterReveal.astro';
 import { BackgroundBeams } from '../components/fx/BackgroundBeams';
+import WhatsAppGlyph from '../components/primitives/WhatsAppGlyph.astro';
 import { BentoGrid, BentoItem } from '../components/fx/BentoGrid';
 
 import { WhatsAppButton } from '../components/cta/WhatsAppButton';
+import { MapFlyTo } from '../components/fx/MapFlyTo';
 
 import { buildWaUrl } from '../lib/wa';
 import { fetchGoogleReviews } from '../lib/googleReviews';
+import { SITE } from '../lib/seo';
 
 const painAnchors = [
   {
@@ -79,7 +80,7 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
   jsonLd={[websiteSchema(), ...ratingSchemas]}
 >
   <!-- HERO -->
-  <section class="relative isolate -mt-32 flex min-h-screen min-h-dvh items-center overflow-hidden bg-bg md:-mt-36">
+  <section class="relative isolate -mt-24 flex min-h-screen min-h-dvh items-center overflow-hidden bg-bg md:-mt-28">
     <video
       class="absolute inset-0 -z-20 h-full w-full object-cover"
       src="/videos/prestige-hero.mp4"
@@ -91,88 +92,40 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
       preload="auto"
       aria-hidden="true"
     />
+    <!-- legibility scrim: darkest at the text edge, clearing toward the video -->
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/85 to-bg/40 md:to-transparent" aria-hidden="true"></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-bg via-transparent to-bg/50" aria-hidden="true"></div>
 
-    <div class="pointer-events-none absolute inset-x-0 top-[20%] z-0 flex flex-col items-center gap-3 lg:hidden">
-      <img
-        src="/logo-mark.png"
-        alt=""
-        width="128"
-        height="128"
-        class="h-32 w-32 opacity-0 animate-fade-in-1"
-      />
-      <div class="flex flex-col items-center font-display font-semibold tracking-wide text-fg opacity-0 animate-fade-in-2">
-        <span class="text-3xl"><span class="text-gold">S.</span>Prestige</span>
-        <span class="text-xl text-gold">Services</span>
-      </div>
-      <LetterReveal
-        as="p"
-        text="Detailing, mechanics, recovery, sales and rentals — one address in Kissonerga. Real starting prices, no surprise charges at pickup. WhatsApp answers the same day."
-        delay={1.9}
-        stagger={0.035}
-        duration={0.5}
-        className="mt-16 max-w-sm text-center font-medium leading-relaxed tracking-wide text-gold text-pretty text-xl"
-      />
-    </div>
-
-    <Container class="relative z-10 py-16 md:py-24 lg:py-28">
+    <Container class="relative z-10 py-24 md:py-28">
       <div class="max-w-2xl">
-        <Eyebrow class="hidden lg:inline-flex">Kissonerga · Cyprus</Eyebrow>
+        <Eyebrow class="opacity-0 animate-fade-in-1">Kissonerga · Cyprus</Eyebrow>
         <TextReveal
           as="h1"
           text={`Prestige cars.\nServiced, sold, rented.`}
-          className="hidden mt-4 font-display text-[clamp(2rem,5.5vw,3.75rem)] font-semibold leading-[1.05] gold-gradient-text [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[clamp(1.4rem,3.6vw,2.4rem)] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold lg:block"
+          delay={0.3}
+          className="mt-4 font-display text-display-1 font-semibold gold-gradient-text [&>span]:!whitespace-normal [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[0.62em] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
         />
-        <p class="hidden mt-6 max-w-xl text-lg text-fg-muted text-pretty lg:block">
+        <p class="mt-6 max-w-xl text-base text-fg-muted text-pretty opacity-0 animate-fade-in-2 sm:text-lg">
           Detailing, mechanics, recovery, sales and rentals — one address
           in Kissonerga. Real starting prices, no surprise charges at
           pickup. WhatsApp answers the same day.
         </p>
+        <div class="mt-8 opacity-0 animate-fade-in-2">
+          <a
+            href={buildWaUrl('detailing.general')}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex h-12 items-center gap-2.5 rounded-md bg-[#25D366] px-6 text-base font-medium text-black shadow-sm transition-transform duration-200 hover:scale-[1.02]"
+          >
+            <WhatsAppGlyph class="h-5 w-5" />
+            Message us
+          </a>
+        </div>
       </div>
     </Container>
 
-    <div class="absolute bottom-10 right-8 z-20 hidden flex-col items-end gap-3 md:flex">
-      <MagneticButton client:idle>
-        <a
-          href={buildWaUrl('detailing.general')}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Message Prestige Services on WhatsApp"
-          class="group flex items-center gap-2.5"
-        >
-          <span class="text-sm text-white/80 transition-colors group-hover:text-white">Prestige Services</span>
-          <img
-            src="/whatsapp-icon.png"
-            alt=""
-            width="160"
-            height="160"
-            class="h-14 w-14 shrink-0 drop-shadow-lg transition-transform duration-200 group-hover:scale-110"
-            aria-hidden="true"
-          />
-        </a>
-      </MagneticButton>
-      <MagneticButton client:idle>
-        <a
-          href={buildWaUrl('rental.general')}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Message Rentals on WhatsApp"
-          class="group flex items-center gap-2.5"
-        >
-          <span class="text-sm text-white/80 transition-colors group-hover:text-white">Rentals</span>
-          <img
-            src="/whatsapp-icon.png"
-            alt=""
-            width="160"
-            height="160"
-            class="h-14 w-14 shrink-0 drop-shadow-lg transition-transform duration-200 group-hover:scale-110"
-            aria-hidden="true"
-          />
-        </a>
-      </MagneticButton>
-    </div>
-
-    <div class="pointer-events-none absolute inset-x-0 bottom-8 z-10 flex flex-col items-center gap-2 opacity-0 animate-fade-in-4 lg:hidden">
-      <span class="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold/80">Scroll to explore</span>
+    <div class="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 opacity-0 animate-fade-in-4">
+      <span class="u-label text-fg-muted">Scroll</span>
       <svg
         class="h-5 w-5 animate-bounce text-gold"
         viewBox="0 0 24 24"
@@ -190,7 +143,7 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
 
   <!-- TRUST STRIP -->
   <Section bg="elev" spacing="tight">
-    <div class="grid grid-cols-2 divide-x divide-gold/10 md:grid-cols-4">
+    <div class="grid grid-cols-2 divide-x divide-hairline/10 md:grid-cols-4">
       <div class="flex flex-col items-center px-4 py-2 text-center first:pl-0 last:pr-0 md:px-8">
         <div class="font-display text-4xl text-gold md:text-5xl">
           <NumberTicker client:idle value={1200} suffix="+" />
@@ -226,7 +179,7 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
   <!-- TWO-LANE SPLIT -->
   <Section>
     <Eyebrow>Pick your lane</Eyebrow>
-    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-[1.1] text-fg md:text-4xl lg:text-5xl text-balance">
+    <h2 class="mt-3 max-w-3xl h-section">
       Auto or tourism —<br class="hidden sm:block" /> both live here.
     </h2>
     <BentoGrid className="mt-10">
@@ -237,6 +190,7 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
         description="Photos on WhatsApp, same-day valuation. Honest numbers, clean paperwork."
         imageUrl="/imagery/bento-buysell.webp"
         imageAlt="Three luxury cars in a dimly lit showroom"
+        className="md:col-span-2"
       />
       <BentoItem
         href="/tourism/rentals"
@@ -284,12 +238,12 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
   <!-- PAIN ANCHORS -->
   <Section bg="elev">
     <Eyebrow>Why locals pick us</Eyebrow>
-    <h2 class="mt-3 max-w-3xl font-display text-3xl leading-[1.1] text-fg md:text-4xl lg:text-5xl text-balance">
+    <h2 class="mt-3 max-w-3xl h-section">
       We name the problem.<br class="hidden sm:block" /> Then we fix it.
     </h2>
     <Spotlight
       client:visible
-      className="mt-10 grid grid-cols-1 gap-3 rounded-xl border border-gold/10 bg-bg p-3 md:grid-cols-2 lg:grid-cols-4"
+      className="mt-10 grid grid-cols-1 gap-3 rounded-xl border border-hairline/10 bg-bg p-3 md:grid-cols-2 lg:grid-cols-4"
     >
       {painAnchors.map((p, i) => (
         <Card class="group/pain">
@@ -301,9 +255,9 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
           </div>
           <h3 class="mt-4 font-display text-xl leading-snug text-fg">{p.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-fg-muted">{p.body}</p>
-          <div class="mt-4 flex items-center gap-1 text-xs font-medium text-gold/0 transition-all duration-300 ease-out-expo group-hover/pain:translate-x-0.5 group-hover/pain:text-gold/60">
+          <div class="mt-4 flex items-center gap-1 text-xs font-medium text-fg-muted/70 transition-colors duration-300 ease-out-expo group-hover/pain:text-gold">
             Our approach
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3 transition-transform duration-300 ease-out-expo group-hover/pain:translate-x-0.5" aria-hidden="true">
               <path d="M3 8h10M9 4l4 4-4 4"/>
             </svg>
           </div>
@@ -318,18 +272,18 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
     <div class="mt-8 overflow-hidden">
       <Marquee speed={28}>
         {testimonials.map((t) => (
-          <div class="flex w-[290px] shrink-0 flex-col justify-between gap-4 rounded-xl border border-gold/20 bg-gradient-to-br from-gold-soft to-[#ffe082] p-5 text-bg shadow-card md:w-[310px] min-h-[190px]">
+          <div class="flex w-[290px] shrink-0 flex-col justify-between gap-4 rounded-lg border border-hairline/10 bg-bg-subtle p-5 shadow-card md:w-[310px] min-h-[190px]">
             <div>
               <div class="mb-3 flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
-                  <svg viewBox="0 0 12 12" fill="currentColor" class:list={["h-3 w-3", i < t.rating ? "text-gold-deep" : "text-bg/20"]} aria-hidden="true">
+                  <svg viewBox="0 0 12 12" fill="currentColor" class:list={["h-3 w-3", i < t.rating ? "text-gold" : "text-fg-muted/25"]} aria-hidden="true">
                     <path d="M6 0l1.5 4.5H12l-3.75 2.7 1.44 4.5L6 9 2.31 11.7l1.44-4.5L0 4.5h4.5z"/>
                   </svg>
                 ))}
               </div>
-              <p class="font-display text-[15px] leading-snug text-bg/90 md:text-base">&ldquo;{t.quote}&rdquo;</p>
+              <p class="font-display text-[15px] leading-snug text-fg md:text-base">&ldquo;{t.quote}&rdquo;</p>
             </div>
-            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-bg/55">{t.who}</p>
+            <p class="u-label text-fg-muted">{t.who}</p>
           </div>
         ))}
       </Marquee>
@@ -344,18 +298,18 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
       <div class="grid gap-10 md:grid-cols-2 md:items-start">
         <div>
           <Eyebrow>Kissonerga, Cyprus</Eyebrow>
-          <h2 class="mt-3 font-display text-3xl leading-[1.1] text-fg md:text-4xl lg:text-5xl text-balance">
+          <h2 class="mt-3 h-section">
             Tap, text, done.
           </h2>
           <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div class="rounded-xl border border-gold/15 bg-bg/50 p-5 backdrop-blur-sm transition-[border-color] duration-200 hover:border-gold/30">
+            <div class="rounded-xl border border-hairline/12 bg-bg/50 p-5 backdrop-blur-sm transition-[border-color] duration-200 hover:border-gold/30">
               <Eyebrow>Address</Eyebrow>
               <div class="mt-3 font-medium leading-snug text-fg">
                 Eustathios Plaza, Leoforos Chrisoneras, Kat.5
               </div>
               <div class="mt-1 text-sm text-fg-muted">Kissonerga, Pafos 8574</div>
             </div>
-            <div class="rounded-xl border border-gold/15 bg-bg/50 p-5 backdrop-blur-sm transition-[border-color] duration-200 hover:border-gold/30">
+            <div class="rounded-xl border border-hairline/12 bg-bg/50 p-5 backdrop-blur-sm transition-[border-color] duration-200 hover:border-gold/30">
               <Eyebrow>Hours</Eyebrow>
               <div class="mt-3 font-medium leading-snug text-fg">
                 Mon–Sat&nbsp;· 08:00–18:00
@@ -380,17 +334,18 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
             </WhatsAppButton>
           </div>
         </div>
-        <div class="overflow-hidden rounded-xl border border-gold/12 bg-bg shadow-card">
-          <iframe
-            title="S.Prestige Services — Kissonerga location"
-            src="https://www.google.com/maps?q=S.PRESTIGE+SERVICES+Kissonerga+Cyprus&z=17&output=embed"
-            loading="lazy"
-            class="h-[380px] w-full"
-            style="border: 0; display: block;"
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade"
-          />
-        </div>
+        <MapFlyTo
+          client:visible
+          lat={SITE.geo.latitude}
+          lng={SITE.geo.longitude}
+          addressLines={[
+            SITE.address.streetAddress,
+            `${SITE.address.addressLocality}, ${SITE.address.addressRegion} ${SITE.address.postalCode}`,
+            'Cyprus',
+          ]}
+          label={SITE.name}
+          fallbackSrc="https://www.google.com/maps?q=S.PRESTIGE+SERVICES+Kissonerga+Cyprus&z=17&output=embed"
+        />
       </div>
     </Container>
   </section>

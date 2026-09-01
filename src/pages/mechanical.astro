@@ -72,7 +72,7 @@ const services = [
         <TextReveal
           as="h1"
           text={`Car Mechanic in Pafos, Cyprus.\nHonest quotes before any work begins.`}
-          className="mt-4 pb-2 font-display text-4xl font-semibold leading-[1.15] md:text-5xl gold-gradient-text"
+          className="mt-4 pb-2 font-display text-display-1 font-semibold gold-gradient-text"
         />
         <p class="mt-6 max-w-xl text-lg text-fg-muted text-pretty">
           Diagnostics, servicing, brakes, suspension, pre-purchase checks. We
@@ -113,7 +113,7 @@ const services = [
 
   <Section>
     <Eyebrow>What we cover</Eyebrow>
-    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Plain mechanical work, done properly.</h2>
+    <h2 class="mt-3 h-section">Plain mechanical work, done properly.</h2>
     <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {services.map((s) => (
         <Card>
@@ -129,7 +129,7 @@ const services = [
 
   <Section bg="elev">
     <Eyebrow>FAQ</Eyebrow>
-    <h2 class="mt-3 font-display text-3xl text-fg md:text-5xl">Straight answers.</h2>
+    <h2 class="mt-3 h-section">Straight answers.</h2>
     <div class="mt-10 grid gap-4 md:grid-cols-2">
       {faq.map((item) => (
         <Card>
@@ -144,7 +144,7 @@ const services = [
     <div class="flex flex-wrap items-center justify-between gap-6">
       <div>
         <Eyebrow>Need it sooner?</Eyebrow>
-        <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Same-day diagnostics, when slots allow.</h2>
+        <h2 class="mt-3 h-section">Same-day diagnostics, when slots allow.</h2>
       </div>
       <div class="flex flex-wrap gap-3">
         <WhatsAppButton template="mechanical.general" size="lg" variant="primary">

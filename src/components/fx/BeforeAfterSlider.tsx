@@ -52,7 +52,7 @@ export function BeforeAfterSlider({
       aria-valuenow={Math.round(pct)}
       onKeyDown={onKey}
       className={cn(
-        'relative aspect-[16/10] select-none overflow-hidden rounded-lg border border-gold/10',
+        'relative aspect-[16/10] select-none overflow-hidden rounded-lg border border-hairline/10',
         className,
       )}
       onMouseDown={(e) => {
@@ -108,10 +108,10 @@ export function BeforeAfterSlider({
           </svg>
         </div>
       </div>
-      <div className="pointer-events-none absolute left-3 top-3 rounded bg-bg/80 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-fg-muted backdrop-blur">
+      <div className="pointer-events-none absolute left-3 top-3 rounded bg-bg/80 px-2 py-0.5 u-label text-fg-muted backdrop-blur">
         {beforeLabel}
       </div>
-      <div className="pointer-events-none absolute right-3 top-3 rounded bg-bg/80 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-gold backdrop-blur">
+      <div className="pointer-events-none absolute right-3 top-3 rounded bg-bg/80 px-2 py-0.5 u-label text-gold backdrop-blur">
         {afterLabel}
       </div>
       {plate && (

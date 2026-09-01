@@ -45,7 +45,7 @@ const buyerGuarantees = [
   jsonLd={schema}
 >
   <Section>
-    <h1 class="mt-3 font-display text-4xl leading-[1.1] text-fg md:text-6xl">
+    <h1 class="mt-3 h-display">
       <span class="block">Used Cars for Sale in Cyprus.</span>
       <span class="block">Clean paperwork.</span>
       <span class="block">Honest numbers.</span>
@@ -57,7 +57,7 @@ const buyerGuarantees = [
 
     <div class="mt-10 grid gap-4 md:grid-cols-3">
       {buyerGuarantees.map((g) => (
-        <div class="flex items-start gap-4 rounded-lg border border-gold/10 bg-bg-elev p-5">
+        <div class="flex items-start gap-4 rounded-lg border border-hairline/10 bg-bg-elev p-5">
           <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
               <path d="M20 6 9 17l-5-5"/>
@@ -76,7 +76,7 @@ const buyerGuarantees = [
     <div class="flex items-end justify-between">
       <div>
         <Eyebrow>Inventory</Eyebrow>
-        <h2 class="mt-3 font-display text-3xl text-fg md:text-4xl">Currently in stock</h2>
+        <h2 class="mt-3 h-section">Currently in stock</h2>
       </div>
       {forSale.length > 0 && (
         <span class="text-sm text-fg-muted">{forSale.length} vehicles</span>
@@ -103,36 +103,38 @@ const buyerGuarantees = [
     ) : (
       <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {forSale.map((car) => (
-          <a href={`/buy-sell/${car.slug}`} class="block">
-            <Card class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
-              <div class="relative aspect-[3/4] w-full overflow-hidden rounded border border-gold/10 bg-bg-elev">
+          <a href={`/buy-sell/${car.slug}`} class="group block">
+            <Card padded={false} class="transition-all hover:-translate-y-0.5 hover:border-gold/30">
+              <div class="relative aspect-[4/3] w-full overflow-hidden bg-bg-elev">
                 <Image
                   src={car.data.images[0]}
                   alt={`${car.data.year} ${car.data.make} ${car.data.model}`}
-                  width={640}
-                  widths={[320, 640]}
+                  width={720}
+                  widths={[360, 720]}
                   sizes="(max-width: 768px) 100vw, 33vw"
                   format="webp"
                   quality={75}
                   loading="lazy"
-                  class="h-full w-full object-cover"
+                  class="h-full w-full object-cover grayscale-[0.18] saturate-[0.9] transition duration-500 ease-out-expo group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:saturate-100"
                 />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/95 via-bg/20 to-transparent" aria-hidden="true"></div>
+                <div class="pointer-events-none absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.45)]" aria-hidden="true"></div>
                 {car.data.badge && (
-                  <Badge variant="gold" class="absolute top-2 left-2">{car.data.badge}</Badge>
+                  <Badge variant="gold" class="absolute left-3 top-3">{car.data.badge}</Badge>
+                )}
+                {car.data.listingType === 'sale' && (
+                  <div class="absolute bottom-3 left-3">
+                    <PriceTag amount={car.data.priceEUR} variant="exact" />
+                  </div>
                 )}
               </div>
-              <div class="mt-4 flex items-start justify-between gap-2">
-                <div class="min-w-0">
-                  <div class="min-h-[3rem] font-display text-xl leading-tight text-fg">
-                    {car.data.make} {car.data.model}
-                  </div>
-                  <p class="mt-1 text-sm text-fg-muted">
-                    {car.data.year} · {car.data.transmission} · {car.data.fuel}
-                  </p>
+              <div class="p-5">
+                <div class="font-display text-xl leading-tight text-fg">
+                  {car.data.make} {car.data.model}
                 </div>
-                {car.data.listingType === 'sale' && (
-                  <PriceTag amount={car.data.priceEUR} variant="exact" />
-                )}
+                <p class="mt-1 text-sm text-fg-muted">
+                  {car.data.year} · {car.data.transmission} · {car.data.fuel}
+                </p>
               </div>
             </Card>
           </a>
@@ -143,7 +145,7 @@ const buyerGuarantees = [
 
   <Section>
     <Eyebrow>Selling your car</Eyebrow>
-    <h2 class="mt-3 max-w-2xl font-display text-3xl text-fg md:text-5xl text-balance">
+    <h2 class="mt-3 max-w-2xl h-section">
       Three photos, mileage, condition. Same-day number.
     </h2>
     <p class="mt-4 max-w-xl text-fg-muted">
