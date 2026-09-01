@@ -92,20 +92,16 @@ if (placeRating !== null && placeReviewCount !== null && placeReviewCount > 0) {
       preload="auto"
       aria-hidden="true"
     />
-    <!-- legibility scrim: darkest at the text edge, clearing toward the video -->
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/85 to-bg/40 md:to-transparent" aria-hidden="true"></div>
-    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-bg via-transparent to-bg/50" aria-hidden="true"></div>
-
     <Container class="relative z-10 py-24 md:py-28">
       <div class="max-w-2xl">
-        <Eyebrow class="opacity-0 animate-fade-in-1">Kissonerga · Cyprus</Eyebrow>
+        <Eyebrow class="opacity-0 animate-fade-in-1 [text-shadow:0_1px_14px_rgba(0,0,0,0.55)]">Kissonerga · Cyprus</Eyebrow>
         <TextReveal
           as="h1"
           text={`Prestige cars.\nServiced, sold, rented.`}
           delay={0.3}
-          className="mt-4 font-display text-display-1 font-semibold gold-gradient-text [&>span]:!whitespace-normal [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[0.62em] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
+          className="mt-4 font-display text-display-1 font-semibold gold-gradient-text [filter:drop-shadow(0_2px_14px_rgba(0,0,0,0.5))] [&>span]:!whitespace-normal [&>span:nth-child(2)]:mt-1 [&>span:nth-child(2)]:text-[0.62em] [&>span:nth-child(2)]:font-medium [&>span:nth-child(2)]:tracking-tight [&>span:nth-child(2)]:text-gold"
         />
-        <p class="mt-6 max-w-xl text-base text-fg-muted text-pretty opacity-0 animate-fade-in-2 sm:text-lg">
+        <p class="mt-6 max-w-xl text-base text-fg-muted text-pretty opacity-0 animate-fade-in-2 [text-shadow:0_1px_14px_rgba(0,0,0,0.6)] sm:text-lg">
           Detailing, mechanics, recovery, sales and rentals — one address
           in Kissonerga. Real starting prices, no surprise charges at
           pickup. WhatsApp answers the same day.
