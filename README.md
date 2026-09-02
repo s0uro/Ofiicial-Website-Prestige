@@ -24,6 +24,12 @@ files. Customer conversion happens through WhatsApp deep links, not forms.
 
 No runtime environment variables are required to build or serve the site.
 
+Two optional variables unlock extra features — see `.env.example`. Setting
+`PUBLIC_TIKTOK_PIXEL_ID` in Vercel enables TikTok conversion tracking, which
+loads only after a visitor accepts the cookie banner; leave it unset and no
+advertising script is shipped. The campaign-side plan is in
+[`docs/tiktok-ads.md`](docs/tiktok-ads.md).
+
 ---
 
 ## Requirements

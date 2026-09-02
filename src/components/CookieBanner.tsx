@@ -1,23 +1,38 @@
 import * as React from 'react';
+import {
+  CONSENT_ACCEPTED,
+  CONSENT_DECLINED,
+  readConsent,
+  setConsent,
+} from '../lib/consent';
 
-const STORAGE_KEY = 'sp_cookie_consent';
+interface Props {
+  /**
+   * True when an advertising pixel is configured for this deployment. The
+   * banner has to describe what it is actually asking permission for, and that
+   * differs between a build with the TikTok pixel and one without.
+   */
+  adsEnabled?: boolean;
+}
 
-export function CookieBanner(): React.ReactElement | null {
+export function CookieBanner({
+  adsEnabled = false,
+}: Props): React.ReactElement | null {
   const [visible, setVisible] = React.useState(false);
 
   React.useEffect(() => {
-    if (!localStorage.getItem(STORAGE_KEY)) {
+    if (readConsent() === null) {
       setVisible(true);
     }
   }, []);
 
   function accept() {
-    localStorage.setItem(STORAGE_KEY, 'accepted');
+    setConsent(CONSENT_ACCEPTED);
     setVisible(false);
   }
 
   function decline() {
-    localStorage.setItem(STORAGE_KEY, 'declined');
+    setConsent(CONSENT_DECLINED);
     setVisible(false);
   }
 
@@ -35,8 +50,19 @@ export function CookieBanner(): React.ReactElement | null {
           Cookies
         </p>
         <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-          We use Google Maps which sets cookies when the map loads. No
-          advertising or tracking cookies are used.{' '}
+          {adsEnabled ? (
+            <>
+              We use Google Maps, which sets cookies when the map loads. If you
+              accept, we also load the TikTok pixel so we can measure which of
+              our ads bring people here. Decline and no advertising cookies are
+              set.{' '}
+            </>
+          ) : (
+            <>
+              We use Google Maps which sets cookies when the map loads. No
+              advertising or tracking cookies are used.{' '}
+            </>
+          )}
           <a
             href="/legal/privacy"
             className="text-gold underline-offset-2 hover:underline"

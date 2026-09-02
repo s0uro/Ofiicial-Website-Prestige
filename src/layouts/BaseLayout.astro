@@ -7,6 +7,7 @@ import Footer from '../components/nav/Footer.astro';
 import Preloader from '../components/fx/Preloader.astro';
 import JsonLd from '../components/primitives/JsonLd.astro';
 import { CookieBanner } from '../components/CookieBanner';
+import TikTokPixel from '../components/analytics/TikTokPixel.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import Analytics from '@vercel/analytics/astro';
 
@@ -104,7 +105,8 @@ const ogImageType = OG_IMAGE_TYPES[ogImageExt] ?? 'image/jpeg';
       <slot />
     </main>
     {showChrome && <Footer />}
-    <CookieBanner client:only="react" />
+    <CookieBanner client:only="react" adsEnabled={Boolean(import.meta.env.PUBLIC_TIKTOK_PIXEL_ID)} />
+    <TikTokPixel />
     <SpeedInsights />
     <Analytics />
   </body>

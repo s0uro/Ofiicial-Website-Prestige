@@ -1,0 +1,106 @@
+---
+/**
+ * TikTok Pixel — consent-gated.
+ *
+ * Renders nothing unless `PUBLIC_TIKTOK_PIXEL_ID` is set, so local builds and
+ * any deployment without the variable stay free of advertising scripts. When it
+ * is set, the pixel still only loads after the visitor accepts the cookie
+ * banner, and it loads on the spot when they accept — no reload needed.
+ *
+ * Conversions on this site happen off-site, in WhatsApp or on a phone call, so
+ * the pixel cannot observe the actual lead. The closest signal it can see is
+ * the click that hands the visitor over, tracked here as `Contact`. Optimise
+ * TikTok campaigns against that event rather than against page views.
+ *
+ * See `docs/tiktok-ads.md` for the campaign-side setup.
+ */
+import {
+  CONSENT_ACCEPTED,
+  CONSENT_EVENT,
+  CONSENT_STORAGE_KEY,
+} from '../../lib/consent';
+
+const pixelId = import.meta.env.PUBLIC_TIKTOK_PIXEL_ID;
+
+// Built as a string so the pixel's own minified source is never parsed as
+// Astro template syntax, and so the tag can be omitted entirely when unset.
+const script = `
+(function () {
+  var PIXEL_ID = ${JSON.stringify(pixelId ?? '')};
+  var CONSENT_KEY = ${JSON.stringify(CONSENT_STORAGE_KEY)};
+  var CONSENT_EVENT = ${JSON.stringify(CONSENT_EVENT)};
+  var CONSENT_ACCEPTED = ${JSON.stringify(CONSENT_ACCEPTED)};
+
+  var loaded = false;
+
+  function loadPixel() {
+    if (loaded) return;
+    loaded = true;
+
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=d.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=d.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+    }(window, document, 'ttq');
+
+    window.ttq.load(PIXEL_ID);
+    window.ttq.page();
+  }
+
+  function track(event, props) {
+    if (window.ttq && typeof window.ttq.track === 'function') {
+      window.ttq.track(event, props);
+    }
+  }
+
+  function storedConsent() {
+    try {
+      return localStorage.getItem(CONSENT_KEY);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // One delegated listener covers every CTA on the site — static Astro markup
+  // and hydrated React islands alike — so contact buttons need no tracking
+  // code of their own.
+  document.addEventListener('click', function (e) {
+    var target = e.target;
+    if (!target || typeof target.closest !== 'function') return;
+
+    var el = target.closest('[data-tt-event], a[href]');
+    if (!el) return;
+
+    var lane = document.body.getAttribute('data-lane') || 'shared';
+
+    var custom = el.getAttribute('data-tt-event');
+    if (custom) {
+      track(custom, {
+        content_name: el.getAttribute('data-tt-name') || document.title,
+        content_category: lane
+      });
+      return;
+    }
+
+    var href = el.getAttribute('href') || '';
+    var channel = null;
+    if (href.indexOf('https://wa.me/') === 0) channel = 'whatsapp';
+    else if (href.indexOf('tel:') === 0) channel = 'phone';
+    if (!channel) return;
+
+    var label = el.getAttribute('aria-label') || el.textContent || channel;
+    track('Contact', {
+      content_type: channel,
+      content_name: label.trim().slice(0, 100),
+      content_category: lane
+    });
+  }, true);
+
+  if (storedConsent() === CONSENT_ACCEPTED) loadPixel();
+
+  window.addEventListener(CONSENT_EVENT, function (e) {
+    if (e.detail === CONSENT_ACCEPTED) loadPixel();
+  });
+})();
+`;
+---
+
+{pixelId && <script is:inline set:html={script} />}
